@@ -1,0 +1,46 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Common.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PortFullSpecification" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PortIdentifier" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PortType" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PortName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PathBrowser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files\Internet Explorer\iexplore.exe</Value>
+    </Setting>
+    <Setting Name="HashCodeLevel1" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">1793506752712787170</Value>
+    </Setting>
+    <Setting Name="HashCodeLevel2" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">1232229187721023276</Value>
+    </Setting>
+    <Setting Name="HashCodeLevel3" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DataDictionaryConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\Configuration\DataDictionary.mdb;Persist Security Info=True&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.OleDb&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\Configuration\DataDictionary.mdb;Persist Security Info=True</Value>
+    </Setting>
+    <Setting Name="PTUConfigurationConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\Configuration\PTU Configuration.mdb;Persist Security Info=True&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.OleDb&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\Configuration\PTU Configuration.mdb;Persist Security Info=True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

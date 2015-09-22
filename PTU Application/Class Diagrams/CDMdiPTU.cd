@@ -1,0 +1,717 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Comment CommentText="Common.UserControls">
+    <Position X="0.5" Y="7.386" Height="0.291" Width="2.398" />
+  </Comment>
+  <Comment CommentText="Common.Configuration">
+    <Position X="3.928" Y="7.739" Height="0.291" Width="1.617" />
+  </Comment>
+  <Class Name="Bombardier.PTU.MdiPTU">
+    <Position X="0.5" Y="0.5" Width="5.75" />
+    <Members>
+      <Method Name="BlinkUpdateIcon" Hidden="true" />
+      <Method Name="CloseChildForms" Hidden="true" />
+      <Property Name="CommunicationInterface" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Property Name="Enumeration" Hidden="true" />
+      <Property Name="FilenameDataDictionary" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Method Name="LoadDictionary" Hidden="true" />
+      <Field Name="m_CommunicationInterface" Hidden="true" />
+      <Field Name="m_Enumeration" Hidden="true" />
+      <Field Name="m_FilenameDataDictionary" Hidden="true" />
+      <Field Name="m_IsDisposed" Hidden="true" />
+      <Field Name="m_LegendRx" Hidden="true" />
+      <Field Name="m_LegendStatusInformation" Hidden="true" />
+      <Field Name="m_MenuItemConfigure" Hidden="true" />
+      <Field Name="m_MenuItemConfigureChartMode" Hidden="true" />
+      <Field Name="m_MenuItemConfigureChartModeData" Hidden="true" />
+      <Method Name="m_MenuItemConfigureChartModeData_Click" Hidden="true" />
+      <Field Name="m_MenuItemConfigureChartModeFullScale" Hidden="true" />
+      <Method Name="m_MenuItemConfigureChartModeFullScale_Click" Hidden="true" />
+      <Field Name="m_MenuItemConfigureChartModeRamp" Hidden="true" />
+      <Method Name="m_MenuItemConfigureChartModeRamp_Click" Hidden="true" />
+      <Field Name="m_MenuItemConfigureChartModeZeroOutput" Hidden="true" />
+      <Method Name="m_MenuItemConfigureChartModeZeroOutput_Click" Hidden="true" />
+      <Field Name="m_MenuItemConfigureChartRecorder" Hidden="true" />
+      <Method Name="m_MenuItemConfigureChartRecorder_Click" Hidden="true" />
+      <Field Name="m_MenuItemConfigureEnumeration" Hidden="true" />
+      <Method Name="m_MenuItemConfigureEnumeration_Click" Hidden="true" />
+      <Field Name="m_MenuItemConfigurePasswordProtection" Hidden="true" />
+      <Method Name="m_MenuItemConfigurePasswordProtection_Click" Hidden="true" />
+      <Field Name="m_MenuItemConfigureRealTimeClock" Hidden="true" />
+      <Method Name="m_MenuItemConfigureRealTimeClock_Click" Hidden="true" />
+      <Field Name="m_MenuItemConfigureWorksets" Hidden="true" />
+      <Field Name="m_MenuItemConfigureWorksetsChartRecorder" Hidden="true" />
+      <Method Name="m_MenuItemConfigureWorksetsChartRecorder_Click" Hidden="true" />
+      <Field Name="m_MenuItemConfigureWorksetsFaultLog" Hidden="true" />
+      <Method Name="m_MenuItemConfigureWorksetsFaultLog_Click" Hidden="true" />
+      <Field Name="m_MenuItemConfigureWorksetsWatchWindow" Hidden="true" />
+      <Method Name="m_MenuItemConfigureWorksetsWatchWindow_Click" Hidden="true" />
+      <Field Name="m_MenuItemDiagnostics" Hidden="true" />
+      <Method Name="m_MenuItemDiagnosticsAnnunciators_Click" Hidden="true" />
+      <Field Name="m_MenuItemDiagnosticsEventLog" Hidden="true" />
+      <Method Name="m_MenuItemDiagnosticsEventLog_Click" Hidden="true" />
+      <Field Name="m_MenuItemDiagnosticsInitializeEventLogs" Hidden="true" />
+      <Method Name="m_MenuItemDiagnosticsInitializeEventLogs_Click" Hidden="true" />
+      <Method Name="m_MenuItemDiagnosticsMacros_Click" Hidden="true" />
+      <Field Name="m_MenuItemDiagnosticsSelfTests" Hidden="true" />
+      <Method Name="m_MenuItemDiagnosticsSelfTests_Click" Hidden="true" />
+      <Field Name="m_MenuItemFile" Hidden="true" />
+      <Field Name="m_MenuItemFileExit" Hidden="true" />
+      <Method Name="m_MenuItemFileExit_Click" Hidden="true" />
+      <Field Name="m_MenuItemFileOpen" Hidden="true" />
+      <Method Name="m_MenuItemFileOpenDataDictionary_Click" Hidden="true" />
+      <Field Name="m_MenuItemFileOpenEventLog" Hidden="true" />
+      <Method Name="m_MenuItemFileOpenEventLog_Click" Hidden="true" />
+      <Field Name="m_MenuItemFileOpenFaultLog" Hidden="true" />
+      <Method Name="m_MenuItemFileOpenFaultLog_Click" Hidden="true" />
+      <Method Name="m_MenuItemFileOpenScreenCapture_Click" Hidden="true" />
+      <Field Name="m_MenuItemFileOpenSimulatedFaultLog" Hidden="true" />
+      <Method Name="m_MenuItemFileOpenSimulatedFaultLog_Click" Hidden="true" />
+      <Field Name="m_MenuItemFileOpenWatchFile" Hidden="true" />
+      <Method Name="m_MenuItemFileOpenWatchFile_Click" Hidden="true" />
+      <Method Name="m_MenuItemFileSaveAll_Click" Hidden="true" />
+      <Method Name="m_MenuItemFileSaveEventLog_Click" Hidden="true" />
+      <Method Name="m_MenuItemFileSaveFaultLogs_Click" Hidden="true" />
+      <Field Name="m_MenuItemFileSelectDataDictionary" Hidden="true" />
+      <Field Name="m_MenuItemHelp" Hidden="true" />
+      <Field Name="m_MenuItemHelpAboutPTU" Hidden="true" />
+      <Method Name="m_MenuItemHelpAboutPTU_Click" Hidden="true" />
+      <Field Name="m_MenuItemHelpPTUHelp" Hidden="true" />
+      <Method Name="m_MenuItemHelpPTUHelp_Click" Hidden="true" />
+      <Field Name="m_MenuItemLogin" Hidden="true" />
+      <Method Name="m_MenuItemLogin_Click" Hidden="true" />
+      <Field Name="m_MenuItemTools" Hidden="true" />
+      <Method Name="m_MenuItemToolsConvertEngineeringDatabase" Hidden="true" />
+      <Field Name="m_MenuItemToolsConvertEngineeringFile" Hidden="true" />
+      <Field Name="m_MenuItemToolsDebugMode" Hidden="true" />
+      <Method Name="m_MenuItemToolsDebugMode_Click" Hidden="true" />
+      <Field Name="m_MenuItemToolsOptions" Hidden="true" />
+      <Method Name="m_MenuItemToolsOptions_Click" Hidden="true" />
+      <Field Name="m_MenuItemView" Hidden="true" />
+      <Field Name="m_MenuItemViewSystemInformation" Hidden="true" />
+      <Method Name="m_MenuItemViewSystemInformation_Click" Hidden="true" />
+      <Field Name="m_MenuItemViewWatchWindow" Hidden="true" />
+      <Method Name="m_MenuItemWatchViewWatchWindow_Click" Hidden="true" />
+      <Field Name="m_MenuStrip" Hidden="true" />
+      <Field Name="m_Mode" Hidden="true" />
+      <Field Name="m_PanelStatus" Hidden="true" />
+      <Field Name="m_PictureBoxBusy" Hidden="true" />
+      <Field Name="m_ProgressBar" Hidden="true" />
+      <Field Name="m_SeparatorConfigureChartMode" Hidden="true" />
+      <Field Name="m_SeparatorConfigureEnd" Hidden="true" />
+      <Field Name="m_SeparatorConfigurePasswordProtection" Hidden="true" />
+      <Field Name="m_SeparatorConfigureRealTimeClock" Hidden="true" />
+      <Field Name="m_SeparatorConfigureWorksets" Hidden="true" />
+      <Field Name="m_SeparatorDiagnosticsEnd" Hidden="true" />
+      <Field Name="m_SeparatorDiagnosticsEventLog" Hidden="true" />
+      <Field Name="m_SeparatorDiagnosticsSelfTest" Hidden="true" />
+      <Field Name="m_SeparatorFileEnd" Hidden="true" />
+      <Field Name="m_SeparatorFileOpenDataDictionary" Hidden="true" />
+      <Field Name="m_SeparatorFileOpenEnd" Hidden="true" />
+      <Field Name="m_SeparatorFileOpenWatchEvaluateVariables" Hidden="true" />
+      <Field Name="m_SeparatorHelpEnd" Hidden="true" />
+      <Field Name="m_SeparatorOffline" Hidden="true" />
+      <Field Name="m_SeparatorOnline" Hidden="true" />
+      <Field Name="m_SeparatorPTUHelp" Hidden="true" />
+      <Field Name="m_SeparatorToolsConvertEngineeringDatabase" Hidden="true" />
+      <Field Name="m_SeparatorToolsDebug" Hidden="true" />
+      <Field Name="m_SeparatorToolsEnd" Hidden="true" />
+      <Field Name="m_SeparatorViewEnd" Hidden="true" />
+      <Field Name="m_SeparatorViewWatchWindow" Hidden="true" />
+      <Field Name="m_ShowBusyAnimation" Hidden="true" />
+      <Field Name="m_StatusStripCurrentSetup" Hidden="true" />
+      <Field Name="m_StatusStripUserMessage" Hidden="true" />
+      <Field Name="m_ToolStripFunctionKeys" Hidden="true" />
+      <Field Name="m_ToolStripStatusLabelCarIdentifier" Hidden="true" />
+      <Field Name="m_ToolStripStatusLabelMode" Hidden="true" />
+      <Field Name="m_ToolStripStatusLabelProgressBar" Hidden="true" />
+      <Field Name="m_ToolStripStatusLabelSecurity" Hidden="true" />
+      <Field Name="m_ToolStripStatusLabelUserMessage" Hidden="true" />
+      <Field Name="m_TSBOffline" Hidden="true" />
+      <Field Name="m_TSBOnline" Hidden="true" />
+      <Property Name="MenuStrip" Hidden="true" />
+      <Property Name="Mode" Hidden="true" />
+      <Method Name="SetMode" Hidden="true" />
+      <Property Name="ShowBusyAnimation" Hidden="true" />
+      <Method Name="ShowDialog" Hidden="true" />
+      <Method Name="ShowMdiChild" Hidden="true" />
+      <Method Name="ShowSecurityLevelChange" Hidden="true" />
+      <Property Name="TaskProgressBar" Hidden="true" />
+      <Property Name="ToolStripFunctionKeys" Hidden="true" />
+      <Property Name="ToolStripItemCollectionMainWindow" Hidden="true" />
+      <Method Name="WriteCarIdentifier" Hidden="true" />
+      <Method Name="WriteProgressBarLegend" Hidden="true" />
+      <Method Name="WriteStatusMessage" Hidden="true" />
+    </Members>
+    <AssociationLine Name="m_DataDictionary" Type="Common.Configuration.DataDictionary">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.263" Y="0.183" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="m_Security" Type="Common.Security" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="3.75" />
+        <Point X="11.469" Y="3.75" />
+        <Point X="11.469" Y="3.75" />
+        <Point X="12.5" Y="3.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="4.819" Y="0.107" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="m_MenuInterfaceApplication" Type="Bombardier.PTU.MenuInterfaceApplication" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="0.812" />
+        <Point X="8.5" Y="0.812" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_MenuInterfaceWatch" Type="Watch.MenuInterfaceWatch" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="4.188" />
+        <Point X="8.5" Y="4.188" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_MenuInterfaceEvent" Type="Event.MenuInterfaceEvent" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="4.938" />
+        <Point X="6.625" Y="4.938" />
+        <Point X="6.625" Y="4.938" />
+        <Point X="8.5" Y="4.938" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_MenuInterfaceSelfTest" Type="SelfTest.MenuInterfaceSelfTest" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6.25" Y="5.688" />
+        <Point X="8.5" Y="5.688" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_MenuInterfaceWibuKey" Type="WibuKey.MenuInterfaceWibuKey" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="6.438" />
+        <Point X="6.625" Y="6.438" />
+        <Point X="6.625" Y="6.438" />
+        <Point X="8.5" Y="6.438" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_DigitalControlPacketReceived" Type="Common.UserControls.DigitalControl" FixedToPoint="true">
+      <Path>
+        <Point X="0.875" Y="7.251" />
+        <Point X="0.875" Y="8.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-2.086" Y="0.172" Height="0.182" Width="2.264" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>DC8Zw0uSAvDgj19hpcmbMhnKc4YghzYnrl1S6Pe8iCM=</HashCode>
+      <FileName>MdiPTU.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_DataDictionary" />
+      <Field Name="m_Security" />
+      <Field Name="m_MenuInterfaceApplication" />
+      <Field Name="m_MenuInterfaceWatch" />
+      <Field Name="m_MenuInterfaceEvent" />
+      <Field Name="m_MenuInterfaceSelfTest" />
+      <Field Name="m_MenuInterfaceWibuKey" />
+      <Field Name="m_DigitalControlPacketReceived" />
+      <Property Name="Mode" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.831" />
+  </Class>
+  <Class Name="Bombardier.PTU.MenuInterfaceApplication">
+    <Position X="8.5" Y="0.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AACAAEAAAAAAIAAAAAAQAAAAQAAAAAACAAAQAAJAAAA=</HashCode>
+      <FileName>MenuInterfaceApplication.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SelfTest.MenuInterfaceSelfTest" Collapsed="true" HideInheritanceLine="true">
+    <Position X="8.5" Y="5.5" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Event.MenuInterfaceEvent" Collapsed="true" HideInheritanceLine="true">
+    <Position X="8.5" Y="4.75" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Watch.MenuInterfaceWatch" Collapsed="true" HideInheritanceLine="true">
+    <Position X="8.5" Y="4" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="WibuKey.MenuInterfaceWibuKey" Collapsed="true" HideInheritanceLine="true">
+    <Position X="8.5" Y="6.25" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Common.Configuration.DataDictionary">
+    <Position X="3.25" Y="8.5" Width="3.75" />
+    <Members>
+      <Property Name="ANNBITS" Hidden="true" />
+      <Property Name="ANNIDS" Hidden="true" />
+      <Property Name="ANNLIGHT" Hidden="true" />
+      <Property Name="ANNLIST" Hidden="true" />
+      <Property Name="ANNUNENUMBIT" Hidden="true" />
+      <Method Name="Clone" Hidden="true" />
+      <Property Name="CONFIGUREPTU" Hidden="true" />
+      <Method Name="DataDictionary" Hidden="true" />
+      <Property Name="DataStreamTypes" Hidden="true" />
+      <Property Name="EVENTENUMBIT" Hidden="true" />
+      <Property Name="EVENTS" Hidden="true" />
+      <Property Name="EVENTVARIABLES" Hidden="true" />
+      <Property Name="FILEINFO" Hidden="true" />
+      <Method Name="GetSchemaSerializable" Hidden="true" />
+      <Method Name="GetTypedDataSetSchema" Hidden="true" />
+      <Property Name="GROUPLIST" Hidden="true" />
+      <Property Name="GROUPLISTIDS" Hidden="true" />
+      <Method Name="InitializeDerivedDataSet" Hidden="true" />
+      <Property Name="LOGS" Hidden="true" />
+      <Property Name="MACROCMDS" Hidden="true" />
+      <Property Name="MACROS" Hidden="true" />
+      <Property Name="MAINTENANCE" Hidden="true" />
+      <Method Name="ReadXmlSerializable" Hidden="true" />
+      <Property Name="Relations" Hidden="true" />
+      <Property Name="SchemaSerializationMode" Hidden="true" />
+      <Property Name="Security" Hidden="true" />
+      <Property Name="SELFTEST" Hidden="true" />
+      <Property Name="SELFTESTENUMBIT" Hidden="true" />
+      <Property Name="SELFTESTERRMESS" Hidden="true" />
+      <Property Name="SELFTESTIDS" Hidden="true" />
+      <Property Name="SELFTESTVARIABLES" Hidden="true" />
+      <Method Name="ShouldSerializeRelations" Hidden="true" />
+      <Method Name="ShouldSerializeTables" Hidden="true" />
+      <Property Name="STRUCT" Hidden="true" />
+      <Property Name="Tables" Hidden="true" />
+      <Property Name="TASKS" Hidden="true" />
+      <Property Name="TESTLIST" Hidden="true" />
+      <Property Name="TESTLISTIDS" Hidden="true" />
+      <Property Name="TESTMESSAGES" Hidden="true" />
+      <Property Name="URI" Hidden="true" />
+      <Property Name="WATCHENUMBIT" Hidden="true" />
+      <Property Name="WATCHVARIABLES" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Delegate Name="Common.Configuration.DataDictionary.SELFTESTERRMESSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="Common.Configuration.DataDictionary.TESTMESSAGESRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.WATCHENUMBITRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.MACROSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.TESTMESSAGESRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.MAINTENANCERow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.TASKSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.EVENTVARIABLESRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="Common.Configuration.DataDictionary.SELFTESTENUMBITRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.EVENTSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.EVENTVARIABLESRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.ANNUNENUMBITRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.WATCHVARIABLESRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.TASKSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.DataStreamTypesRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.MACROCMDSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.LOGSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.ANNLIGHTRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.MAINTENANCERowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.WATCHVARIABLESRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.CONFIGUREPTURowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.TESTMESSAGESRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.URIRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTIDSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.CONFIGUREPTUDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.EVENTVARIABLESDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.EVENTVARIABLESRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTVARIABLESRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTENUMBITRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.ANNLISTRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.ANNLIGHTDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.GROUPLISTIDSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTVARIABLESDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.MACROCMDSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.CONFIGUREPTURow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.SELFTESTIDSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.SecurityRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.ANNIDSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.FILEINFORow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.EVENTENUMBITRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.MACROSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.WATCHENUMBITDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.GROUPLISTRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="Common.Configuration.DataDictionary.SELFTESTRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTERRMESSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.ANNLISTRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="Common.Configuration.DataDictionary.WATCHENUMBITRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.ANNLISTRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.EVENTSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.GROUPLISTRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.TESTLISTIDSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.TESTLISTDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.TESTLISTRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.MAINTENANCEDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTERRMESSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SecurityRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTIDSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.STRUCTRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.URIDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTERRMESSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.MAINTENANCERowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.EVENTSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.GROUPLISTDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.STRUCTRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.SecurityRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="Common.Configuration.DataDictionary.ANNBITSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.TESTLISTRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.TASKSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.EVENTENUMBITDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.GROUPLISTRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.GROUPLISTIDSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTIDSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.STRUCTRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTENUMBITRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.LOGSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.LOGSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.TASKSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.MACROSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.ANNBITSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.CONFIGUREPTURowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.TESTLISTIDSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.SELFTESTVARIABLESRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="Common.Configuration.DataDictionary.ANNIDSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.LOGSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.ANNUNENUMBITRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.SecurityDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.ANNLIGHTRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTENUMBITDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.MACROSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.DataStreamTypesDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.ANNLIGHTRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.ANNIDSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.FILEINFORowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.EVENTENUMBITRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="Common.Configuration.DataDictionary.TESTLISTIDSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.ANNIDSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.MACROCMDSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="Common.Configuration.DataDictionary.URIRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.SELFTESTVARIABLESRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.MACROCMDSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.URIRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.WATCHENUMBITRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.ANNBITSRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.DataStreamTypesRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.GROUPLISTIDSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.TESTMESSAGESDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.ANNLISTDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.ANNUNENUMBITRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.STRUCTDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.WATCHVARIABLESDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.TESTLISTIDSRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.GROUPLISTIDSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.TESTLISTRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.WATCHVARIABLESRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.DataStreamTypesRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.EVENTSRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.ANNBITSDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.EVENTENUMBITRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Common.Configuration.DataDictionary.FILEINFODataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="Common.Configuration.DataDictionary.FILEINFORowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Common.Configuration.DataDictionary.ANNUNENUMBITDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Common.UserControls.DigitalControl" Collapsed="true">
+    <Position X="0.5" Y="8.5" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Common.Security">
+    <Position X="12.5" Y="0.5" Width="4.75" />
+    <AssociationLine Name="SecurityLevelBase" Type="Common.SecurityLevel" FixedFromPoint="true">
+      <Path>
+        <Point X="12.625" Y="5.324" />
+        <Point X="12.625" Y="7" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.619" Y="0.404" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="SecurityLevelHighest" Type="Common.SecurityLevel" FixedToPoint="true">
+      <Path>
+        <Point X="13.562" Y="5.324" />
+        <Point X="13.562" Y="7" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.672" Y="0.643" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="SecurityLevelCurrent" Type="Common.SecurityLevel" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.562" Y="5.324" />
+        <Point X="14.562" Y="5.448" />
+        <Point X="14.562" Y="5.448" />
+        <Point X="14.562" Y="7" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.838" Y="0.893" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="SecurityLevelBase" />
+      <Property Name="SecurityLevelHighest" />
+      <Property Name="SecurityLevelCurrent" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="Common.SecurityLevel">
+    <Position X="12.5" Y="7" Width="2.25" />
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

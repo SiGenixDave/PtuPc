@@ -1,0 +1,665 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4D060B1F-3148-4646-B847-8DBCF6F887F6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Common</RootNamespace>
+    <AssemblyName>Common</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <PublishUrl>http://localhost/Configuration/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <Win32Resource>
+    </Win32Resource>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Common.XML</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AddTCPToRelease|AnyCPU'">
+    <OutputPath>bin\AddTCPToRelease\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\Common.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\Common.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CheckBoxUInt32.cs" />
+    <Compile Include="Communication\AutoScale.cs" />
+    <Compile Include="Communication\CommunicationException.cs" />
+    <Compile Include="Communication\CommunicationParent.cs" />
+    <Compile Include="Communication\CommunicationParentOffline.cs" />
+    <Compile Include="Communication\DataStream.cs" />
+    <Compile Include="Communication\Interfaces\ICommunicationEvent.cs" />
+    <Compile Include="Communication\Interfaces\ICommunicationApplication.cs" />
+    <Compile Include="Communication\Interfaces\ICommunicationParent.cs" />
+    <Compile Include="Communication\Interfaces\ICommunicationSelfTest.cs" />
+    <Compile Include="Communication\Interfaces\ICommunicationWatch.cs" />
+    <Compile Include="Communication\VcuCommunication32.cs" />
+    <Compile Include="Communication\VcuCommunication64.cs" />
+    <Compile Include="Communication\WatchFrame.cs" />
+    <Compile Include="Configuration\DataDictionaryInformation.cs" />
+    <Compile Include="Configuration\DataStreamTypeParameters.cs" />
+    <Compile Include="Configuration\EnumBit.cs" />
+    <Compile Include="Configuration\Event\MostRecentDownloadedEvents.cs" />
+    <Compile Include="Configuration\Event\EventRecord.cs" />
+    <Compile Include="Configuration\Event\EventVariable.cs" />
+    <Compile Include="Configuration\Event\LogTable.cs" />
+    <Compile Include="Configuration\Event\Log.cs" />
+    <Compile Include="Configuration\Event\Struct.cs" />
+    <Compile Include="Configuration\Lookup.cs" />
+    <Compile Include="Configuration\Event\EventTable.cs" />
+    <Compile Include="Configuration\SelfTest\TestListTable.cs" />
+    <Compile Include="Configuration\SelfTest\TestListIdentifier.cs" />
+    <Compile Include="Configuration\SelfTest\TestListRecord.cs" />
+    <Compile Include="Configuration\SelfTest\SelfTestTableBySelfTestNumber.cs" />
+    <Compile Include="Configuration\SelfTest\GroupListTable.cs" />
+    <Compile Include="Configuration\SelfTest\GroupListRecord.cs" />
+    <Compile Include="Configuration\SelfTest\SelfTestIdentifier.cs" />
+    <Compile Include="Configuration\SelfTest\SelfTestRecord.cs" />
+    <Compile Include="Configuration\SelfTest\SelfTestTable.cs" />
+    <Compile Include="Configuration\SelfTest\GroupListIdentifier.cs" />
+    <Compile Include="Configuration\Table.Generic.cs" />
+    <Compile Include="Configuration\SelfTest\SelfTestVariable.cs" />
+    <Compile Include="Configuration\Event\EventVariableTable.cs" />
+    <Compile Include="Configuration\Watch\WatchVariable.cs" />
+    <Compile Include="Configuration\Watch\WatchVariableTable.cs" />
+    <Compile Include="Configuration\Watch\WatchVariableTableByOldIdentifier.cs" />
+    <Compile Include="Configuration\WibuBox.cs" />
+    <Compile Include="Configuration\Workset.cs" />
+    <Compile Include="Configuration\WorksetCollection.cs" />
+    <Compile Include="DebugMode.cs" />
+    <Compile Include="Forms\FormConfigure.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormConfigure.Designer.cs">
+      <DependentUpon>FormConfigure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormPlotDefine.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormPlotDefine.Designer.cs">
+      <DependentUpon>FormPlotDefine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormPlotDefineBitmask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormPlotDefineBitmask.Designer.cs">
+      <DependentUpon>FormPlotDefineBitmask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\ICheckBoxUInt32.cs" />
+    <Compile Include="Interfaces\IEventLogFile.cs" />
+    <Compile Include="Interfaces\IWatchFile.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormShowFlagsSelfTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormShowFlagsSelfTest.Designer.cs">
+      <DependentUpon>FormShowFlagsSelfTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SelfTestBitmaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\SelfTestBitmaskControl.Designer.cs">
+      <DependentUpon>SelfTestBitmaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SelfTestEnumeratorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\SelfTestEnumeratorControl.Designer.cs">
+      <DependentUpon>SelfTestEnumeratorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SelfTestScalarControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\SelfTestScalarControl.Designer.cs">
+      <DependentUpon>SelfTestScalarControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SelfTestControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\SelfTestControl.Designer.cs">
+      <DependentUpon>SelfTestControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Interfaces\IPlotterEnumerator.cs" />
+    <Compile Include="UserControls\PlotterEnumerator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\PlotterEnumerator.designer.cs">
+      <DependentUpon>PlotterEnumerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormShowFlagsEvent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormShowFlagsEvent.Designer.cs">
+      <DependentUpon>FormShowFlagsEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSetSecurityLevel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSetSecurityLevel.Designer.cs">
+      <DependentUpon>FormSetSecurityLevel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormDataStreamPlot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormDataStreamPlot.Designer.cs">
+      <DependentUpon>FormDataStreamPlot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormWatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormWatch.Designer.cs">
+      <DependentUpon>FormWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormDataStreamReplay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormDataStreamReplay.Designer.cs">
+      <DependentUpon>FormDataStreamReplay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HistoricDataManager.cs" />
+    <Compile Include="PlotterControlLayout.cs" />
+    <Compile Include="Configuration\Record.cs" />
+    <Compile Include="PollScheduler.cs" />
+    <Compile Include="UserControls\PlotterEnumeratorParent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\PlotterEnumeratorParent.Designer.cs">
+      <DependentUpon>PlotterEnumeratorParent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EventBitmaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\EventBitmaskControl.Designer.cs">
+      <DependentUpon>EventBitmaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormChangeBitmask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormChangeBitmask.Designer.cs">
+      <DependentUpon>FormChangeBitmask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormChangeScalar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormChangeScalar.designer.cs">
+      <DependentUpon>FormChangeScalar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormChangeEnumerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormChangeEnumerator.Designer.cs">
+      <DependentUpon>FormChangeEnumerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormChangeWatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormChangeWatch.Designer.cs">
+      <DependentUpon>FormChangeWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormShowFlags.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\Forms\FormShowFlags.Designer.cs">
+      <DependentUpon>FormShowFlags.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormWorksetDefine.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormWorksetDefine.designer.cs">
+      <DependentUpon>FormWorksetDefine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormWorksetManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormWorksetManager.designer.cs">
+      <DependentUpon>FormWorksetManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\Interfaces\IEnumBit.cs" />
+    <Compile Include="Configuration\WorksetItem.cs" />
+    <Compile Include="CommonConstants.cs" />
+    <Compile Include="CyclicQueue.cs" />
+    <Compile Include="FileHandling.cs" />
+    <Compile Include="FileHeader.cs" />
+    <Compile Include="Forms\FormAddComments.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormAddComments.designer.cs">
+      <DependentUpon>FormAddComments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormPTU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormPTU.designer.cs">
+      <DependentUpon>FormPTU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormPTUDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormPTUDialog.designer.cs">
+      <DependentUpon>FormPTUDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormShowHeaderInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormShowHeaderInformation.Designer.cs">
+      <DependentUpon>FormShowHeaderInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="General.cs" />
+    <Compile Include="Interfaces\IDataUpdate.cs" />
+    <Compile Include="Communication\Interfaces\ICommunicationInterface.cs" />
+    <Compile Include="Interfaces\IPollTarget.cs" />
+    <Compile Include="Interfaces\IHistoricDataManager.cs" />
+    <Compile Include="Interfaces\IMainWindow.cs" />
+    <Compile Include="Configuration\Parameter.cs" />
+    <Compile Include="Configuration\DataDictionary.cs">
+      <DependentUpon>DataDictionary.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Configuration\DataDictionary.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataDictionary.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\DirectoryManager.cs" />
+    <Compile Include="Configuration\InitialDirectory.cs" />
+    <Compile Include="MenuInterface.cs" />
+    <Compile Include="Configuration\SelfTest\SelfTestVariableTable.cs" />
+    <Compile Include="UserControls\WatchBitmaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\WatchBitmaskControl.Designer.cs">
+      <DependentUpon>WatchBitmaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\WatchEnumeratorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\WatchEnumeratorControl.Designer.cs">
+      <DependentUpon>WatchEnumeratorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EventEnumeratorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\EventEnumeratorControl.Designer.cs">
+      <DependentUpon>EventEnumeratorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EventControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\EventControl.Designer.cs">
+      <DependentUpon>EventControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EventScalarControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\EventScalarControl.Designer.cs">
+      <DependentUpon>EventScalarControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Interfaces\IPlotterBitmask.cs" />
+    <Compile Include="UserControls\Interfaces\IPlotterWatch.cs" />
+    <Compile Include="UserControls\Interfaces\IPlotterScalar.cs" />
+    <Compile Include="UserControls\PlotterBitmask.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\PlotterBitmask.designer.cs">
+      <DependentUpon>PlotterBitmask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DigitalControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\DigitalControl.designer.cs">
+      <DependentUpon>DigitalControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PlotterScalar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\PlotterScalar.designer.cs">
+      <DependentUpon>PlotterScalar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\VariableTable.Generic.cs" />
+    <Compile Include="Configuration\Variable.cs" />
+    <Compile Include="UserControls\WatchControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\WatchControl.Designer.cs">
+      <DependentUpon>WatchControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\WatchScalarControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\WatchScalarControl.Designer.cs">
+      <DependentUpon>WatchScalarControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VariableControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\VariableControl.Designer.cs">
+      <DependentUpon>VariableControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VariableControlSize.cs" />
+    <Compile Include="WatchControlLayout.cs" />
+    <Compile Include="WinHlp32.cs" />
+    <Compile Include="WorkerThread.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Sql.Server.Express.1.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server 2005 Express Edition</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Class Diagrams\CDRecord.cd" />
+    <None Include="Class Diagrams\CDWorkset.cd" />
+    <None Include="Class Diagrams\CDFormWorksetDefine.cd" />
+    <None Include="Configuration\DataDictionary.xsc">
+      <DependentUpon>DataDictionary.xsd</DependentUpon>
+    </None>
+    <None Include="Configuration\DataDictionary.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataDictionary.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Configuration\DataDictionary.xss">
+      <DependentUpon>DataDictionary.xsd</DependentUpon>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Configuration\DataDictionary.mdb">
+    </Content>
+    <None Include="Resources\LightMetallic.png" />
+    <None Include="Resources\Keys.ico" />
+    <None Include="Resources\MultiCursor.png" />
+    <None Include="Resources\YTPlot.png" />
+    <Content Include="Configuration\PTU Configuration.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Add.png" />
+    <None Include="Resources\DataStream.ico" />
+    <Content Include="Resources\Copy.png" />
+    <None Include="Resources\CreateNew.png" />
+    <Content Include="Resources\FileInformation.png" />
+    <Content Include="Resources\Help.png" />
+    <Content Include="Resources\Home.png" />
+    <Content Include="Resources\Modify.png" />
+    <Content Include="Resources\MoveDown.png" />
+    <Content Include="Resources\MoveUp.png" />
+    <None Include="Resources\Play.png" />
+    <Content Include="Resources\Pause.png" />
+    <Content Include="Resources\Print.png" />
+    <Content Include="Resources\Remove.png" />
+    <None Include="Resources\Rename.png" />
+    <Content Include="Resources\Replay.png" />
+    <Content Include="Resources\Trip.png" />
+    <None Include="Resources\MoveNext.png" />
+    <None Include="Resources\Warning.png" />
+    <Content Include="Resources\Save.png" />
+    <None Include="Resources\MovePrevious.png" />
+    <None Include="Resources\MoveLast.png" />
+    <None Include="Resources\Delete.png" />
+    <None Include="Resources\Download.png" />
+    <Content Include="Resources\Edit_Undo.png" />
+    <None Include="Resources\Bookmark.png" />
+    <None Include="Resources\Close.jpg" />
+    <None Include="Resources\Clear.jpg" />
+    <None Include="Resources\MoveFirst.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\FormConfigure.resx">
+      <DependentUpon>FormConfigure.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormPlotDefine.resx">
+      <DependentUpon>FormPlotDefine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormPlotDefineBitmask.resx">
+      <DependentUpon>FormPlotDefineBitmask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSetSecurityLevel.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormSetSecurityLevel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormDataStreamPlot.resx">
+      <DependentUpon>FormDataStreamPlot.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormWatch.resx">
+      <DependentUpon>FormWatch.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormDataStreamReplay.resx">
+      <DependentUpon>FormDataStreamReplay.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Forms\FormShowFlagsSelfTest.resx">
+      <DependentUpon>FormShowFlagsSelfTest.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\SelfTestBitmaskControl.resx">
+      <DependentUpon>SelfTestBitmaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\SelfTestEnumeratorControl.resx">
+      <DependentUpon>SelfTestEnumeratorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\SelfTestScalarControl.resx">
+      <DependentUpon>SelfTestScalarControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\SelfTestControl.resx">
+      <DependentUpon>SelfTestControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\PlotterEnumerator.resx">
+      <DependentUpon>PlotterEnumerator.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\EventBitmaskControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EventBitmaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Forms\FormChangeBitmask.resx">
+      <DependentUpon>FormChangeBitmask.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Forms\FormChangeScalar.resx">
+      <DependentUpon>FormChangeScalar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Forms\FormChangeEnumerator.resx">
+      <DependentUpon>FormChangeEnumerator.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Forms\FormChangeWatch.resx">
+      <DependentUpon>FormChangeWatch.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Forms\FormShowFlags.resx">
+      <DependentUpon>FormShowFlags.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormWorksetDefine.resx">
+      <DependentUpon>FormWorksetDefine.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormWorksetManager.resx">
+      <DependentUpon>FormWorksetManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormAddComments.resx">
+      <DependentUpon>FormAddComments.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormPTU.resx">
+      <DependentUpon>FormPTU.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormPTUDialog.resx">
+      <DependentUpon>FormPTUDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormShowHeaderInformation.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormShowHeaderInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Forms\FormShowFlagsEvent.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormShowFlagsEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\WatchBitmaskControl.resx">
+      <DependentUpon>WatchBitmaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\WatchControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WatchControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\WatchEnumeratorControl.resx">
+      <DependentUpon>WatchEnumeratorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\EventControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EventControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\EventEnumeratorControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EventEnumeratorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\EventScalarControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EventScalarControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\PlotterBitmask.resx">
+      <DependentUpon>PlotterBitmask.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\DigitalControl.resx">
+      <DependentUpon>DigitalControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\PlotterScalar.resx">
+      <DependentUpon>PlotterScalar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\WatchScalarControl.resx">
+      <DependentUpon>WatchScalarControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\VariableControl.resx">
+      <DependentUpon>VariableControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeProject\GraphComponents\CodeProject.GraphComponents.csproj">
+      <Project>{ADB98F2B-764D-4E27-B941-0153F6672DF6}</Project>
+      <Name>CodeProject.GraphComponents</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

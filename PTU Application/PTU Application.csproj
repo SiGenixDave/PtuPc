@@ -1,0 +1,377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\PTE.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{75E30466-91B9-47AF-8066-B1C329E5789A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bombardier.PTU</RootNamespace>
+    <AssemblyName>PTU</AssemblyName>
+    <ManifestCertificateThumbprint>D6218CF619D21697182B45E39D8A0532C63DFDF3</ManifestCertificateThumbprint>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+    <GenerateManifests>false</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <TargetZone>LocalIntranet</TargetZone>
+    <SignAssembly>true</SignAssembly>
+    <StartupObject>
+    </StartupObject>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <PublishUrl>ftp://ftp.northernsoftwareengineering.co.uk/public_html/PTE/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>true</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://www.northernsoftwareengineering.co.uk/PTE/</InstallUrl>
+    <TargetCulture>en-GB</TargetCulture>
+    <ProductName>Portable Test Equipment</ProductName>
+    <PublisherName>Turbo Power Systems</PublisherName>
+    <MinimumRequiredVersion>1.7.0.0</MinimumRequiredVersion>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>index.htm</WebPage>
+    <DisallowUrlActivation>true</DisallowUrlActivation>
+    <ApplicationVersion>0.0.0.0</ApplicationVersion>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <DocumentationFile>
+    </DocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\PTU.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AddTCPToRelease|x86'">
+    <OutputPath>bin\x86\AddTCPToRelease\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\PTE.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\x86\Release\PTU.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AddTCPToRelease|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\AddTCPToRelease\</OutputPath>
+    <DocumentationFile>bin\Release\PTU.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\PTU.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <DefineConstants>
+    </DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Communication\CommunicationApplication.cs" />
+    <Compile Include="Communication\CommunicationApplicationOffline.cs" />
+    <Compile Include="Forms\FormConfigureRealTimeClock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormConfigureRealTimeClock.Designer.cs">
+      <DependentUpon>FormConfigureRealTimeClock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSelectTarget.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSelectTarget.Designer.cs">
+      <DependentUpon>FormSelectTarget.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormHelpAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormHelpAbout.designer.cs">
+      <DependentUpon>FormHelpAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormConfigurePasswordProtection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormConfigurePasswordProtection.designer.cs">
+      <DependentUpon>FormConfigurePasswordProtection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormLogin.designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormOptions.designer.cs">
+      <DependentUpon>FormOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormShowSystemInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormShowSystemInformation.Designer.cs">
+      <DependentUpon>FormShowSystemInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MdiPTU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MdiPTU.designer.cs">
+      <DependentUpon>MdiPTU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MdiPTU.Support.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\ControlPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\ControlPanel.Designer.cs">
+      <DependentUpon>ControlPanel.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\FormConfigureRealTimeClock.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormConfigureRealTimeClock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormHelpAbout.resx">
+      <DependentUpon>FormHelpAbout.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormConfigurePasswordProtection.resx">
+      <DependentUpon>FormConfigurePasswordProtection.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormOptions.resx">
+      <DependentUpon>FormOptions.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSelectTarget.resx">
+      <DependentUpon>FormSelectTarget.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormShowSystemInformation.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormShowSystemInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MdiPTU.resx">
+      <DependentUpon>MdiPTU.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MenuInterfaceApplication.cs">
+    </Compile>
+    <Compile Include="Properties\Settings.cs" />
+    <EmbeddedResource Include="UserControls\ControlPanel.resx">
+      <DependentUpon>ControlPanel.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Class Diagrams\CDMdiPTU.cd" />
+    <None Include="Class Diagrams\CDFormsCalledbyMdiPTU.cd" />
+    <None Include="Class Diagrams\CDStaticClassesUsedbyMdiPTU.cd" />
+    <None Include="Class Diagrams\CDiMainWindow.cd" />
+    <None Include="Class Diagrams\CDMenuInterfaceApplication.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Offline.png" />
+    <None Include="Resources\COMPort.png" />
+    <None Include="Resources\ModeOnline.ico" />
+    <None Include="Resources\ModeOffline.ico" />
+    <None Include="Resources\Bookmark.png" />
+    <None Include="Resources\Bombardier Logo.jpg" />
+    <None Include="Resources\HotPlug.ico" />
+    <None Include="Resources\Eventlog.ico" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\Initialize.png" />
+    <None Include="Properties\PTU.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\CarNumber.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeProject\GraphComponents\CodeProject.GraphComponents.csproj">
+      <Project>{ADB98F2B-764D-4E27-B941-0153F6672DF6}</Project>
+      <Name>CodeProject.GraphComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DLL\Common\Common.csproj">
+      <Project>{4D060B1F-3148-4646-B847-8DBCF6F887F6}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DLL\Event\Event.csproj">
+      <Project>{71103C84-59FD-416E-8945-4EA0F2F0D8E8}</Project>
+      <Name>Event</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DLL\SelfTest\SelfTest.csproj">
+      <Project>{60BF322B-FC8C-4B5C-A5C6-E545E9F32787}</Project>
+      <Name>SelfTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DLL\Watch\Watch.csproj">
+      <Project>{E5728B56-BB04-433D-B658-9230B640AB5A}</Project>
+      <Name>Watch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DLL\WibuKey\WibuKey.csproj">
+      <Project>{31C7AD53-3E01-4195-A200-3CF577E8D37A}</Project>
+      <Name>WibuKey</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WibuKey.jpg" />
+    <None Include="Resources\Blank.png" />
+    <Content Include="Resources\DataStream.ico" />
+    <Content Include="Resources\ModeDiagnostic.png" />
+    <Content Include="Resources\FolderOpen.ico" />
+    <None Include="Resources\Record.png" />
+    <Content Include="Resources\Watch.png" />
+    <None Include="Resources\DataStreamSimulated.png" />
+    <Content Include="Resources\Help.png" />
+    <Content Include="Resources\Modify.png" />
+    <Content Include="Resources\Train.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Warning.png" />
+    <None Include="Resources\Time.png" />
+    <None Include="Resources\SelfTest.png" />
+    <None Include="Resources\Configuration.ico" />
+    <None Include="Resources\fSEARCH_00.gif" />
+    <None Include="Resources\Background Images\MetallicRaised.png" />
+    <None Include="Resources\Background Images\LightMetallic.png" />
+    <None Include="Resources\Font.png" />
+    <None Include="Resources\Function.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Keys.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Options.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\User.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Information.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Connect.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WallClock.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

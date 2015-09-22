@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Common.Configuration.DirectoryManager">
+    <Position X="0.5" Y="0.5" Width="4.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Common.Configuration.Parameter">
+    <Position X="5.5" Y="0.5" Width="3.75" />
+    <NestedTypes>
+      <Enum Name="Common.Configuration.Parameter.CommunicationTypeEnum" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+    </NestedTypes>
+    <AssociationLine Name="WibuBox" Type="Common.Configuration.WibuBox" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="6.5" />
+        <Point X="4.562" Y="6.5" />
+        <Point X="4.562" Y="7.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="SecurityConfiguration" Type="Common.SecurityConfiguration_t" FixedFromPoint="true">
+      <Path>
+        <Point X="6.875" Y="6.805" />
+        <Point X="6.875" Y="8.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="ProjectInformation" />
+      <Property Name="WibuBox" />
+      <Property Name="SecurityConfiguration" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Common.FileHeader">
+    <Position X="9.5" Y="0.5" Width="2.5" />
+    <AssociationLine Name="HeaderCurrent" Type="Common.Header_t">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.508" Y="0.068" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="HeaderLastRetrieved" Type="Common.Header_t">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.175" Y="0.089" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="HeaderSaveAll" Type="Common.Header_t">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.539" Y="0.068" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="HeaderCurrent" />
+      <Property Name="HeaderLastRetrieved" />
+      <Property Name="HeaderSaveAll" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Common.DebugMode">
+    <Position X="9.5" Y="2" Width="3.25" />
+    <NestedTypes>
+      <Struct Name="Common.DebugMode.UpdateWatchElements_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.GetStreamInformation_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.SetChartMode_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.GetStream_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.SendVariable_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.ClearEvent_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.GetEventLog_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.InitializeEventLog_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.FreeEventLogMemory_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.UpdateSTLoopCount_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.GetDefaultStreamInformation_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.SetWatchElements_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.RunPredefinedSTTests_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.SendOperatorAcknowledge_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.AbortSTSequence_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.LoadFaultlog_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.SetDefaultStreamInformation_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.ChangeEventLog_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.UpdateSTTestList_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.GetSelfTestSpecialMessage_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.CheckFaultlogger_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.UpdateSTMode_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.GetFaultHdr_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.GetChartMode_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.SetChartIndex_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.GetFaultVar_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.GetSelfTestResult_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.ExitSelfTestTask_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.GetEmbeddedInformation_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.InitCommunication_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.ExecuteSTTestList_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.StartSelfTestTask_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.ExitEventLog_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.CloseCommunication_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Struct Name="Common.DebugMode.SetChartScale_t" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Common.Configuration.Lookup">
+    <Position X="9.5" Y="4.75" Width="5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Common.Configuration.Workset">
+    <Position X="9.5" Y="8.5" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Struct Name="Common.Header_t">
+    <Position X="13.75" Y="0.5" Width="3.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="Common.Configuration.DataDictionaryInformation_t">
+    <Position X="0.5" Y="5" Width="3.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="Common.Configuration.WibuBox">
+    <Position X="0.5" Y="7.75" Width="4.25" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="Common.SecurityConfiguration_t">
+    <Position X="5" Y="8.5" Width="4.25" />
+    <TypeIdentifier />
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

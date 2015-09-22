@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E5728B56-BB04-433D-B658-9230B640AB5A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Watch</RootNamespace>
+    <AssemblyName>Watch</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DocumentationFile>
+    </DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\Watch.xml</DocumentationFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AddTCPToRelease|AnyCPU'">
+    <OutputPath>bin\AddTCPToRelease\</OutputPath>
+    <DocumentationFile>bin\Release\Watch.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\Watch.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Communication\CommunicationWatch.cs" />
+    <Compile Include="Communication\CommunicationWatchOffline.cs" />
+    <Compile Include="Forms\FormWorksetDefineChartRecorder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormWorksetDefineChartRecorder.Designer.cs">
+      <DependentUpon>FormWorksetDefineChartRecorder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormChangeChartScale.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormChangeChartScale.Designer.cs">
+      <DependentUpon>FormChangeChartScale.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormConfigureChartRecorder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormConfigureChartRecorder.Designer.cs">
+      <DependentUpon>FormConfigureChartRecorder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormWorksetManagerChartRecorder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormWorksetManagerChartRecorder.Designer.cs">
+      <DependentUpon>FormWorksetManagerChartRecorder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormOpenSimulatedFaultLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormOpenSimulatedFaultLog.Designer.cs">
+      <DependentUpon>FormOpenSimulatedFaultLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormOpenWatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormOpenWatch.Designer.cs">
+      <DependentUpon>FormOpenWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormViewWatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormViewWatch.Designer.cs">
+      <DependentUpon>FormViewWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormWorksetDefineWatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormWorksetDefineWatch.Designer.cs">
+      <DependentUpon>FormWorksetDefineWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormWorksetManagerWatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormWorksetManagerWatch.Designer.cs">
+      <DependentUpon>FormWorksetManagerWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IChartScale.cs" />
+    <Compile Include="MenuInterfaceWatch.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ThreadPollWatch.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\FormWorksetDefineChartRecorder.resx">
+      <DependentUpon>FormWorksetDefineChartRecorder.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormChangeChartScale.resx">
+      <DependentUpon>FormChangeChartScale.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormConfigureChartRecorder.resx">
+      <DependentUpon>FormConfigureChartRecorder.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormWorksetDefineWatch.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormWorksetDefineWatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormWorksetManagerChartRecorder.resx">
+      <DependentUpon>FormWorksetManagerChartRecorder.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormOpenSimulatedFaultLog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormOpenSimulatedFaultLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormOpenWatch.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormOpenWatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormViewWatch.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormViewWatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormWorksetManagerWatch.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormWorksetManagerWatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeProject\GraphComponents\CodeProject.GraphComponents.csproj">
+      <Project>{ADB98F2B-764D-4E27-B941-0153F6672DF6}</Project>
+      <Name>CodeProject.GraphComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{4D060B1F-3148-4646-B847-8DBCF6F887F6}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <Content Include="Resources\FileInformation.png" />
+    <Content Include="Resources\Modify.png" />
+    <Content Include="Resources\Pause.png" />
+    <Content Include="Resources\Play.png" />
+    <Content Include="Resources\Record.png" />
+    <Content Include="Resources\RecordStop.png" />
+    <Content Include="Resources\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Class Diagrams\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

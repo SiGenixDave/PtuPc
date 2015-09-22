@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Common.Forms.FormWorksetDefine">
+    <Position X="0.5" Y="2" Width="6" />
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Event Name="DataUpdate" Hidden="true" />
+      <Field Name="m_ButtonAdd" Hidden="true" />
+      <Field Name="m_ButtonApply" Hidden="true" />
+      <Field Name="m_ButtonCancel" Hidden="true" />
+      <Field Name="m_ButtonClear" Hidden="true" />
+      <Field Name="m_ButtonMoveDown" Hidden="true" />
+      <Field Name="m_ButtonMoveUp" Hidden="true" />
+      <Field Name="m_ButtonOK" Hidden="true" />
+      <Field Name="m_ButtonRemove" Hidden="true" />
+      <Field Name="m_GroupBoxAvailable" Hidden="true" />
+      <Field Name="m_GroupBoxWorkset" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ISNgQKzKgeYpBUEOgDCyDoQ7kEyaAnABIRpKEMDkEoA=</HashCode>
+      <FileName>Forms\FormWorksetDefine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Common.Forms.FormPTUDialog">
+    <Position X="7.25" Y="2" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAACAABAQAAAGEChCCACAAAAAAAQAEAEAAAAA=</HashCode>
+      <FileName>Forms\FormPTUDialog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Forms.FormConfigure">
+    <Position X="7.25" Y="7.25" Width="5.75" />
+    <NestedTypes>
+      <Enum Name="Common.Forms.FormConfigure.ModifyState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Forms\FormConfigure.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AUIEBAAAAAQUABCQUUGCBAYiAAwANQTAAIKEAEGACCA=</HashCode>
+      <FileName>Forms\FormConfigure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Forms.FormPlotDefine">
+    <Position X="7.25" Y="19.25" Width="4.75" />
+    <InheritanceLine Type="Common.Forms.FormWorksetDefine" FixedFromPoint="true">
+      <Path>
+        <Point X="6.5" Y="20.626" />
+        <Point X="7.25" Y="20.626" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAICAACAAMAAAAAEQADABAQSAEBIACBAAAAAAECEAAA=</HashCode>
+      <FileName>Forms\FormPlotDefine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Common.IDataUpdate">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IDataUpdate.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

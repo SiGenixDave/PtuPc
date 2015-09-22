@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WibuKey.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="HashCodeWkDevUser" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">-2501720387180353553</Value>
+    </Setting>
+    <Setting Name="HashCodeWkDevFirm" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">4436298908807646370</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

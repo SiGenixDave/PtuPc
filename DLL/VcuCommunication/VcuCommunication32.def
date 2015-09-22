@@ -1,0 +1,67 @@
+; VcuCommunication32.def : Declares the module parameters for the DLL.
+
+LIBRARY      "VcuCommunication32"
+
+EXPORTS
+    ; Explicit exports can go here
+	
+	;Comm.cpp
+			InitCommunication
+			CloseCommunication
+			SendVariable
+			SetWatchElements
+			SetWatchElement
+			UpdateWatchElements
+			GetVariableInformation
+			GetEmbeddedInformation
+			GetChartMode
+			SetChartMode
+			GetChartIndex
+			SetChartIndex
+			SetChartScale
+			GetTimeDate
+			SetTimeDate
+			SetCarID
+			StartClock
+			StopClock
+			PTU_MVB_Interface
+			SetWatchSize
+			
+	
+	;Event.cpp
+			LoadFaultlog
+			CheckFaultlogger
+			GetFaultHdr
+			GetFaultVar
+			GetFltFlagInfo
+			GetFltHistInfo
+			FreeEventLogMemory
+			SetFaultFlags
+			GetStreamInformation
+			GetStream
+			ClearEvent
+			InitializeEventLog
+			GetDefaultStreamInformation
+			SetDefaultStreamInformation
+			GetEventLog
+			ChangeEventLog
+			ExitEventLog
+			ReadCMSFaultData
+	
+	;Selftest.cpp
+			GetSelfTestSpecialMessage
+			StartSelfTestTask
+			ExitSelfTestTask
+			AbortSTSequence
+			SendOperatorAcknowledge
+			UpdateSTTestList
+			RunPredefinedSTTests
+			UpdateSTLoopCount
+			ExecuteSTTestList
+			UpdateSTMode
+			GetSelfTestResult	
+	
+	DllCanUnloadNow PRIVATE
+	DllGetClassObject PRIVATE
+	DllRegisterServer PRIVATE
+

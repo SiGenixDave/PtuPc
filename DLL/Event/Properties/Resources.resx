@@ -1,0 +1,457 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FunctionKeyTextInfo" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="MBTModifyFaultLogParametersSuccess" xml:space="preserve">
+    <value>The data stream parameters have been successfully updated.</value>
+  </data>
+  <data name="MBTEventLogInitializeFailed" xml:space="preserve">
+    <value>Unable to initialize one or more of the event logs.</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Trash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LegendCurrentEventLog" xml:space="preserve">
+    <value>&amp;Event Log:</value>
+  </data>
+  <data name="TextReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="SMCommunicationFaultReadTimeout" xml:space="preserve">
+    <value>Communication Fault - Read Timeout.</value>
+  </data>
+  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SMSortOrderDateTimeAscending" xml:space="preserve">
+    <value>Sorted by date/time, oldest event first.</value>
+  </data>
+  <data name="MBTGetStreamFailed" xml:space="preserve">
+    <value>Unable to retrieve the data stream associated with the '{0}' event.</value>
+  </data>
+  <data name="SMLoadFile" xml:space="preserve">
+    <value>Loading '{0}'.</value>
+  </data>
+  <data name="FunctionKeyTextSetupStream" xml:space="preserve">
+    <value>Stream</value>
+  </data>
+  <data name="MBCaptionError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="LegendCount" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="FunctionKeyToolTipFlags" xml:space="preserve">
+    <value>[Configure Event Flags]</value>
+  </data>
+  <data name="MBTWatchVariableNotDefined" xml:space="preserve">
+    <value>The specified watch variable is not defined in the current data dictionary.</value>
+  </data>
+  <data name="FileRetrieve" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FileRetrieve.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TitleOpenEventLog" xml:space="preserve">
+    <value>Open/Event Log: {0}</value>
+  </data>
+  <data name="FunctionKeyTextClear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="Help" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Help.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Modify" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Modify.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SMEventLogsInitialize" xml:space="preserve">
+    <value>Initializing the '{0}' log.</value>
+  </data>
+  <data name="MBTOpenFaultLogFailed" xml:space="preserve">
+    <value>Unable to show the selected data stream.</value>
+  </data>
+  <data name="SMDataStreamSaveXofY" xml:space="preserve">
+    <value>Saving '{0}' log data stream {1} of {2}.</value>
+  </data>
+  <data name="EMGetFltFlagInfoFailed" xml:space="preserve">
+    <value>Unable to retrieve the event flag information.</value>
+  </data>
+  <data name="MBTQueryEventLogSave" xml:space="preserve">
+    <value>Do you want to save the current events before proceeding?</value>
+  </data>
+  <data name="MBTFaultLogSerializationFailed" xml:space="preserve">
+    <value>Unable to serialize the data stream to disk.</value>
+  </data>
+  <data name="EMEventVariableTypeInvalid" xml:space="preserve">
+    <value>The event variable type associated with the record in invalid.</value>
+  </data>
+  <data name="MBTEventLogSaveFailed" xml:space="preserve">
+    <value>The current events were not successfully saved. Do you want to continue?</value>
+  </data>
+  <data name="MBCaptionWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="TitleFaultLog" xml:space="preserve">
+    <value>Diagnostics/Data Stream: {0}</value>
+  </data>
+  <data name="FunctionKeyToolTipClear" xml:space="preserve">
+    <value>[Clear Recent History]</value>
+  </data>
+  <data name="MBTSaveDataStreamsFailed" xml:space="preserve">
+    <value>The operation has been cancelled as the data stream associated with the '{0}' event could not be downloaded.</value>
+  </data>
+  <data name="FunctionKeyTextFlags" xml:space="preserve">
+    <value>Flags</value>
+  </data>
+  <data name="MBTGetDefaultStreamParametersFailed" xml:space="preserve">
+    <value>Unable to retrieve the default data stream parameters.</value>
+  </data>
+  <data name="MBTConfirmClearEventLogs" xml:space="preserve">
+    <value>Are you sure that you want to clear all event logs?</value>
+  </data>
+  <data name="MBTFaultLogWorksetEditRequest" xml:space="preserve">
+    <value>Please select a new workset or modify the current workset and retry.</value>
+  </data>
+  <data name="FunctionKeyToolTipHistory" xml:space="preserve">
+    <value>[Show Event History]</value>
+  </data>
+  <data name="FunctionKeyToolTipSaveEventLogs" xml:space="preserve">
+    <value>[Save All Event Logs]</value>
+  </data>
+  <data name="FileDialogOpenTitleEventLog" xml:space="preserve">
+    <value>Select Event Log(s)</value>
+  </data>
+  <data name="TitleRenameFaultLogWorkset" xml:space="preserve">
+    <value>Rename - Data Stream Workset</value>
+  </data>
+  <data name="MBTUserCancelled" xml:space="preserve">
+    <value>The operation was cancelled by the user.</value>
+  </data>
+  <data name="MBTFileCorrupt" xml:space="preserve">
+    <value>The contents of the file cannot be read. Do you want to over-write the file?</value>
+  </data>
+  <data name="MBTFormatNotRecognized" xml:space="preserve">
+    <value>The format of '{0}' is not recognized. This file will not be imported.</value>
+  </data>
+  <data name="MBCaptionInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="LegendAvailable" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Edit_Undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Edit_Undo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SMEventLogsClear" xml:space="preserve">
+    <value>Clearing the '{0}' log.</value>
+  </data>
+  <data name="FunctionKeyToolTipInitialize" xml:space="preserve">
+    <value>[Clear Cumulative and Recent History]</value>
+  </data>
+  <data name="MBTLogFileTypeNotSupported" xml:space="preserve">
+    <value>This log file type is not supported.</value>
+  </data>
+  <data name="TextSet" xml:space="preserve">
+    <value>Set</value>
+  </data>
+  <data name="MBTViewEventLogFailed" xml:space="preserve">
+    <value>Unable to display the event logs.</value>
+  </data>
+  <data name="SMSortOrderDateTimeDescending" xml:space="preserve">
+    <value>Sorted by date/time, most recent event first.</value>
+  </data>
+  <data name="Blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FunctionKeyToolTipSaveFaultLog" xml:space="preserve">
+    <value>[Save Data Stream]</value>
+  </data>
+  <data name="MBCaptionQuestion" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="FunctionKeyToolTipEsc" xml:space="preserve">
+    <value>[Show Event Log Display]</value>
+  </data>
+  <data name="MBTShowFaultLogFailed" xml:space="preserve">
+    <value>Unable to display the data stream.</value>
+  </data>
+  <data name="TitleOpenFaultLog" xml:space="preserve">
+    <value>Open/Data Stream: {0}</value>
+  </data>
+  <data name="TitleEventHistory" xml:space="preserve">
+    <value>Event History</value>
+  </data>
+  <data name="SMSaveFile" xml:space="preserve">
+    <value>Saving '{0}'.</value>
+  </data>
+  <data name="MBTQueryModifyFaultLogParameters" xml:space="preserve">
+    <value>Are you sure that you want to modify the data stream parameters to the selected setting?</value>
+  </data>
+  <data name="InformationLegendEventCount" xml:space="preserve">
+    <value>Events:</value>
+  </data>
+  <data name="MBTFaultLogNotAvailable" xml:space="preserve">
+    <value>There is no data stream available for the selected event.</value>
+  </data>
+  <data name="SMSortOrdedAscending" xml:space="preserve">
+    <value>Sorted by '{0}' in ascending order, most recent event first.</value>
+  </data>
+  <data name="FunctionKeyTextLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="FunctionKeyTextInitialize" xml:space="preserve">
+    <value>Init.</value>
+  </data>
+  <data name="SMEventLogRetrieve" xml:space="preserve">
+    <value>Retrieving the '{0}' log.</value>
+  </data>
+  <data name="EMSampleMultipleInvalid" xml:space="preserve">
+    <value>The sample interval defined in the workset is invalid, assume a value of 1.</value>
+  </data>
+  <data name="ConfigureEventFlags" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Tools.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TitleCopyFaultLogWorkset" xml:space="preserve">
+    <value>Copy - Data Stream Workset</value>
+  </data>
+  <data name="EventHistory" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FilingCabinet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTEventFlagsChanged" xml:space="preserve">
+    <value>One or more event flags have been modified. Do you want to update the Vehicle Control Unit?</value>
+  </data>
+  <data name="FileDialogOpenTitleFaultLog" xml:space="preserve">
+    <value>Select Data Stream</value>
+  </data>
+  <data name="FunctionKeyToolTipLoad" xml:space="preserve">
+    <value>[Load Additional Event Log(s)]</value>
+  </data>
+  <data name="FileInformation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FileInformation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EMGetFltHistInfoFailed" xml:space="preserve">
+    <value>Unable to retrieve the event history.</value>
+  </data>
+  <data name="SMCommunicationFaultPortLocked" xml:space="preserve">
+    <value>Communication Fault - Port Locked.</value>
+  </data>
+  <data name="MBTAppendProjectMismatch" xml:space="preserve">
+    <value>The specified file contains data associated with a different project. The current data will not be appended to the file and the save operation will be cancelled.</value>
+  </data>
+  <data name="SMEventListEmpty" xml:space="preserve">
+    <value>There are no events.</value>
+  </data>
+  <data name="FunctionKeyToolTipSetupStream" xml:space="preserve">
+    <value>[Configure Data Stream]</value>
+  </data>
+  <data name="Initialize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Initialize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InformationLegendDate" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="FunctionKeyTextHistory" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="MBTModifyFaultLogParametersFailed" xml:space="preserve">
+    <value>Unable to modify the data stream parameters.</value>
+  </data>
+  <data name="LegendOf" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="MBTProjectIdMismatchMultipleImport" xml:space="preserve">
+    <value>The project identifier associated with '{0}' does not match that of the current configuration. This file will not be imported.</value>
+  </data>
+  <data name="MBTDataStreamNotSaved" xml:space="preserve">
+    <value>The data stream file associated with the selected event cannot be found.</value>
+  </data>
+  <data name="TitleCreateFaultLogWorkset" xml:space="preserve">
+    <value>Create New - Data Stream Workset</value>
+  </data>
+  <data name="SMDataStreamsSave" xml:space="preserve">
+    <value>Saving the '{0}' log data streams.</value>
+  </data>
+  <data name="MBTInvalidFormat" xml:space="preserve">
+    <value>The format of the selected file is not recognized.</value>
+  </data>
+  <data name="LegendTotalCount" xml:space="preserve">
+    <value>Total Count</value>
+  </data>
+  <data name="MBTEventNotFound" xml:space="preserve">
+    <value>The Events table of the data dictionary does not contain an event corresponding to LOGID = {0}, TASKID = {1} and EVENTID = {2}.</value>
+  </data>
+  <data name="FunctionKeyTextEsc" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="TitleEditFaultLogWorksets" xml:space="preserve">
+    <value>Modify - Data Stream Workset</value>
+  </data>
+  <data name="SMSortOrdedDescending" xml:space="preserve">
+    <value>Sorted by '{0}' in descending order, oldest event first.</value>
+  </data>
+  <data name="MBTSetFaultFlagsFailed" xml:space="preserve">
+    <value>Unable to update the event flag associated with the '{0}' event.</value>
+  </data>
+  <data name="MBTAppendOverwrite" xml:space="preserve">
+    <value>Yes - append the current events to the existing records. No - replace the existing records.</value>
+  </data>
+  <data name="FolderOpen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FolderOpen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTEventLogDownloadFailed" xml:space="preserve">
+    <value>Unable to download the selected event log.</value>
+  </data>
+  <data name="FunctionKeyToolTipInfo" xml:space="preserve">
+    <value>[Show Header Information]</value>
+  </data>
+  <data name="MBTFaultLogWorksetWatchVariablesMaxExceeded" xml:space="preserve">
+    <value>The number of watch variables defined in the workset exceeds the number that are supported by the current event log.</value>
+  </data>
+  <data name="FunctionKeyTextSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="MBTEventLogClearFailed" xml:space="preserve">
+    <value>Unable to clear one or more of the event logs.</value>
+  </data>
+  <data name="EMWorksetIntegrityCheckFailed" xml:space="preserve">
+    <value>There is a problem with the integrity check on the workset, please contact the system administrator.</value>
+  </data>
+  <data name="MBTConfirmInitializeEventLogs" xml:space="preserve">
+    <value>Are you sure that you want to initialize all event logs?</value>
+  </data>
+  <data name="TitleConfigureFaultLogParameters" xml:space="preserve">
+    <value>Configure - Data Stream Parameters</value>
+  </data>
+  <data name="InformationLegendTime" xml:space="preserve">
+    <value>PC Time:</value>
+  </data>
+  <data name="FileDialogOpenFilterEventLog" xml:space="preserve">
+    <value>Event Log Files</value>
+  </data>
+  <data name="FileDialogOpenFilterFaultLog" xml:space="preserve">
+    <value>Data Stream Files</value>
+  </data>
+  <data name="MBTProjectIdMismatch" xml:space="preserve">
+    <value>The project identifier associated with the selected file does not match that of the current configuration.</value>
+  </data>
+  <data name="DataStream" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataStream.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

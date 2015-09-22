@@ -1,0 +1,14 @@
+// VcuCommunication.odl : type library source for VcuCommunication.dll
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (VcuCommunication.tlb).
+
+[ uuid(F1440586-1DAB-11D3-9B9B-0020AFEDFB1E), version(2.0) ]
+library VcuCommunication
+{
+	importlib("stdole32.tlb");
+	
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

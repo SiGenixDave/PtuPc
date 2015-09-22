@@ -1,0 +1,556 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Watch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Watch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTSelectTarget" xml:space="preserve">
+    <value>Please select a target or press Cancel.</value>
+  </data>
+  <data name="Time" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Time.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTConfigDefaultNotFound" xml:space="preserve">
+    <value>The default data dictionary, '{0}', could not be found, please select a valid data dictionary.</value>
+  </data>
+  <data name="LinkBombardier" xml:space="preserve">
+    <value>http://www.bombardier.com/en/transportation.html</value>
+  </data>
+  <data name="FileDialogOpenFilterDataDictionary" xml:space="preserve">
+    <value>Data Dictionary Files</value>
+  </data>
+  <data name="MetallicRaised" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Background Images\MetallicRaised.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LegendRights" xml:space="preserve">
+    <value>All rights reserved.</value>
+  </data>
+  <data name="MBTLogicsNotFound" xml:space="preserve">
+    <value>No targets were found. Please select Retry to rescan all available ports.</value>
+  </data>
+  <data name="EMCarIDSetFailed" xml:space="preserve">
+    <value>Unable to set the car identifier.</value>
+  </data>
+  <data name="TextNoTargetsFound" xml:space="preserve">
+    <value>No targets found</value>
+  </data>
+  <data name="MBCaptionError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Function" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Function.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PathDefaultTCMSProgrammer" xml:space="preserve">
+    <value>C:\Program Files\Bombardier</value>
+  </data>
+  <data name="MBTSecurityQueryLogOut" xml:space="preserve">
+    <value>Are you sure that you want to log out?</value>
+  </data>
+  <data name="MBTHelpFileNotFound" xml:space="preserve">
+    <value>The help document cannot be found.</value>
+  </data>
+  <data name="MBTConfigVCUMismatchProjectId" xml:space="preserve">
+    <value>The project identifier of the PTU configuration does not match that of the propulsion system software. Would you like to update the PTU configuration now?</value>
+  </data>
+  <data name="Modify" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Modify.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTNoPasswordsToConfigure" xml:space="preserve">
+    <value>There are no passwords associated with the current security configuration.</value>
+  </data>
+  <data name="MBTConfigProjectNotFound" xml:space="preserve">
+    <value>The specified project data dictionary could not be found. An attempt will be made to load the default data dictionary, '{0}', instead.</value>
+  </data>
+  <data name="MBTShortcutParameterCountInvalid" xml:space="preserve">
+    <value>An invalid number of shortcut parameters were passed to the PTU. An attempt will be made to load the default data dictionary, '{0}', instead.</value>
+  </data>
+  <data name="SelfTest" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SelfTest.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTPortInitializationFailed" xml:space="preserve">
+    <value>Unable to initialize the communication port.</value>
+  </data>
+  <data name="MBTWorksetCollectionWatchLoadFailed" xml:space="preserve">
+    <value>Unable to load the workset collection associated with viewing and recording watch variables.</value>
+  </data>
+  <data name="EMTimeDateSetFailed" xml:space="preserve">
+    <value>Unable to set the time and date.</value>
+  </data>
+  <data name="LabelWebAddress" xml:space="preserve">
+    <value>www.bombardier.com</value>
+  </data>
+  <data name="MBTWibuBoxRemoved" xml:space="preserve">
+    <value>The Wibu-Key security device has been removed. Access to the Engineering account is only allowed if a valid Wibu-Key security device is present. Logging out...</value>
+  </data>
+  <data name="MBTWorksetCollectionChartRecorderLoadFailed" xml:space="preserve">
+    <value>Unable to load the workset collection associated with the chart recorder.</value>
+  </data>
+  <data name="LabelModeSelfTest" xml:space="preserve">
+    <value>Self Test</value>
+  </data>
+  <data name="TextTargetsFound" xml:space="preserve">
+    <value>target(s) found</value>
+  </data>
+  <data name="MBCaptionWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="FileDialogOpenTitleDataDictionary" xml:space="preserve">
+    <value>Select Data Dictionary</value>
+  </data>
+  <data name="Information" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Information.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTModifyChartRecorderModeFailed" xml:space="preserve">
+    <value>Unable to set the mode of the chart recorder.</value>
+  </data>
+  <data name="ModeOffline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ModeOffline.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTPortCloseFailed" xml:space="preserve">
+    <value>Unable to close the communication port.</value>
+  </data>
+  <data name="Configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configuration.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eventlog" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Eventlog.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LegendCopyright" xml:space="preserve">
+    <value>(C) 2010 - 2015  Bombardier Transportation (Holdings) USA Inc.</value>
+  </data>
+  <data name="MBTDiagnosticHelpNotFound" xml:space="preserve">
+    <value>The diagnostic help file for the current project cannot be found.</value>
+  </data>
+  <data name="MBTSetDataDictionaryNotAllowedSelfTest" xml:space="preserve">
+    <value>A new data dictionary cannot be selected while the PTU is running self tests. Please terminate the self tests, disconnect and ensure that you are logged into the {1} account to complete this operation.</value>
+  </data>
+  <data name="LightMetallic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Background Images\LightMetallic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBCaptionInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="ModeOnline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ModeOnline.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTUnauthorizedSetDataDictionary" xml:space="preserve">
+    <value>You do not have sufficient privileges to select a new data dictionary. Please log into the {0} account to complete this operation.</value>
+  </data>
+  <data name="Blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Bookmark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Bookmark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Keys" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Keys.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WibuKey" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WibuKey.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HotPlug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HotPlug.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTSerialDeviceNotFound" xml:space="preserve">
+    <value>There we no serial communication devices found on this computer.</value>
+  </data>
+  <data name="Help" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Help.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LabelModeOffline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="COMPort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\COMPort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EMTimeDateGetFailed" xml:space="preserve">
+    <value>Unable to retrieve the time and date.</value>
+  </data>
+  <data name="Font" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Font.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTDataDictionaryProjectIdEmpty" xml:space="preserve">
+    <value>The data dictionary did not contain a valid project identifier, please contact the system administrator.</value>
+  </data>
+  <data name="PathUseDefault" xml:space="preserve">
+    <value>&lt;default&gt;</value>
+  </data>
+  <data name="PathRelativeDocumentation" xml:space="preserve">
+    <value>\Documentation</value>
+  </data>
+  <data name="PathDefaultFTPClient" xml:space="preserve">
+    <value>C:\Program Files\FileZilla Client\filezilla.exe</value>
+  </data>
+  <data name="FilenameDefaultDataDictionary" xml:space="preserve">
+    <value>Configuration.xml</value>
+  </data>
+  <data name="TextTargetFoundOn" xml:space="preserve">
+    <value>Target found on</value>
+  </data>
+  <data name="MBTSecurityLoginFailed" xml:space="preserve">
+    <value>Login failed, please contact the system administrator.</value>
+  </data>
+  <data name="fSEARCH_00" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fSEARCH_00.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTDataDictionaryApplicationDataPathInvalid" xml:space="preserve">
+    <value>The application data path specified in the configuration file is invalid; using the Windows default path.</value>
+  </data>
+  <data name="Train" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Train.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTConfigReadFailed" xml:space="preserve">
+    <value>Unable to read the data dictionary.</value>
+  </data>
+  <data name="DataStreamSimulated" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataStreamSimulated.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTReleaseNotesNotFound" xml:space="preserve">
+    <value>The release notes cannot be found.</value>
+  </data>
+  <data name="DataStream" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataStream.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTConfigReselect" xml:space="preserve">
+    <value>Please contact the system administrator or use the 'File/Open - Data Dictionary' menu option to select another data dictionary.</value>
+  </data>
+  <data name="MBTDataDictionaryLoadFailed" xml:space="preserve">
+    <value>Unable to load the data dictionary.</value>
+  </data>
+  <data name="TextSearchingForTargetOn" xml:space="preserve">
+    <value>Searching for target on</value>
+  </data>
+  <data name="LabelModeSetup" xml:space="preserve">
+    <value>Setup</value>
+  </data>
+  <data name="MBTConfigVCUMatchNotFoundManualSelection" xml:space="preserve">
+    <value>The PTU configuration file associated with the propulsion system software could not be found in the default sub-directory, do you want to select a file manually?</value>
+  </data>
+  <data name="Options" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Options.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTSetDataDictionaryNotAllowed" xml:space="preserve">
+    <value>A new data dictionary cannot be selected while the PTU is {0}. Please disconnect and ensure that you are logged into the {1} account to complete this operation.</value>
+  </data>
+  <data name="Record" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Record.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTShowHelpFileFailed" xml:space="preserve">
+    <value>Unable to display the help information.</value>
+  </data>
+  <data name="MBTConfigVCUMismatchVersion" xml:space="preserve">
+    <value>The version reference of the PTU configuration does not match that of the propulsion system software. Would you like to update the PTU configuration now?</value>
+  </data>
+  <data name="EMBrowserStartFailed" xml:space="preserve">
+    <value>Unable to start the browser specified in the user settings.</value>
+  </data>
+  <data name="PathDefaultBrowser" xml:space="preserve">
+    <value>C:\Program Files\Internet Explorer\iexplore.exe</value>
+  </data>
+  <data name="SecurityLogOut" xml:space="preserve">
+    <value>&amp;Logout</value>
+  </data>
+  <data name="ModeDiagnostic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ModeDiagnostic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Initialize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Initialize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTInvalidWorkset" xml:space="preserve">
+    <value>The watch variables associated with the following old identifiers are present in the '{0}' workset file but cannot be found in the data dictionary: {1}.</value>
+  </data>
+  <data name="LabelModeOnline" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="SecurityLogIn" xml:space="preserve">
+    <value>&amp;Login</value>
+  </data>
+  <data name="MBTSecurityMismatch" xml:space="preserve">
+    <value>The new password and the verification password did not match, please try again.</value>
+  </data>
+  <data name="Warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTWibuKeyInstall" xml:space="preserve">
+    <value>Please contact the system administrator or install the WibuKey Runtime Device Driver.</value>
+  </data>
+  <data name="MBTSecuritySuccess" xml:space="preserve">
+    <value>The password has been successfully updated.</value>
+  </data>
+  <data name="FilenameReleaseNotesPTU" xml:space="preserve">
+    <value>Portable Test Unit - Release Notes.pdf</value>
+  </data>
+  <data name="MBTConfigInvalid" xml:space="preserve">
+    <value>The data dictionary, '{0}', is invalid and cannot be read.</value>
+  </data>
+  <data name="Offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Offline.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TextNoTargetFoundOn" xml:space="preserve">
+    <value>No target found on</value>
+  </data>
+  <data name="LegendOS" xml:space="preserve">
+    <value>Windows 7/Vista/XP</value>
+  </data>
+  <data name="MBTDateTimeGetFailed" xml:space="preserve">
+    <value>Unable to retrieve the date and time.</value>
+  </data>
+  <data name="LabelModeDiagnostic" xml:space="preserve">
+    <value />
+  </data>
+  <data name="COMPort1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\COMPort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="User" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\User.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FolderOpen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FolderOpen.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTWibuKeyDeviceDriverNotInstalled" xml:space="preserve">
+    <value>The current project requires a Wibu-Key security device, however, the WibuKey Runtime Device Driver is not installed.</value>
+  </data>
+  <data name="MBTWibuBoxReInsert" xml:space="preserve">
+    <value>Please re-insert the Wibu-Key security device and log back in.</value>
+  </data>
+  <data name="BombardierLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Bombardier Logo.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FileDialogOpenTitleWebBrowser" xml:space="preserve">
+    <value>Select the Web Browser</value>
+  </data>
+  <data name="MBTNotYetImplemented" xml:space="preserve">
+    <value>This menu option has not yet been implemented.</value>
+  </data>
+  <data name="CarNumber" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CarNumber.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTSecurityPasswordIncorrect" xml:space="preserve">
+    <value>That password is incorrect, please try again.</value>
+  </data>
+  <data name="MBTDateTimeSetSuccess" xml:space="preserve">
+    <value>The real time clock has been successfully updated.</value>
+  </data>
+  <data name="MBTWorksetCollectionFaultLogLoadFailed" xml:space="preserve">
+    <value>Unable to load the workset collection associated with the data stream parameters.</value>
+  </data>
+  <data name="MBTOptionThirdPartyUnauthorized" xml:space="preserve">
+    <value>The third party application software can only be modified by logging into the highest security level.</value>
+  </data>
+  <data name="MBTDateTimeSetFailed" xml:space="preserve">
+    <value>Unable to set the real time clock.</value>
+  </data>
+  <data name="LabelWibuBoxStatusNotPresent" xml:space="preserve">
+    <value>Not Present</value>
+  </data>
+  <data name="LabelWibuBoxStatusPresent" xml:space="preserve">
+    <value>Present</value>
+  </data>
+  <data name="FunctionKeyTextDisconnectLogic" xml:space="preserve">
+    <value>F2-Disconnect Logic</value>
+  </data>
+  <data name="FunctionKeyTextSelectLogic" xml:space="preserve">
+    <value>F2-Select Target Logic</value>
+  </data>
+  <data name="LegendCarNumber" xml:space="preserve">
+    <value>Car No.:</value>
+  </data>
+  <data name="LegendLogStatus" xml:space="preserve">
+    <value>Log:</value>
+  </data>
+  <data name="FunctionKeyTextSimulationExit" xml:space="preserve">
+    <value>F3-Exit Simulation</value>
+  </data>
+  <data name="FunctionKeyTextSimulationStart" xml:space="preserve">
+    <value>F3-Logic Simulation</value>
+  </data>
+  <data name="FunctionKeyTextOffline" xml:space="preserve">
+    <value>F3-Offline</value>
+  </data>
+  <data name="FunctionKeyTextOnline" xml:space="preserve">
+    <value>F2-Online</value>
+  </data>
+  <data name="FunctionKeyToolTipTextDisconnectLogic" xml:space="preserve">
+    <value>[Disconnect the Vehicle Control Unit]</value>
+  </data>
+  <data name="FunctionKeyToolTipTextOffline" xml:space="preserve">
+    <value>[Display Screens without Connecting to the Vehicle Control Unit]</value>
+  </data>
+  <data name="FunctionKeyToolTipTextOnline" xml:space="preserve">
+    <value>[Connect to the Vehicle Control Unit]</value>
+  </data>
+  <data name="FunctionKeyToolTipTextSelectLogic" xml:space="preserve">
+    <value>[Connect to the Vehicle Control Unit]</value>
+  </data>
+  <data name="FunctionKeyToolTipTextSimulationExit" xml:space="preserve">
+    <value>[Exit the Vehicle Control Unit Simulation]</value>
+  </data>
+  <data name="FunctionKeyToolTipTextSimulationStart" xml:space="preserve">
+    <value>[Start the Vehicle Control Unit Simulation]</value>
+  </data>
+  <data name="MBTConfigVCUDownloadStart" xml:space="preserve">
+    <value>In order to update the PTU configuration: {0}1. Please disconnect the RS-232 connection and move the PTU up to the cab area. {1}2. Using a M12 to RS-485 Ethernet cable, connect the PTU laptop port (RJ45) to the J4 port (M12) located in the ceiling cabinet directly above the doorway entrance to the cab and locker area. The J4 Ethernet port is located directly to the left of the HV Box RS-232 serial port in this cabinet.{2}3. Once the connection is established, please click 'OK' to begin updating the PTU configuration. Please note that it can take up to 10 minutes to establish a connection.</value>
+  </data>
+  <data name="FilenameConfigDownload" xml:space="preserve">
+    <value>DownloadConfiguration.bat</value>
+  </data>
+  <data name="MBTConfigVCUDownloadComplete" xml:space="preserve">
+    <value>The PTU configuration has been updated. Please disconnect the Ethernet cable and reconnect the original RS-232 connection. Click 'OK' when the PTU is reconnected to the propulsion system.</value>
+  </data>
+  <data name="MBTConfigVCUDownloadFailed" xml:space="preserve">
+    <value>Unable to download the PTU configuration from the propulsion system.</value>
+  </data>
+  <data name="MBTConfigVCUDownloadInProgress" xml:space="preserve">
+    <value>The file transfer is in progress. Please do not disconnect the Ethernet cable until the transfer is complete.</value>
+  </data>
+  <data name="MBTConfigVCUMatchNotFoundTryAgain" xml:space="preserve">
+    <value>The PTU configuration file associated with the propulsion system software still cannot be found in the default sub-directory. Please try again."</value>
+  </data>
+  <data name="MBTConfigProjectAsParameterMismatch" xml:space="preserve">
+    <value>The project identifier associated with the current data dictionary is not applicable to this project, please contact the system administrator.</value>
+  </data>
+  <data name="LabelModeVCUSimulation" xml:space="preserve">
+    <value>Simulation</value>
+  </data>
+  <data name="LegendMode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LegendSecurityLevel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LegendWibuBoxStatus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FilenameReleaseNotesPTE" xml:space="preserve">
+    <value>Portable Test Equipment - Release Notes.pdf</value>
+  </data>
+  <data name="ProductNamePTE" xml:space="preserve">
+    <value>Portable Test Equipment (PTE)</value>
+  </data>
+  <data name="ProductNamePTU" xml:space="preserve">
+    <value>Portable Test Unit (PTU)</value>
+  </data>
+  <data name="FilenameSoftwareUserManualPTE" xml:space="preserve">
+    <value>Portable Test Equipment - Software User Manual.pdf</value>
+  </data>
+  <data name="FilenameSoftwareUserManualPTU" xml:space="preserve">
+    <value>Portable Test Unit - Software User Manual.pdf</value>
+  </data>
+</root>

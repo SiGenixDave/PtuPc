@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Common.Configuration.Workset">
+    <Position X="12.75" Y="7" Width="3" />
+    <Members>
+      <Field Name="m_WorksetCollectionChartRecorder" Hidden="true" />
+      <Field Name="m_WorksetCollectionFaultLog" Hidden="true" />
+      <Field Name="m_WorksetCollectionRecordedWatch" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIAgAIAAAAAAIQAAAAAAQAAAAAQEAAgAAAAAAAAAIAA=</HashCode>
+      <FileName>Configuration\Workset.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RecordedWatch" />
+      <Property Name="FaultLog" />
+      <Property Name="ChartRecorder" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Common.Configuration.WorksetCollection">
+    <Position X="0.5" Y="0.5" Width="10.25" />
+    <AssociationLine Name="m_WorksetCollectionFile_t" Type="Common.Configuration.WorksetCollectionFile_t" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.375" Y="8.343" />
+        <Point X="10.375" Y="8.718" />
+        <Point X="12.469" Y="8.718" />
+        <Point X="12.469" Y="10" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QgaAgCAgAMAAZUAICgAABAAgICBaAAACAYAAIAAQAAQ=</HashCode>
+      <FileName>Configuration\WorksetCollection.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_WorksetCollectionFile_t" />
+      <Property Name="ProjectInformation" />
+      <Property Name="ActiveWorkset" />
+      <Property Name="WorksetCollectionType" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Worksets" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Struct Name="Common.Configuration.WorksetCollectionFile_t">
+    <Position X="12.25" Y="10" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAgAAAIAAAAAAAAAAAgIAAIAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Configuration\WorksetCollection.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Common.Configuration.DataDictionaryInformation_t">
+    <Position X="0.5" Y="9" Width="9.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAEAgKAAAAAIAAAAAAAgAIAACAACAAAAA=</HashCode>
+      <FileName>Configuration\DataDictionaryInformation.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Common.Configuration.Workset_t">
+    <Position X="12.75" Y="0.5" Width="8" />
+    <TypeIdentifier>
+      <HashCode>AAACBAgAAACAAAAEAABQAAQAAAAAAAAAAgACAAEBIAA=</HashCode>
+      <FileName>Configuration\WorksetCollection.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="Common.Configuration.WorksetCollectionType">
+    <Position X="12.75" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAoAAAAAAAAAAAAAAEAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Configuration\WorksetCollection.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

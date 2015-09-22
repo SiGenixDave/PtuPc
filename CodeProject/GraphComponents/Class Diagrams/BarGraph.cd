@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Font Name="Segoe UI" Size="9" />
+  <Class Name="CodeProject.GraphComponents.BarGraph">
+    <Position X="0.5" Y="5.25" Width="3" />
+    <TypeIdentifier>
+      <FileName>BarGraph.cs</FileName>
+      <HashCode>AoKJWCBACSBAAwAAAEDKAQaCQAAIA0AIRQAAACAAQUQ=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_BasicBar" />
+      <Property Name="Type" />
+      <Property Name="BarOrientation" />
+      <Property Name="ValueAlignment" />
+      <Property Name="BarGraduation" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="m_AboveRangeColor" Hidden="true" />
+      <Field Name="m_AboveRangeValue" Hidden="true" />
+      <Field Name="m_BarColor" Hidden="true" />
+      <Field Name="m_BarGraduation" Hidden="true" />
+      <Field Name="m_BarGraphType" Hidden="true" />
+      <Field Name="m_BarOrientation" Hidden="true" />
+      <Field Name="m_BarValue" Hidden="true" />
+      <Field Name="m_BarValueMax" Hidden="true" />
+      <Field Name="m_BarValueMin" Hidden="true" />
+      <Field Name="m_BelowRangeColor" Hidden="true" />
+      <Field Name="m_BelowRangeValue" Hidden="true" />
+      <Field Name="m_GraphBorderColor" Hidden="true" />
+      <Field Name="m_MaximumValue" Hidden="true" />
+      <Field Name="m_MinimumValue" Hidden="true" />
+      <Field Name="m_ShowRangeLines" Hidden="true" />
+      <Field Name="m_ShowRangeValues" Hidden="true" />
+      <Field Name="m_ValueAlignment" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="CodeProject.GraphComponents.Graph" FixedFromPoint="true">
+      <Path>
+        <Point X="2" Y="4.752" />
+        <Point X="2" Y="5.25" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="m_BasicBar" Type="CodeProject.GraphComponents.BasicBar" FixedFromPoint="true">
+      <Path>
+        <Point X="3.5" Y="5.437" />
+        <Point X="8" Y="5.437" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ValueAlignment" Type="CodeProject.GraphComponents.TextAlignment">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.048" Y="0.07" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Class>
+  <Class Name="CodeProject.GraphComponents.Graph">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Graph.cs</FileName>
+      <HashCode>AIBAQAAAASCAggQgBACCADSQAACBICAAAAAAAAAIAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Gridlines" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Field Name="m_GraduationsX" Hidden="true" />
+      <Field Name="m_GraduationsY" Hidden="true" />
+      <Field Name="m_GraphArea" Hidden="true" />
+      <Field Name="m_GraphAreaColor" Hidden="true" />
+      <Field Name="m_GridlineColor" Hidden="true" />
+      <Field Name="m_Gridlines" Hidden="true" />
+      <Field Name="m_Transparency" Hidden="true" />
+      <Field Name="m_ValueFormat" Hidden="true" />
+      <Field Name="m_XAxisColor" Hidden="true" />
+      <Field Name="m_YAxisColor" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CodeProject.GraphComponents.BasicBar">
+    <Position X="8" Y="5" Width="4.5" />
+    <TypeIdentifier>
+      <FileName>BasicBar.cs</FileName>
+      <HashCode>AgIJWSFiCABAAxAAAERIASISQAAJA0AIRQAACiAIUcQ=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+      <Property Name="BarOrientation" />
+      <Property Name="ValueAlignment" />
+      <Property Name="BarGraduation" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="borderThickness" Hidden="true" />
+      <Method Name="DrawBarValue" Hidden="true" />
+      <Method Name="DrawGraduations" Hidden="true" />
+      <Method Name="DrawOutOfRangeArrows" Hidden="true" />
+      <Method Name="DrawRangeLines" Hidden="true" />
+      <Method Name="DrawRangeValues" Hidden="true" />
+      <Field Name="m_AboveRangeColor" Hidden="true" />
+      <Field Name="m_AboveRangeValue" Hidden="true" />
+      <Field Name="m_BarColor" Hidden="true" />
+      <Field Name="m_BarGraduation" Hidden="true" />
+      <Field Name="m_BarGraphType" Hidden="true" />
+      <Field Name="m_BarOrientation" Hidden="true" />
+      <Field Name="m_BarValue" Hidden="true" />
+      <Field Name="m_BarValueMax" Hidden="true" />
+      <Field Name="m_BarValueMin" Hidden="true" />
+      <Field Name="m_BelowRangeColor" Hidden="true" />
+      <Field Name="m_BelowRangeValue" Hidden="true" />
+      <Field Name="m_ClientRectangle" Hidden="true" />
+      <Field Name="m_ForeColor" Hidden="true" />
+      <Field Name="m_GraphBorderColor" Hidden="true" />
+      <Field Name="m_MaximumValue" Hidden="true" />
+      <Field Name="m_MinimumValue" Hidden="true" />
+      <Field Name="m_OutOfRangeArrowColor" Hidden="true" />
+      <Field Name="m_ShowRangeLines" Hidden="true" />
+      <Field Name="m_ShowRangeValues" Hidden="true" />
+      <Field Name="m_TextFont" Hidden="true" />
+      <Field Name="m_ValueAlignment" Hidden="true" />
+      <Field Name="m_ValueFormat" Hidden="true" />
+    </Members>
+    <AssociationLine Name="Type" Type="CodeProject.GraphComponents.BarGraphType" FixedFromPoint="true">
+      <Path>
+        <Point X="8" Y="9.5" />
+        <Point X="6.5" Y="9.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="BarOrientation" Type="CodeProject.GraphComponents.Orientation" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.188" Y="10.017" />
+        <Point X="12.188" Y="11.023" />
+        <Point X="6.5" Y="11.023" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="BarGraduation" Type="CodeProject.GraphComponents.Graduation" FixedToPoint="true">
+      <Path>
+        <Point X="8" Y="7.812" />
+        <Point X="6.5" Y="7.812" />
+      </Path>
+    </AssociationLine>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="CodeProject.GraphComponents.IGraphElement">
+    <Position X="8" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>IGraphElement.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="CodeProject.GraphComponents.BarGraphType">
+    <Position X="4.75" Y="9" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>BarGraph.cs</FileName>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CodeProject.GraphComponents.GridStyles">
+    <Position X="4" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>GraphTypedefs.cs</FileName>
+      <HashCode>AAAAAgAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CodeProject.GraphComponents.Orientation">
+    <Position X="4.75" Y="10.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>GraphTypedefs.cs</FileName>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CodeProject.GraphComponents.Graduation">
+    <Position X="4.75" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>GraphTypedefs.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAEAAAAAEIAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CodeProject.GraphComponents.TextAlignment">
+    <Position X="4.75" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>GraphTypedefs.cs</FileName>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAQA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Font Name="Segoe UI" Size="9" />
+  <Class Name="CodeProject.GraphComponents.Channel">
+    <Position X="14" Y="0.5" Width="6" />
+    <TypeIdentifier>
+      <FileName>Channel.cs</FileName>
+      <HashCode>UhAABCgAACBghIQACUAIA4SBRAABACkAAAAIBACgZAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ChannelCursor" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="m_ChannelColor" Hidden="true" />
+      <Field Name="m_ChannelCursor" Hidden="true" />
+      <Field Name="m_CurrentValue" Hidden="true" />
+      <Field Name="m_CursorOffset" Hidden="true" />
+      <Field Name="m_DefaultMaximumValue" Hidden="true" />
+      <Field Name="m_DefaultMinimumValue" Hidden="true" />
+      <Field Name="m_Enabled" Hidden="true" />
+      <Field Name="m_MaximumValue" Hidden="true" />
+      <Field Name="m_MinimumValue" Hidden="true" />
+      <Field Name="m_Name" Hidden="true" />
+      <Field Name="m_PlotIntervalMs" Hidden="true" />
+      <Field Name="m_Points" Hidden="true" />
+      <Field Name="m_TotalTimeElapsed" Hidden="true" />
+      <Field Name="m_X" Hidden="true" />
+      <Field Name="MaxPoints" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="ChannelCursor" Type="CodeProject.GraphComponents.Cursor">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.838" Y="2.96" Height="0.182" Width="1.502" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CodeProject.GraphComponents.Graph">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Graph.cs</FileName>
+      <HashCode>AIBAQAAAASCAggQgBACCADSQAACBICAAAAAAAAAIAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Gridlines" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Field Name="m_GraduationsX" Hidden="true" />
+      <Field Name="m_GraduationsY" Hidden="true" />
+      <Field Name="m_GraphArea" Hidden="true" />
+      <Field Name="m_GraphAreaColor" Hidden="true" />
+      <Field Name="m_GridlineColor" Hidden="true" />
+      <Field Name="m_Gridlines" Hidden="true" />
+      <Field Name="m_Transparency" Hidden="true" />
+      <Field Name="m_ValueFormat" Hidden="true" />
+      <Field Name="m_XAxisColor" Hidden="true" />
+      <Field Name="m_YAxisColor" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CodeProject.GraphComponents.Plotter">
+    <Position X="3.75" Y="0.5" Width="4.25" />
+    <TypeIdentifier>
+      <FileName>Plotter.cs</FileName>
+      <HashCode>S3jmgbqJoDbYhqxEEYDQM6L2OKgCBDIAtgARIBU7ECQ=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_Gridline" />
+      <Field Name="m_AxisLineXandY" />
+      <Property Name="Channels" />
+      <Property Name="CurrentState" />
+      <Property Name="ActiveChannel" />
+      <Property Name="TimeDisplayStyle" />
+      <Property Name="CurrentRangeSelection" />
+      <Property Name="AnalogueType" />
+    </ShowAsAssociation>
+    <Members>
+      <Method Name="CalculateGraphArea" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Method Name="Draw" Hidden="true" />
+      <Method Name="DrawCrossHair" Hidden="true" />
+      <Method Name="DrawSelectedArea" Hidden="true" />
+      <Method Name="DrawTripTime" Hidden="true" />
+      <Method Name="DrawXAxisValues" Hidden="true" />
+      <Method Name="DrawXYText" Hidden="true" />
+      <Method Name="DrawYAxisValues" Hidden="true" />
+      <Method Name="FindX" Hidden="true" />
+      <Method Name="GetCoordinateTextRect" Hidden="true" />
+      <Method Name="GetFormatForTime" Hidden="true" />
+      <Method Name="GetPixelFromValue" Hidden="true" />
+      <Method Name="GetValueFromPixel" Hidden="true" />
+      <Field Name="GraduationBorder" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="m_ActiveChannelIndex" Hidden="true" />
+      <Method Name="m_BtnNextChannel_Click" Hidden="true" />
+      <Method Name="m_BtnPrevChannel_Click" Hidden="true" />
+      <Method Name="m_BtnYAxisMinus_Click" Hidden="true" />
+      <Method Name="m_BtnYAxisPlus_Click" Hidden="true" />
+      <Field Name="m_ChannelCollection" Hidden="true" />
+      <Field Name="m_CompressedMode" Hidden="true" />
+      <Field Name="m_CurrentState" Hidden="true" />
+      <Field Name="m_GraphAreaNormalColor" Hidden="true" />
+      <Field Name="m_GraphMarginBottom" Hidden="true" />
+      <Field Name="m_GraphMarginLeft" Hidden="true" />
+      <Field Name="m_GraphMarginRight" Hidden="true" />
+      <Field Name="m_GraphMarginTop" Hidden="true" />
+      <Field Name="m_InitialPlotIntervalMs" Hidden="true" />
+      <Field Name="m_IsFaultLog" Hidden="true" />
+      <Field Name="m_LeftDisplayLimit" Hidden="true" />
+      <Field Name="m_MenuItemCancel" Hidden="true" />
+      <Method Name="m_MenuItemCancel_Click" Hidden="true" />
+      <Method Name="m_MenuItemNewTimeSpan_Click" Hidden="true" />
+      <Field Name="m_MenuItemNextChannel" Hidden="true" />
+      <Method Name="m_MenuItemNextChannel_Click" Hidden="true" />
+      <Field Name="m_MenuItemPreviousChannel" Hidden="true" />
+      <Method Name="m_MenuItemPreviousChannel_Click" Hidden="true" />
+      <Field Name="m_MenuItemResetAxis" Hidden="true" />
+      <Method Name="m_MenuItemResetAxis_Click" Hidden="true" />
+      <Method Name="m_MenuItemResetTimeSpan_Click" Hidden="true" />
+      <Field Name="m_MenuItemZoom" Hidden="true" />
+      <Method Name="m_MenuItemZoom_Click" Hidden="true" />
+      <Field Name="m_MouseDownCoordinates" Hidden="true" />
+      <Field Name="m_MouseHoverCoordinates" Hidden="true" />
+      <Field Name="m_MouseUpCoordinates" Hidden="true" />
+      <Field Name="m_PlotIntervalMs" Hidden="true" />
+      <Field Name="m_PlotterPenPosition" Hidden="true" />
+      <Field Name="m_PointsToRemove" Hidden="true" />
+      <Field Name="m_RightDisplayLimit" Hidden="true" />
+      <Field Name="m_SavedLeftDisplayLimit" Hidden="true" />
+      <Field Name="m_SavedPointsToRemove" Hidden="true" />
+      <Field Name="m_SavedXRange" Hidden="true" />
+      <Field Name="m_SeparatorCancel" Hidden="true" />
+      <Field Name="m_StartTime" Hidden="true" />
+      <Field Name="m_StoppedLeftDisplayLimit" Hidden="true" />
+      <Field Name="m_TimeDisplayStyle" Hidden="true" />
+      <Field Name="m_TotalPointsToRemove" Hidden="true" />
+      <Field Name="m_TotalTimeElapsed" Hidden="true" />
+      <Field Name="m_TripTime" Hidden="true" />
+      <Field Name="m_XRange" Hidden="true" />
+      <Method Name="NextChannel" Hidden="true" />
+      <Method Name="Plotter_MouseDown" Hidden="true" />
+      <Method Name="Plotter_MouseMove" Hidden="true" />
+      <Method Name="Plotter_MouseUp" Hidden="true" />
+      <Method Name="plotterHScrollBar_Scroll" Hidden="true" />
+      <Field Name="SelectedAreaBorder" Hidden="true" />
+      <Field Name="TripLineWidth" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="CodeProject.GraphComponents.Plotter.PlotterEventHandler" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Plotter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <AssociationLine Name="m_AxisLineXandY" Type="CodeProject.GraphComponents.AxisLine" FixedToPoint="true">
+      <Path>
+        <Point X="8" Y="6.125" />
+        <Point X="10.25" Y="6.125" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.08" Y="0.098" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Channels" Type="CodeProject.GraphComponents.ChannelCollection">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.313" Y="0.116" Height="0.182" Width="1.011" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="ActiveChannel" Type="CodeProject.GraphComponents.Channel">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="4.01" Y="0.076" Height="0.182" Width="1.293" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="TimeDisplayStyle" Type="CodeProject.GraphComponents.TimeAxisStyle">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.505" Y="0.418" Height="0.182" Width="1.378" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="AnalogueType" Type="CodeProject.GraphComponents.AnalogueType" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.375" Y="9.309" />
+        <Point X="4.375" Y="11.523" />
+        <Point X="2.5" Y="11.523" />
+      </Path>
+    </AssociationLine>
+  </Class>
+  <Class Name="CodeProject.GraphComponents.ChannelCollection">
+    <Position X="10" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>ChannelCollection.cs</FileName>
+      <HashCode>AEIAAEAAAAAAAAAACAAABAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="this[System.Int32]" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CodeProject.GraphComponents.AxisLine">
+    <Position X="10.25" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>GraphDecorators\AxisLine.cs</FileName>
+      <HashCode>AAAAAABAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="m_ParentGraph" Hidden="true" />
+    </Members>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CodeProject.GraphComponents.Gridline">
+    <Position X="10.25" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>GraphDecorators\Gridline.cs</FileName>
+      <HashCode>AAAAAABAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CodeProject.GraphComponents.Cursor">
+    <Position X="14.25" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>GraphDecorators\Cursor.cs</FileName>
+      <HashCode>AAAAQAAAAAAAAgAAFAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="m_Channel" Hidden="true" />
+      <Field Name="m_GraphArea" Hidden="true" />
+    </Members>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="CodeProject.GraphComponents.PlotterRangeSelection">
+    <Position X="10.25" Y="8" Width="3.25" />
+    <TypeIdentifier>
+      <FileName>Plotter.cs</FileName>
+      <HashCode>AkBAAACIAAAABAAAAQAAAAAKIAAAFAAAAAQAAAAAAAE=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="LastPlotterRangeSelectionState" />
+      <Property Name="PlotterRangeSelectionState" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="LastPlotterRangeSelectionState" Type="CodeProject.GraphComponents.PlotterRangeSelectionState" FixedFromPoint="true">
+      <Path>
+        <Point X="11.125" Y="9.747" />
+        <Point X="11.125" Y="11" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.145" Y="0.926" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="PlotterRangeSelectionState" Type="CodeProject.GraphComponents.PlotterRangeSelectionState">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-2.239" Y="0.597" Height="0.182" Width="2.07" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Struct>
+  <Enum Name="CodeProject.GraphComponents.GridStyles">
+    <Position X="0.5" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>GraphTypedefs.cs</FileName>
+      <HashCode>AAAAAgAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CodeProject.GraphComponents.TimeAxisStyle">
+    <Position X="5.5" Y="10.5" Width="3.25" />
+    <TypeIdentifier>
+      <FileName>GraphTypedefs.cs</FileName>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAIAAAAEAAAAAEAAACAAAQA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CodeProject.GraphComponents.AnalogueType">
+    <Position X="0.5" Y="11" Width="2" />
+    <TypeIdentifier>
+      <FileName>Plotter.cs</FileName>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CodeProject.GraphComponents.PlotterState">
+    <Position X="0.5" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Plotter.cs</FileName>
+      <HashCode>AAAAAAAAAAIABAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CodeProject.GraphComponents.PlotterRangeSelectionState">
+    <Position X="10.25" Y="11" Width="3.25" />
+    <TypeIdentifier>
+      <FileName>Plotter.cs</FileName>
+      <HashCode>AAAAgAAAAAAAAAAAAAgAAAAAAAIAAAAAAAAAAAAABQA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

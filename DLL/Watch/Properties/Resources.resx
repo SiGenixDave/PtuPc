@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FunctionKeyTextRecord" xml:space="preserve">
+    <value>Rec.</value>
+  </data>
+  <data name="FunctionKeyTextPause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="MBCaptionInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="MBCaptionError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="MBCaptionWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="FileDialogOpenFilterSimulatedFaultLog" xml:space="preserve">
+    <value>Simulated Data Stream Files</value>
+  </data>
+  <data name="FileDialogOpenTitleSimulatedFaultLog" xml:space="preserve">
+    <value>Select Simulated Data Stream</value>
+  </data>
+  <data name="FileDialogOpenFilterRecordedWatchFile" xml:space="preserve">
+    <value>Recorded Watch Files</value>
+  </data>
+  <data name="FileDialogOpenTitleRecordedWatchFile" xml:space="preserve">
+    <value>Select Recorded Watch File</value>
+  </data>
+  <data name="FunctionKeyTextInfo" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="FunctionKeyTextSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="FunctionKeyToolTipInfo" xml:space="preserve">
+    <value>[Show Header Information]</value>
+  </data>
+  <data name="FunctionKeyToolTipPause" xml:space="preserve">
+    <value>[Pause]</value>
+  </data>
+  <data name="FunctionKeyToolTipRecord" xml:space="preserve">
+    <value>[Record]</value>
+  </data>
+  <data name="FunctionKeyToolTipSave" xml:space="preserve">
+    <value>[Save]</value>
+  </data>
+  <data name="TitleOpenWatchFile" xml:space="preserve">
+    <value>Open/Watch File : {0}</value>
+  </data>
+  <data name="TitleOpenSimulatedFaultLog" xml:space="preserve">
+    <value>Open/Simulated Data Stream: {0}</value>
+  </data>
+  <data name="InformationLegendDate" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="InformationLegendDuration" xml:space="preserve">
+    <value>Duration:</value>
+  </data>
+  <data name="InformationLegendRecordingStartTime" xml:space="preserve">
+    <value>Rec. Start:</value>
+  </data>
+  <data name="InformationLegendTime" xml:space="preserve">
+    <value>PC Time:</value>
+  </data>
+  <data name="SMCommunicationFaultReadTimeout" xml:space="preserve">
+    <value>Communication Fault - Read Timeout.</value>
+  </data>
+  <data name="EMSetWatchElementsFailed" xml:space="preserve">
+    <value>Unable to map the watch identifiers to the watch elements.</value>
+  </data>
+  <data name="EMUpdateWatchElementsFailed" xml:space="preserve">
+    <value>Unable to retrieve the watch elements from the target hardware.</value>
+  </data>
+  <data name="EMSendVariableFailed" xml:space="preserve">
+    <value>Unable to write the new value to the target hardware.</value>
+  </data>
+  <data name="FunctionKeyTextEdit" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="FunctionKeyToolTipEdit" xml:space="preserve">
+    <value>[Modify Current Workset]</value>
+  </data>
+  <data name="LegendWorkset" xml:space="preserve">
+    <value>Wor&amp;kset:</value>
+  </data>
+  <data name="EMWorksetIntegrityCheckFailed" xml:space="preserve">
+    <value>There is a problem with the integrity check on the workset, please contact the system administrator.</value>
+  </data>
+  <data name="MBTLogFileTypeNotSupported" xml:space="preserve">
+    <value>This log file type is not supported.</value>
+  </data>
+  <data name="LegendRecording" xml:space="preserve">
+    <value>Recording:</value>
+  </data>
+  <data name="MBTInsufficientPrivilegesEdit" xml:space="preserve">
+    <value>You do not have sufficient privileges to modify the current workset.</value>
+  </data>
+  <data name="MBTModifyChannelsFailed" xml:space="preserve">
+    <value>Unable to re-configure the chart recorder channels.</value>
+  </data>
+  <data name="MBTModifyChartRecorderConfigurationSuccess" xml:space="preserve">
+    <value>The chart recorder has been successfully re-configured.</value>
+  </data>
+  <data name="MBTQueryModifyChartRecorderChannels" xml:space="preserve">
+    <value>Are you sure that you want to modify the chart recorder channel configuration to the selected settings ?</value>
+  </data>
+  <data name="TitleConfigureChartRecorder" xml:space="preserve">
+    <value>Configure - Chart Recorder</value>
+  </data>
+  <data name="TitleCopyChartRecorderWorkset" xml:space="preserve">
+    <value>Copy - Chart Recorder Workset</value>
+  </data>
+  <data name="TitleCreateChartRecorderWorkset" xml:space="preserve">
+    <value>Create New - Chart Recorder Workset</value>
+  </data>
+  <data name="TitleEditChartRecorderWorkset" xml:space="preserve">
+    <value>Modify - Chart Recorder Workset</value>
+  </data>
+  <data name="TitleRenameChartRecorderWorkset" xml:space="preserve">
+    <value>Rename - Chart Recorder Workset</value>
+  </data>
+  <data name="LegendAvailable" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="LegendCount" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="LegendOf" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="LegendTotalCount" xml:space="preserve">
+    <value>Total Count</value>
+  </data>
+  <data name="MBTChartScaleLowerLimitInvalid" xml:space="preserve">
+    <value>Data entry error - The lower limit must be less than or equal to the upper limit.</value>
+  </data>
+  <data name="MBTChartScaleUpperLimitInvalid" xml:space="preserve">
+    <value>Data entry error - The upper limit must be greater than or equal to the lower limit.</value>
+  </data>
+  <data name="MBTModifyLimitFailed" xml:space="preserve">
+    <value>Unable to modify the upper and lower limits of the chart recorder channel.</value>
+  </data>
+  <data name="MBTWatchVariableNotFound" xml:space="preserve">
+    <value>The selected watch variable does not exist.</value>
+  </data>
+  <data name="LegendFormatHex" xml:space="preserve">
+    <value>(Hex)</value>
+  </data>
+  <data name="MBTChartScaleLimitsInvalid" xml:space="preserve">
+    <value>One or both of the chart recorder Y axis limits for this watch variable contain(s) invalid data. The upper and lower limits wil be set to their default values.</value>
+  </data>
+  <data name="MBTDataEntryDecimalInvalid" xml:space="preserve">
+    <value>Data entry error - The specified value did not represent a valid 32 bit decimal value.</value>
+  </data>
+  <data name="MBTDataEntryHexInvalid" xml:space="preserve">
+    <value>Data entry error - The specified value did not represent a valid 32 bit hexadecimal value.</value>
+  </data>
+  <data name="SMCommunicationFaultPortLocked" xml:space="preserve">
+    <value>Communication Fault - Port Locked.</value>
+  </data>
+  <data name="SMFunctionKeyPause" xml:space="preserve">
+    <value>Paused.</value>
+  </data>
+  <data name="MBTLoadingBaselineWorkset" xml:space="preserve">
+    <value>Loading the baseline workset '{0}'.</value>
+  </data>
+  <data name="NameBaselineWorkset" xml:space="preserve">
+    <value>Baseline</value>
+  </data>
+  <data name="MBTValidWorksetNotFound" xml:space="preserve">
+    <value>No valid worksets were found.</value>
+  </data>
+  <data name="EMGetChartRecorderWatchIDFailed" xml:space="preserve">
+    <value>Unable to retrieve the watch variable identifier associated with channel {0} of the chart recorder.</value>
+  </data>
+  <data name="EMSetChartRecorderWatchIDFailed" xml:space="preserve">
+    <value>Unable to set the watch variable identifier associated with channel {0} of the chart recorder.</value>
+  </data>
+  <data name="FunctionKeyTextContinue" xml:space="preserve">
+    <value>Cont.</value>
+  </data>
+  <data name="FunctionKeyTextStop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="FunctionKeyToolTipContinue" xml:space="preserve">
+    <value>[Continue]</value>
+  </data>
+  <data name="FunctionKeyToolTipStop" xml:space="preserve">
+    <value>[Stop Recording] </value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Modify" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Modify.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Play" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Record" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Record.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RecordStop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RecordStop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FileInformation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FileInformation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

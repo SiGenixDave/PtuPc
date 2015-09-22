@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{71103C84-59FD-416E-8945-4EA0F2F0D8E8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Event</RootNamespace>
+    <AssemblyName>Event</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\Event.XML</DocumentationFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AddTCPToRelease|AnyCPU'">
+    <OutputPath>bin\AddTCPToRelease\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\Event.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\Event.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\FormConfigureFaultLogParameters.resx">
+      <DependentUpon>FormConfigureFaultLogParameters.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormGetFltHistInfo.resx">
+      <DependentUpon>FormGetFltHistInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormConfigureEventFlags.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormConfigureEventFlags.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormGetStream.resx">
+      <DependentUpon>FormGetStream.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormShowEventHistory.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormShowEventHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormViewEventLog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormViewEventLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormViewFaultLog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormViewFaultLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormOpenEventLog.resx">
+      <DependentUpon>FormOpenEventLog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormOpenFaultLog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormOpenFaultLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormWorksetDefineFaultLog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormWorksetDefineFaultLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormWorksetManagerFaultLog.resx">
+      <DependentUpon>FormWorksetManagerFaultLog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Communication\CommunicationEvent.cs" />
+    <Compile Include="Communication\CommunicationEventOffline.cs" />
+    <Compile Include="Communication\VcuCommunication32Event.cs" />
+    <Compile Include="Communication\VcuCommunication64Event.cs" />
+    <Compile Include="Forms\FormConfigureFaultLogParameters.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormConfigureFaultLogParameters.Designer.cs">
+      <DependentUpon>FormConfigureFaultLogParameters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormGetFltHistInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormGetFltHistInfo.designer.cs">
+      <DependentUpon>FormGetFltHistInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormConfigureEventFlags.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormConfigureEventFlags.Designer.cs">
+      <DependentUpon>FormConfigureEventFlags.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormShowEventHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormShowEventHistory.Designer.cs">
+      <DependentUpon>FormShowEventHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormGetStream.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormGetStream.designer.cs">
+      <DependentUpon>FormGetStream.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormViewEventLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormViewEventLog.Designer.cs">
+      <DependentUpon>FormViewEventLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormViewFaultLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormViewFaultLog.Designer.cs">
+      <DependentUpon>FormViewFaultLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormOpenEventLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormOpenEventLog.Designer.cs">
+      <DependentUpon>FormOpenEventLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormOpenFaultLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormOpenFaultLog.Designer.cs">
+      <DependentUpon>FormOpenFaultLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormWorksetDefineFaultLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormWorksetDefineFaultLog.Designer.cs">
+      <DependentUpon>FormWorksetDefineFaultLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormWorksetManagerFaultLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormWorksetManagerFaultLog.Designer.cs">
+      <DependentUpon>FormWorksetManagerFaultLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenuInterfaceEvent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ThreadPollEvent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeProject\GraphComponents\CodeProject.GraphComponents.csproj">
+      <Project>{ADB98F2B-764D-4E27-B941-0153F6672DF6}</Project>
+      <Name>CodeProject.GraphComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{4D060B1F-3148-4646-B847-8DBCF6F887F6}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DataStream.ico" />
+    <Content Include="Resources\FileInformation.png" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\Trash.png" />
+    <None Include="Resources\Tools.png" />
+    <Content Include="Resources\FolderOpen.png" />
+    <Content Include="Resources\Help.png" />
+    <Content Include="Resources\FilingCabinet.png" />
+    <Content Include="Resources\Modify.png" />
+    <Content Include="Resources\Save.png" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Initialize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FileRetrieve.gif" />
+    <None Include="Resources\Blank.png" />
+    <Content Include="Resources\Edit_Undo.png" />
+  </ItemGroup>
+</Project>

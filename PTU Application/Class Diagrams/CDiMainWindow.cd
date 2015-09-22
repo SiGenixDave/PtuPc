@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Struct Name="Common.Communication.CommunicationSetting_t">
+    <Position X="6" Y="3.5" Width="4.5" />
+    <AssociationLine Name="Protocol" Type="Common.Communication.Protocol" FixedFromPoint="true">
+      <Path>
+        <Point X="10.5" Y="3.625" />
+        <Point X="14.25" Y="3.625" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Port" Type="Common.Communication.Port_t" FixedToPoint="true">
+      <Path>
+        <Point X="10.5" Y="4.125" />
+        <Point X="12" Y="4.125" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Field Name="Protocol" />
+      <Field Name="Port" />
+      <Field Name="SerialCommunicationParameters" />
+    </ShowAsAssociation>
+  </Struct>
+  <Struct Name="Common.Communication.Port_t">
+    <Position X="12" Y="4" Width="2" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="Common.Communication.SerialCommunicationParameters_t">
+    <Position X="8" Y="5.25" Width="2.5" />
+    <AssociationLine Name="BaudRate" Type="Common.Communication.Baud" FixedToPoint="true">
+      <Path>
+        <Point X="10.5" Y="6.25" />
+        <Point X="14.25" Y="6.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Field Name="BaudRate" />
+      <Field Name="Parity" />
+      <Field Name="StopBits" />
+      <Field Name="BitsPerCharacter" />
+    </ShowAsAssociation>
+  </Struct>
+  <Interface Name="Common.IMainWindow">
+    <Position X="0.5" Y="0.5" Width="5" />
+    <AssociationLine Name="CommunicationInterface" Type="Common.Communication.ICommunicationParent" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="0.938" />
+        <Point X="8" Y="0.938" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.102" Y="0.152" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="Mode" />
+      <Property Name="CommunicationInterface" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Common.Communication.ICommunicationParent">
+    <Position X="8" Y="0.5" Width="5" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="CommunicationSetting" />
+    </ShowAsAssociation>
+  </Interface>
+  <Enum Name="Common.Mode">
+    <Position X="0.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Common.Communication.Protocol">
+    <Position X="14.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Common.Communication.Baud">
+    <Position X="14.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Common.Communication.Parity">
+    <Position X="5.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Common.Communication.StopBits">
+    <Position X="8" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Common.Communication.BitsPerCharacter" Collapsed="true">
+    <Position X="10.25" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

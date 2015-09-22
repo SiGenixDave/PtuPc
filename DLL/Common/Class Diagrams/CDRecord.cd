@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Common.Configuration.EventRecord">
+    <Position X="0.5" Y="2.75" Width="2.75" />
+    <Members>
+      <Field Name="m_CarIdentifier" Hidden="true" />
+      <Field Name="m_Date" Hidden="true" />
+      <Field Name="m_DateTime" Hidden="true" />
+      <Field Name="m_Description" Hidden="true" />
+      <Field Name="m_EventIdentifier" Hidden="true" />
+      <Field Name="m_EventIndex" Hidden="true" />
+      <Field Name="m_EventVariableList" Hidden="true" />
+      <Field Name="m_LogIdentifier" Hidden="true" />
+      <Field Name="m_StreamNumber" Hidden="true" />
+      <Field Name="m_StreamSaved" Hidden="true" />
+      <Field Name="m_StructureIdentifier" Hidden="true" />
+      <Field Name="m_TaskIdentifier" Hidden="true" />
+      <Field Name="m_Time" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Common.Configuration.Record" FixedToPoint="true">
+      <Path>
+        <Point X="1.625" Y="1.796" />
+        <Point X="1.625" Y="2.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ABCIAIhAAAI0AAAAAIBAgEAAAAAEAAQJAAAggADAAQg=</HashCode>
+      <FileName>Configuration\Event\EventRecord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Configuration.Record">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <Members>
+      <Field Name="m_HelpIndex" Hidden="true" />
+      <Field Name="m_Identifier" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAABAAAIAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Configuration\Record.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Configuration.Log">
+    <Position X="3.5" Y="2.75" Width="4" />
+    <Members>
+      <Field Name="m_ChangeStatus" Hidden="true" />
+      <Field Name="m_DataStreamTypeIdentifier" Hidden="true" />
+      <Field Name="m_DataStreamTypeParameters" Hidden="true" />
+      <Field Name="m_Description" Hidden="true" />
+      <Field Name="m_MaxEventsPerTask" Hidden="true" />
+      <Field Name="m_MaxTasks" Hidden="true" />
+      <Field Name="m_SampleIntervalMs" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIABAAAAAAAgAAEEQAAAAAAAABUAAAARAABASABAAAA=</HashCode>
+      <FileName>Configuration\Event\Log.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Configuration.GroupListRecord">
+    <Position X="7.75" Y="2.75" Width="3" />
+    <Members>
+      <Field Name="m_Attribute" Hidden="true" />
+      <Field Name="m_Description" Hidden="true" />
+      <Field Name="m_SelfTestRecordList" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAiAAAGAAAEAAAAAAAAAAAAAAAAgABAAAA=</HashCode>
+      <FileName>Configuration\SelfTest\GroupListRecord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Configuration.SelfTestRecord">
+    <Position X="11" Y="2.75" Width="3" />
+    <Members>
+      <Field Name="m_DateTime" Hidden="true" />
+      <Field Name="m_Description" Hidden="true" />
+      <Field Name="m_SelfTestNumber" Hidden="true" />
+      <Field Name="m_SelfTestVariableList" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgQAAEAAAAAAAACAAAAAQAAAAAAAhAAAg=</HashCode>
+      <FileName>Configuration\SelfTest\SelfTestRecord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Configuration.TestListRecord">
+    <Position X="14.25" Y="2.75" Width="3" />
+    <Members>
+      <Field Name="m_Attribute" Hidden="true" />
+      <Field Name="m_Description" Hidden="true" />
+      <Field Name="m_SelfTestRecordList" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAiAAAGAAAEAAAAAAAAAAAAAAAAgABAAAA=</HashCode>
+      <FileName>Configuration\SelfTest\TestListRecord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Configuration.Variable">
+    <Position X="17.5" Y="2.75" Width="2.25" />
+    <Members>
+      <Field Name="m_DataType" Hidden="true" />
+      <Field Name="m_DataTypeFromTarget" Hidden="true" />
+      <Field Name="m_EnumBitIdentifier" Hidden="true" />
+      <Field Name="m_FormatString" Hidden="true" />
+      <Field Name="m_IsBitMask" Hidden="true" />
+      <Field Name="m_Name" Hidden="true" />
+      <Field Name="m_ScaleFactor" Hidden="true" />
+      <Field Name="m_Units" Hidden="true" />
+      <Field Name="m_ValueFromTarget" Hidden="true" />
+      <Field Name="m_VariableType" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EAAEAgAAAAISAAAAAAgAAAQQhAAAQKACEEAQAIAABAA=</HashCode>
+      <FileName>Configuration\Variable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Configuration.EventVariable">
+    <Position X="13.25" Y="6.75" Width="2" />
+    <Members>
+      <Field Name="m_ConversionFactor" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Common.Configuration.Variable" FixedFromPoint="true">
+      <Path>
+        <Point X="19.5" Y="5.714" />
+        <Point X="19.5" Y="6.375" />
+        <Point X="14.25" Y="6.375" />
+        <Point X="14.25" Y="6.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Configuration\Event\EventVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Configuration.SelfTestVariable">
+    <Position X="15.5" Y="6.75" Width="2" />
+    <Members>
+      <Field Name="m_EmbeddedName" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Common.Configuration.Variable" FixedFromPoint="true">
+      <Path>
+        <Point X="19.5" Y="5.714" />
+        <Point X="19.5" Y="6.375" />
+        <Point X="16.5" Y="6.375" />
+        <Point X="16.5" Y="6.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAIAA=</HashCode>
+      <FileName>Configuration\SelfTest\SelfTestVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Common.Configuration.WatchVariable">
+    <Position X="17.75" Y="6.75" Width="2" />
+    <Members>
+      <Field Name="m_AttributeFlags" Hidden="true" />
+      <Field Name="m_EmbeddedName" Hidden="true" />
+      <Field Name="m_MaxChartScale" Hidden="true" />
+      <Field Name="m_MaxModifyValue" Hidden="true" />
+      <Field Name="m_MinChartScale" Hidden="true" />
+      <Field Name="m_MinModifyValue" Hidden="true" />
+      <Field Name="m_OldIdentifier" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Common.Configuration.Variable" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="19.5" Y="5.714" />
+        <Point X="19.5" Y="6.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>YAAAABkAAAAAQgAAIAAAAAAAAQAQABAEABAAAAIAAAA=</HashCode>
+      <FileName>Configuration\Watch\WatchVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,769 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PathRelativeSimulatedFaultLogs" xml:space="preserve">
+    <value>\Simulated Data Streams</value>
+  </data>
+  <data name="FileDialogSaveFilterJPEG" xml:space="preserve">
+    <value>JPEG File</value>
+  </data>
+  <data name="MBCaptionConfirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="FileDialogSaveFilterBMP" xml:space="preserve">
+    <value>16 Color Bitmap</value>
+  </data>
+  <data name="MBTInvalidOldIdentifierList" xml:space="preserve">
+    <value>The invalid references are: {0}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Close" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Close.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DescriptionSecurityLevel2" xml:space="preserve">
+    <value>Engineering</value>
+  </data>
+  <data name="EMSetChartScaleFailed" xml:space="preserve">
+    <value>Unable to set the scale of a chart recorder channel.</value>
+  </data>
+  <data name="MBTReadOnly" xml:space="preserve">
+    <value>The selected watch variable is read-only.</value>
+  </data>
+  <data name="NameWorksetCopy" xml:space="preserve">
+    <value>{0} - [Copy]</value>
+  </data>
+  <data name="MBTInstructionConfigureWorksets" xml:space="preserve">
+    <value>Please contact the system administrator or use the 'Configure/Worksets' menu option to correct the workset(s).</value>
+  </data>
+  <data name="PathRelativeApplicationData" xml:space="preserve">
+    <value>\Bombardier\Portable Test Application</value>
+  </data>
+  <data name="MBTUnauthorizedDeleteWorkset" xml:space="preserve">
+    <value>You do not have sufficient privileges to delete the selected workset.</value>
+  </data>
+  <data name="SMModifiedPlotLayout" xml:space="preserve">
+    <value>Modified Layout.</value>
+  </data>
+  <data name="LightMetallic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LightMetallic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTProjectIdMismatch" xml:space="preserve">
+    <value>The project identifier associated with the selected file does not match that of the current configuration.</value>
+  </data>
+  <data name="MBTWorksetCreationSuccess" xml:space="preserve">
+    <value>The workset '{0}' has been successfully created.</value>
+  </data>
+  <data name="MoveUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MoveUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EMChartModeSetFailed" xml:space="preserve">
+    <value>Unable to set the mode of the chart recorder.</value>
+  </data>
+  <data name="FunctionKeyToolTipReplay" xml:space="preserve">
+    <value>[Replay Frames in Single-Step Mode]</value>
+  </data>
+  <data name="FileDialogSaveTitleDataDictionary" xml:space="preserve">
+    <value>Save Data Dictionary</value>
+  </data>
+  <data name="MBTQueryWorksetRename" xml:space="preserve">
+    <value>Are you sure that you want to rename the '{0}' workset ?</value>
+  </data>
+  <data name="PathRelativeWorksetFiles" xml:space="preserve">
+    <value>\Workset Files</value>
+  </data>
+  <data name="FunctionKeyToolTipPlay" xml:space="preserve">
+    <value>[Playback in Real Time]</value>
+  </data>
+  <data name="MBTConfigSelectionInvalid" xml:space="preserve">
+    <value>The default configuration file, '{0}', or any of the project default configuration files, '&lt;project-identifier&gt;.{0}', are not valid selections for this menu option. Please select a project configuration file that is based upon the following filename format: '&lt;project-identifier&gt;VC&lt;4-digit-version-reference&gt;.xml' e.g. 'CTPAVC0193.xml'.</value>
+  </data>
+  <data name="FunctionKeyTextEsc" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="MBTWriteFail" xml:space="preserve">
+    <value>Unable to write the new value to the target hardware.</value>
+  </data>
+  <data name="MBTWatchSizeInvalid" xml:space="preserve">
+    <value>The PTUDLL32 dynamic link library does not support the watch size specified in the data dictionary. Please contact the system adminisrator.</value>
+  </data>
+  <data name="LegendWorkset" xml:space="preserve">
+    <value>&amp;Workset:</value>
+  </data>
+  <data name="EMSetChartIndexFailed" xml:space="preserve">
+    <value>Unable to set the chart index associated with channel {0} of the chart recorder.</value>
+  </data>
+  <data name="FunctionKeyTextLast" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="MBTWorksetsOldIdentifiersInvalid" xml:space="preserve">
+    <value>The following '{0}' workset(s) contain(s) one or more old identifier references that are not defined in the current data dictionary:"</value>
+  </data>
+  <data name="Modify" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Modify.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FunctionKeyTextPrevious" xml:space="preserve">
+    <value>Prev.</value>
+  </data>
+  <data name="DescriptionSecurityLevel0" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="MBTSuccessDataDictionaryCreate" xml:space="preserve">
+    <value>The XML data dictionary was successfully created.</value>
+  </data>
+  <data name="MBTInvalidFormat" xml:space="preserve">
+    <value>The format of the selected file is not recognized.</value>
+  </data>
+  <data name="FunctionKeyTextEdit" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="MBTHelpFail" xml:space="preserve">
+    <value>Unable to display the help information.</value>
+  </data>
+  <data name="FunctionKeyToolTipInfo" xml:space="preserve">
+    <value>[Show Header Information]</value>
+  </data>
+  <data name="DescriptionSecurityLevel3" xml:space="preserve">
+    <value>Factory</value>
+  </data>
+  <data name="MBTWorksetDefineMaxExceeded" xml:space="preserve">
+    <value>Adding the selected watch variable(s) will exceed the maximum number that are allowed for this workset.</value>
+  </data>
+  <data name="FileDialogSaveFilterSimulatedFaultLog" xml:space="preserve">
+    <value>Simulated Data Stream</value>
+  </data>
+  <data name="PathUseDefault" xml:space="preserve">
+    <value>&lt;default&gt;</value>
+  </data>
+  <data name="Edit_Undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Edit_Undo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FunctionKeyToolTipEsc" xml:space="preserve">
+    <value>[Return to Event Log Display]</value>
+  </data>
+  <data name="EMHelpFileFormatInvalid" xml:space="preserve">
+    <value>The format of the specified help file is invalid.</value>
+  </data>
+  <data name="MBTQueryDeleteDefaultWorkset" xml:space="preserve">
+    <value>The selected workset is defined as the default workset. Are you sure that you want to delete this workset ?</value>
+  </data>
+  <data name="MBTQueryDeleteWorkset" xml:space="preserve">
+    <value>Are you sure that you want to delete '{0}'?</value>
+  </data>
+  <data name="NameConfigureWorksetsFaultLogMenuOption" xml:space="preserve">
+    <value>Data Stream</value>
+  </data>
+  <data name="MBTWorksetFileSerializationError" xml:space="preserve">
+    <value>The workset file is corrupt. Please contact the system administrator.</value>
+  </data>
+  <data name="FileDialogOpenFilterDataDictionary" xml:space="preserve">
+    <value>Data Dictionary Files</value>
+  </data>
+  <data name="EMCyclicQueueInvalidBufferSize" xml:space="preserve">
+    <value>The buffer size must be a positive value.</value>
+  </data>
+  <data name="EMFileNotFound" xml:space="preserve">
+    <value>The specified file cannot be found.</value>
+  </data>
+  <data name="EMListBoxMultipleSelectionNotSupported" xml:space="preserve">
+    <value>System does not support multiple selections.</value>
+  </data>
+  <data name="MBTWorksetFileUndefinedReferencesFound" xml:space="preserve">
+    <value>The workset file contains one or more references that do not exist in the data dictionary. Please contact the system administrator.</value>
+  </data>
+  <data name="MBTFrameNotFound" xml:space="preserve">
+    <value>An entry corresponding to the time of the trip could not be found.</value>
+  </data>
+  <data name="FunctionKeyToolTipFirst" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NameBaselineWorkset" xml:space="preserve">
+    <value>Baseline</value>
+  </data>
+  <data name="LegendColumn" xml:space="preserve">
+    <value>Column</value>
+  </data>
+  <data name="MBTUnauthorizedEditDefaultWorkset" xml:space="preserve">
+    <value>You do not have sufficient privileges to modify the default workset.</value>
+  </data>
+  <data name="EMPortCloseFailed" xml:space="preserve">
+    <value>Unable to close the communication port.</value>
+  </data>
+  <data name="MBTWorksetNameExists" xml:space="preserve">
+    <value>A workset of that name already exists, please use another name.</value>
+  </data>
+  <data name="MBTQueryEditDefaultWorkset" xml:space="preserve">
+    <value>The selected workset is defined as the default workset. Are you sure that you want to modify this workset ?</value>
+  </data>
+  <data name="MBTWorksetFileNotFound" xml:space="preserve">
+    <value>The workset file could not be found. Please contact the system administrator.</value>
+  </data>
+  <data name="MBTWorksetIdentical" xml:space="preserve">
+    <value>This workset is identical to the workset '{0}' and will not be saved.</value>
+  </data>
+  <data name="EMWorksetIntegrityCheckFailed" xml:space="preserve">
+    <value>There is a problem with the integrity check on the workset. Please contact the system administrator.</value>
+  </data>
+  <data name="FunctionKeyToolTipEditPlotLayout" xml:space="preserve">
+    <value>[Modify Plot Layout]</value>
+  </data>
+  <data name="DescriptionSecurityLevel1" xml:space="preserve">
+    <value>Technician</value>
+  </data>
+  <data name="EMCyclicQueueQueueEmptyPeek" xml:space="preserve">
+    <value>Cannot peek an empty queue.</value>
+  </data>
+  <data name="MBTDatabaseConnectionFailed" xml:space="preserve">
+    <value>Unable to open a connection to the specified database.</value>
+  </data>
+  <data name="FunctionKeyToolTipYTPlot" xml:space="preserve">
+    <value>[Show the Plot of Y Values Against Time]</value>
+  </data>
+  <data name="FunctionKeyTextSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="MBTWorksetRenameSuccess" xml:space="preserve">
+    <value>The '{0}' workset has been successfully renamed to '{1}'.</value>
+  </data>
+  <data name="InformationLegendStopTime" xml:space="preserve">
+    <value>Stop:</value>
+  </data>
+  <data name="MBTUnauthorizedChangeValue" xml:space="preserve">
+    <value>You do not have sufficient privileges to modify the value of the selected watch variable.</value>
+  </data>
+  <data name="MBTWorksetWatchSizeExceeded" xml:space="preserve">
+    <value>The workset  exceeds the permitted number of watch variables Please use the Remove button to ensure that the watch variable count is within the limits.</value>
+  </data>
+  <data name="MBTWorksetsAllWatchSizeExceeded" xml:space="preserve">
+    <value>All  '{0}' worksets exceed the permitted number of watch variables. Please contact the system administrator.</value>
+  </data>
+  <data name="Warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Print" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Print.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InformationLegendRTC" xml:space="preserve">
+    <value>Time:</value>
+  </data>
+  <data name="SMPlottingData" xml:space="preserve">
+    <value>Plotting Data.</value>
+  </data>
+  <data name="MBTTableColumnMissing" xml:space="preserve">
+    <value>The conversion cannot proceed as one or more columns of the '{0}' table are missing. Please update the table using the equivalent table contained within the 'E1 Database Modifications.E1' database as a template.</value>
+  </data>
+  <data name="EMWinHlp32NotInitialized" xml:space="preserve">
+    <value>The WinHlp32 help engine has not been initialized.</value>
+  </data>
+  <data name="EMChartModeGetFailed" xml:space="preserve">
+    <value>Unable to retrieve the mode of the chart recorder.</value>
+  </data>
+  <data name="FunctionKeyToolTipLast" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FunctionKeyTextTrip" xml:space="preserve">
+    <value>Trip</value>
+  </data>
+  <data name="FileDialogSaveTitleImageFile" xml:space="preserve">
+    <value>Save Image File</value>
+  </data>
+  <data name="MBTUnauthorizedEditBaselineWorkset" xml:space="preserve">
+    <value>The baseline workset cannot be modified.</value>
+  </data>
+  <data name="PathRelativeScreenCaptureFiles" xml:space="preserve">
+    <value>\Screen Capture Files</value>
+  </data>
+  <data name="FunctionKeyTextReplay" xml:space="preserve">
+    <value>Replay</value>
+  </data>
+  <data name="NameNewWorksetDefault" xml:space="preserve">
+    <value>[New Workset]</value>
+  </data>
+  <data name="MBTConfigurationFileLoadFailed" xml:space="preserve">
+    <value>Unable to open the XML configuration file.</value>
+  </data>
+  <data name="MBTDefaultDataDictionaryNotFound" xml:space="preserve">
+    <value>The default data dictionary file could not be found. Please contact the system administrator.</value>
+  </data>
+  <data name="Clear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Clear.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FunctionKeyTextNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="LegendAvailable" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="TextUnavailable" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
+  <data name="FileDialogSaveTitleFaultLog" xml:space="preserve">
+    <value>Save Data Stream</value>
+  </data>
+  <data name="Keys" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Keys.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FileDialogOpenFilterEngineeringDatabase" xml:space="preserve">
+    <value>Engineering Database Files</value>
+  </data>
+  <data name="FileDialogSaveFilterEventLog" xml:space="preserve">
+    <value>Event Log</value>
+  </data>
+  <data name="LegendPlayback" xml:space="preserve">
+    <value>Playback:</value>
+  </data>
+  <data name="MBTInstructionSelectWorkset" xml:space="preserve">
+    <value>Please select a workset.</value>
+  </data>
+  <data name="InformationLegendDate" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="FunctionKeyToolTipEdit" xml:space="preserve">
+    <value>[Modify Current Workset]</value>
+  </data>
+  <data name="FunctionKeyToolTipNext" xml:space="preserve">
+    <value />
+  </data>
+  <data name="EMPortInitializationFailed" xml:space="preserve">
+    <value>Unable to initialize the communication port.</value>
+  </data>
+  <data name="SMPaused" xml:space="preserve">
+    <value>Paused.</value>
+  </data>
+  <data name="EMGetTargetConfigurationFailed" xml:space="preserve">
+    <value>Unable to retrieve the target configuration.</value>
+  </data>
+  <data name="MBTUnauthorizedDeleteDefaultWorkset" xml:space="preserve">
+    <value>You do not have sufficient privileges to delete the default workset.</value>
+  </data>
+  <data name="MBTHelpFileNotFound" xml:space="preserve">
+    <value>The help document cannot be found.</value>
+  </data>
+  <data name="MBTWorksetFileInvalidIdentifiersFound" xml:space="preserve">
+    <value>The worksets contains one or more watch identifiers that are outside the range of the current data dictionary.</value>
+  </data>
+  <data name="NameConfigureWorksetsChartRecorderMenuOption" xml:space="preserve">
+    <value>Chart Recorder</value>
+  </data>
+  <data name="MBTUnauthorizedRenameWorkset" xml:space="preserve">
+    <value>You do not have sufficient privileges to rename the selected workset.</value>
+  </data>
+  <data name="SMCommunicationFaultReadTimeout" xml:space="preserve">
+    <value>Communication Fault - Read Timeout.</value>
+  </data>
+  <data name="FileDialogSaveFilterRecordedWatchFile" xml:space="preserve">
+    <value>Recorded Watch File</value>
+  </data>
+  <data name="InformationLegendTime" xml:space="preserve">
+    <value>PC Time:</value>
+  </data>
+  <data name="MBTWorksetExists" xml:space="preserve">
+    <value>The workset '{0}' already exists.</value>
+  </data>
+  <data name="MBCaptionError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="LegendTotalCount" xml:space="preserve">
+    <value>Total Count</value>
+  </data>
+  <data name="EMOutOfRange" xml:space="preserve">
+    <value>Out of range.</value>
+  </data>
+  <data name="Delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FileDialogSaveFilterFaultLog" xml:space="preserve">
+    <value>Data Stream</value>
+  </data>
+  <data name="MBCaptionQuestion" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="PathRelativeConfigurationFiles" xml:space="preserve">
+    <value>\Configuration Files</value>
+  </data>
+  <data name="FileDialogOpenTitleDataDictionary" xml:space="preserve">
+    <value>Select Data Dictionary</value>
+  </data>
+  <data name="FunctionKeyTextMultiCursor" xml:space="preserve">
+    <value>Cursor</value>
+  </data>
+  <data name="MBTOutsideOfRange" xml:space="preserve">
+    <value>The specified value is outside of the allowable range.</value>
+  </data>
+  <data name="MBTWorksetUpdateSuccess" xml:space="preserve">
+    <value>The workset '{0}' has been successfully updated.</value>
+  </data>
+  <data name="MBCaptionWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="TextNotAvailable" xml:space="preserve">
+    <value>Not Available</value>
+  </data>
+  <data name="InformationLegendFrame" xml:space="preserve">
+    <value>Frame:</value>
+  </data>
+  <data name="FunctionKeyTextYTPlot" xml:space="preserve">
+    <value>YTPlot</value>
+  </data>
+  <data name="FileDialogSaveTitleEventLog" xml:space="preserve">
+    <value>Save Event Log</value>
+  </data>
+  <data name="FunctionKeyToolTipMultiCursor" xml:space="preserve">
+    <value>[Toggle Single/Multiple Cursors]</value>
+  </data>
+  <data name="MBTWatchVariableIDNotFound" xml:space="preserve">
+    <value>The specified watch variable identifier could not be found in the data dictionary. Please contact the system administrator.</value>
+  </data>
+  <data name="EMNullReference" xml:space="preserve">
+    <value>Reference is null.</value>
+  </data>
+  <data name="MBTWorksetFileReadOnly" xml:space="preserve">
+    <value>The workset file is read-only. Please set the attribute to read/write.</value>
+  </data>
+  <data name="ConnectionStringDataDictionary" xml:space="preserve">
+    <value>Provider=Microsoft.Jet.OLEDB.4.0; Data Source =</value>
+  </data>
+  <data name="NameConfigureWorksetsWatchWindowMenuOption" xml:space="preserve">
+    <value>Watch Window</value>
+  </data>
+  <data name="TextCopy" xml:space="preserve">
+    <value>[Copy]</value>
+  </data>
+  <data name="MBCaptionInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="FunctionKeyTextPlay" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="MBTSetWatchSizeNotSupported" xml:space="preserve">
+    <value>The PTUDLL32 dynamic link library supplied with the project does not support programmable setting of the watch variable size. The retrieved data may have incorrect values.</value>
+  </data>
+  <data name="FunctionKeyToolTipTrip" xml:space="preserve">
+    <value>[Go to Trip Condition]</value>
+  </data>
+  <data name="PathRelativeWatchFiles" xml:space="preserve">
+    <value>\Watch Files</value>
+  </data>
+  <data name="FileDialogSaveTitleSimulatedFaultLog" xml:space="preserve">
+    <value>Save Simulated Data Stream</value>
+  </data>
+  <data name="MBTWorksetDefineMultipleSelection" xml:space="preserve">
+    <value>This feature is not available for multiple selections.</value>
+  </data>
+  <data name="MBTInsufficientPrivilegesModify" xml:space="preserve">
+    <value>You do not have sufficient privileges to modify the workset.</value>
+  </data>
+  <data name="MBTUnauthorizedRenameBaselineWorkset" xml:space="preserve">
+    <value>The baseline workset cannot be renamed.</value>
+  </data>
+  <data name="FilenameDefaultDataDictionary" xml:space="preserve">
+    <value>Configuration.xml</value>
+  </data>
+  <data name="MBTWatchVariableNotDefined" xml:space="preserve">
+    <value>The specified watch variable is not defined in the data dictionary.</value>
+  </data>
+  <data name="MBTUnauthorizedEditWorkset" xml:space="preserve">
+    <value>You do not have sufficient privileges to modify the selected workset.</value>
+  </data>
+  <data name="TitleReplay" xml:space="preserve">
+    <value>Replay</value>
+  </data>
+  <data name="FunctionKeyToolTipPrevious" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PathRelativeFaultLogs" xml:space="preserve">
+    <value>\Data Streams</value>
+  </data>
+  <data name="MBTUnauthorizedDeleteBaselineWorkset" xml:space="preserve">
+    <value>The baseline workset cannot be deleted.</value>
+  </data>
+  <data name="EMWinHlp32CallFailed" xml:space="preserve">
+    <value>The call to the WinHlp32 help engine was unsuccessful.</value>
+  </data>
+  <data name="SMConfiguringPlotterControls" xml:space="preserve">
+    <value>Configuring Plotter Controls.</value>
+  </data>
+  <data name="MBTWorksetFileNewIdentifiersFound" xml:space="preserve">
+    <value>Additional watch variables have been added to the data dictionary since the worksets were configured.</value>
+  </data>
+  <data name="PathRelativeEventLogs" xml:space="preserve">
+    <value>\Event Logs</value>
+  </data>
+  <data name="FileDialogOpenTitleEngineeringDatabase" xml:space="preserve">
+    <value>Select Engineering Database</value>
+  </data>
+  <data name="FunctionKeyTextFirst" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="InformationLegendDuration" xml:space="preserve">
+    <value>Duration:</value>
+  </data>
+  <data name="InformationLegendRecordingStartTime" xml:space="preserve">
+    <value>Rec. Start:</value>
+  </data>
+  <data name="MoveDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MoveDown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EMCyclicQueueQueueEmptyDequeue" xml:space="preserve">
+    <value>Cannot dequeue an empty queue.</value>
+  </data>
+  <data name="MBTBitmaskOnly" xml:space="preserve">
+    <value>This context menu option is only applicable to bitmask watch variables.</value>
+  </data>
+  <data name="FileDialogSaveTitleRecordedWatchFile" xml:space="preserve">
+    <value>Save Recorded Watch Data</value>
+  </data>
+  <data name="InformationLegendStartTime" xml:space="preserve">
+    <value>Start:</value>
+  </data>
+  <data name="EMCyclicQueueInvalidRank" xml:space="preserve">
+    <value>The array rank must be 1.</value>
+  </data>
+  <data name="FunctionKeyToolTipPause" xml:space="preserve">
+    <value>[Pause Screen Update]</value>
+  </data>
+  <data name="Bookmark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Bookmark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTWorksetsWatchSizeExceeded" xml:space="preserve">
+    <value>The following '{0}' workset(s) exceed(s) the permitted number of watch variables :</value>
+  </data>
+  <data name="MBTViewDataStreamInvalidWatchIdentifiers" xml:space="preserve">
+    <value>The data dictionary parameter values of the following watch variables make it unsuitable to plot the values.</value>
+  </data>
+  <data name="EMCyclicQueueInvalidArraySize" xml:space="preserve">
+    <value>Array is too small.</value>
+  </data>
+  <data name="FileDialogSaveFilterDataDictionary" xml:space="preserve">
+    <value>Data Dictionary File</value>
+  </data>
+  <data name="FilenameDefaultDebugFile" xml:space="preserve">
+    <value>Debug.xml</value>
+  </data>
+  <data name="FunctionKeyTextInfo" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="PathRelativeDiagnosticHelpFiles" xml:space="preserve">
+    <value>\Diagnostic Help Files</value>
+  </data>
+  <data name="MBTConfirmWorksetModify" xml:space="preserve">
+    <value>Are you sure that you want to modify the '{0}' workset ?</value>
+  </data>
+  <data name="Help" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Help.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Play" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FileInformation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FileInformation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MultiCursor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MultiCursor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Home" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Home.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Trip" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Trip.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Remove.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MoveFirst" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MoveFirst.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MoveLast" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MoveLast.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MoveNext" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MoveNext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MovePrevious" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MovePrevious.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Replay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Replay.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="YTPlot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\YTPlot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SMWorksetNameNotDefined" xml:space="preserve">
+    <value>The workset must be given a name before it can be saved.</value>
+  </data>
+  <data name="SMWorksetWatchCountTooSmall" xml:space="preserve">
+    <value>The workset must contain at least one watch variable before it can be saved.</value>
+  </data>
+  <data name="SMWorksetNameExists" xml:space="preserve">
+    <value>The current name is in use, please use another name.</value>
+  </data>
+  <data name="Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CreateNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CreateNew.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Rename" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Rename.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Download" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Download.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PathRelativeDocumentation" xml:space="preserve">
+    <value>\Documentation</value>
+  </data>
+  <data name="FileDialogOpenTitleProjectConfigurationDatabase" xml:space="preserve">
+    <value>Select Project Configuration Database</value>
+  </data>
+  <data name="FunctionKeyTextPause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="FunctionKeyToolTipPauseReplay" xml:space="preserve">
+    <value>[Pause Playback]</value>
+  </data>
+  <data name="FunctionKeyToolTipSave" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MBTLayoutChangesNotSaved" xml:space="preserve">
+    <value>The layout will be modified for the current session, however, these changes will not be committed to disk.</value>
+  </data>
+  <data name="HeaderTextDataStream" xml:space="preserve">
+    <value>Data Stream</value>
+  </data>
+  <data name="MBTConfigProjectAsParameterMismatch" xml:space="preserve">
+    <value>The project identifier associated with the selected data dictionary is not applicable to this project, please select a project configuration file that is associated with the {0} project, e.g. '{0}VC0123.xml'.</value>
+  </data>
+  <data name="FilenameSoftwareUserManualPTE" xml:space="preserve">
+    <value>Portable Test Equipment - Software User Manual.pdf</value>
+  </data>
+  <data name="FilenameSoftwareUserManualPTU" xml:space="preserve">
+    <value>Portable Test Unit - Software User Manual.pdf</value>
+  </data>
+  <data name="FileMnemonicDefaultWorkset" xml:space="preserve">
+    <value>Workset</value>
+  </data>
+</root>
