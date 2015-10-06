@@ -15,7 +15,7 @@ namespace VcuComm
 
         public Protocol.GetEmbeddedInfoRes GetEmbeddedInformation()
         {
-            Protocol.GetEmbeddedInfoRes getEmbInfo = new Protocol.GetEmbeddedInfoRes();
+            Protocol.GetEmbeddedInfoRes getEmbInfo;
 
             Protocol.DataPacketProlog dpp = new Protocol.DataPacketProlog();
 
@@ -32,5 +32,23 @@ namespace VcuComm
 
             return getEmbInfo;
         }
+
+        public Protocol.GetChartModeRes GetChartMode()
+        {
+            Protocol.GetChartModeRes getChartMode;
+
+            Protocol.DataPacketProlog dpp = new Protocol.DataPacketProlog();
+
+            Byte[] txData = dpp.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, false);
+
+            Byte[] rxData = m_TCPComm.SendData(txData);
+
+            // Map rxData to GetEmbeddedInfoRes;
+            getChartMode.CurrentChartMode =  rxData[8];
+
+            return getChartMode;
+        }
+
+    
     }
 }

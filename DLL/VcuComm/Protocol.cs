@@ -72,7 +72,7 @@ namespace VcuComm
             public StreamVariable[] StreamVariableInfo; //256
         }
 
-        public class SetWatchElementReq
+        public class SetWatchElementReq : ICommRequest
         {
             private UInt16 ElementIndex;
             private UInt16 DictionaryIndex;
@@ -102,9 +102,8 @@ namespace VcuComm
             }
         }
 
-        public class SetWatchElementsReq
+        public class SetWatchElementsReq : ICommRequest
         {
-            public DataPacketProlog Header;
             public UInt16[] WatchElement;  // WatchSize
 
             private SetWatchElementsReq() { }
@@ -140,10 +139,26 @@ namespace VcuComm
             }
         };
 
-        public struct UpdateWatchElementsReq
+        public class UpdateWatchElementsReq : ICommRequest
         {
-            public DataPacketProlog Header;
             public byte ForceFullUpdate;
+            private UpdateWatchElementsReq() { }
+            public UpdateWatchElementsReq(byte ForceFullUpdate)
+            {
+                this.ForceFullUpdate = ForceFullUpdate;
+            }
+
+            public Byte[] GetByteArray(Boolean targetIsBigEndian)
+            {
+                DataPacketProlog dpp = new DataPacketProlog();
+
+                Byte[] payload = { ForceFullUpdate };
+
+                return dpp.GetByteArray(payload, PacketType.SET_WATCH_ELEMENTS, ResponseType.COMMANDREQUEST, targetIsBigEndian);
+
+            }
+
+
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -203,7 +218,6 @@ namespace VcuComm
 
         public struct GetEmbeddedInfoRes
         {
-            public DataPacketProlog Header;
             public String SoftwareVersion;   //41
             public String CarID;  //11
             public String SubSystemName; //41
@@ -211,18 +225,30 @@ namespace VcuComm
             public UInt32 ConfigurationMask;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct GetChartModeRes
         {
-            public DataPacketProlog Header;
             public Byte CurrentChartMode;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct SetChartModeReq
+        public class SetChartModeReq
         {
-            public DataPacketProlog Header;
             public Byte TargetChartMode;
+            private SetChartModeReq() { }
+            public SetChartModeReq(byte TargetChartMode)
+            {
+                this.TargetChartMode = TargetChartMode;
+            }
+
+            public Byte[] GetByteArray(Boolean targetIsBigEndian)
+            {
+                DataPacketProlog dpp = new DataPacketProlog();
+
+                Byte[] payload = { this.TargetChartMode };
+
+                return dpp.GetByteArray(payload, PacketType.SET_CHART_MODE, ResponseType.COMMANDREQUEST, targetIsBigEndian);
+
+            }
+
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -239,8 +265,7 @@ namespace VcuComm
             public UInt16 VariableIndex;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct SetChartIndexReq_t
+        public class SetChartIndexReq_t
         {
             public DataPacketProlog Header;
             public UInt16 VariableIndex;
