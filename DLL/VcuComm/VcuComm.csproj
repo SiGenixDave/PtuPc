@@ -43,10 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comm.cs" />
-    <Compile Include="ICommRequest.cs" />
     <Compile Include="IP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Protocol.cs" />
+    <Compile Include="ProtocolClass\Protocol.cs" />
+    <Compile Include="ProtocolClass\ProtocolEnum.cs" />
+    <Compile Include="ProtocolClass\ProtocolRequests.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
