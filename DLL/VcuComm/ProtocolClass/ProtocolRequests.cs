@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace VcuComm
 {
@@ -629,9 +630,37 @@ namespace VcuComm
 
         }
 
-        public class SetCarIDReq//TODO : ICommRequest
+        public class SetCarIDReq : ICommRequest
         {
-            private String NewCarID; //11;
+            private String NewCarId;
+            private const PacketType PACKET_TYPE = PacketType.SET_CARID;
+            private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
+
+            private SetCarIDReq()
+            {
+            }
+
+            public SetCarIDReq(UInt16 NewCarId)
+            {
+                // TODO may have to perform a hex formatter... TBD
+                this.NewCarId = NewCarId.ToString().PadRight(11, '\0'); ;
+            }
+
+            public Byte[] GetByteArray(Boolean targetIsBigEndian)
+            {
+                DataPacketProlog dpp = new DataPacketProlog();
+
+                if (targetIsBigEndian)
+                {
+                    // Intentionally do nothing since the only item to be converted is a string
+                }
+
+                // Convert string to byte array
+                Byte[] payload = Encoding.ASCII.GetBytes(this.NewCarId);
+                
+                return dpp.GetByteArray(payload, PACKET_TYPE, RESPONSE_TYPE, targetIsBigEndian);
+            }
+
         }
 
         public class SetStreamInfoReq//TODO : ICommRequest

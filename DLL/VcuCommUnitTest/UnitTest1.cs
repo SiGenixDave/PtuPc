@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections;
 using System;
 using System.Diagnostics;
+using Common;
 
 
 namespace VcuCommUnitTest
@@ -10,6 +11,7 @@ namespace VcuCommUnitTest
     [TestClass]
     public class UnitTest1
     {
+
         [TestMethod]
         public void TestMethod1()
         {
@@ -18,14 +20,27 @@ namespace VcuCommUnitTest
 
             ip1.InitializeSockets("localhost");
 
-            Protocol.GetEmbeddedInfoRes emdRes = comm.GetEmbeddedInformation();
+            comm.SetCarID(0x1234);
+
+        }
+        
+        [TestMethod]
+        public void TestMethod2()
+        {
+            IP ip1 = new IP();
+            Comm comm = new Comm(ip1);
+
+            ip1.InitializeSockets("localhost");
+
+            Protocol.GetEmbeddedInfoRes emdRes = new Protocol.GetEmbeddedInfoRes();
+            comm.GetEmbeddedInformation(ref emdRes);
 
             Debug.Print(emdRes.SoftwareVersion);
 
         }
         
         [TestMethod]
-        public void TestMethod2()
+        public void TestMethod3()
         {
             IP ip1 = new IP();
             IP ip2 = new IP();

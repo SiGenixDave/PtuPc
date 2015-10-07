@@ -50,6 +50,10 @@
     <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{4D060B1F-3148-4646-B847-8DBCF6F887F6}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VcuComm\VcuComm.csproj">
       <Project>{7DF2E400-C4E7-4C0E-B945-D85C728D7FCD}</Project>
       <Name>VcuComm</Name>

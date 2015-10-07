@@ -43,6 +43,10 @@ namespace VcuComm
                 bw.Write(this.packetType);
                 bw.Write(this.checksum);
                 bw.Write(this.responseType);
+                if (payload != null)
+                {
+                    bw.Write(payload);
+                }
                 return ms.ToArray();
             }
         }
