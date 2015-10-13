@@ -21,5 +21,7 @@ namespace VcuComm
 
         Int16 Close(String commaDelimitedOptions);
 
+        Boolean IsTargetBigEndian();
+
     }
 }

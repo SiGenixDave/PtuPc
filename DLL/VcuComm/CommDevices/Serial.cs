@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Net;
-using System.Net.Sockets;
 
 namespace VcuComm
 {
@@ -38,6 +35,11 @@ namespace VcuComm
         }
 
         public short Close(string commaDelimitedOptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsTargetBigEndian()
         {
             throw new NotImplementedException();
         }

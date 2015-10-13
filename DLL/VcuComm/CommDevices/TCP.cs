@@ -112,7 +112,7 @@ namespace VcuComm
             return 0;
         }
 
-        private Boolean TargetBigEndian()
+        public Boolean IsTargetBigEndian()
         {
             // TODO determine if target big endian by examining returned SOM
             if (m_TargetStartOfMessage == Protocol.TARGET_BIG_ENDIAN_SOM)

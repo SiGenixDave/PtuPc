@@ -8,6 +8,9 @@ namespace VcuComm
     {
         private ICommDevice m_CommDevice;
 
+        private Comm () 
+        {}
+
         public Comm(ICommDevice device)
         {
             m_CommDevice = device;
@@ -17,7 +20,7 @@ namespace VcuComm
         {
             Protocol.DataPacketProlog dpp = new Protocol.DataPacketProlog();
 
-            Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.GET_EMBEDDED_INFORMATION, Protocol.ResponseType.DATAREQUEST, false);
+            Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.GET_EMBEDDED_INFORMATION, Protocol.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
 
             m_CommDevice.SendDataToTarget(txMessage);
 
@@ -80,7 +83,7 @@ namespace VcuComm
 
             Protocol.SendVariableReq request = new Protocol.SendVariableReq(DictionaryIndex, data);
 
-            Byte[] txMessage = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
             m_CommDevice.SendDataToTarget(txMessage);
 
@@ -91,7 +94,7 @@ namespace VcuComm
         {
             Protocol.SetWatchElementsReq request = new Protocol.SetWatchElementsReq(WatchElements);
 
-            Byte[] txMessage = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
             m_CommDevice.SendDataToTarget(txMessage);
 
@@ -102,7 +105,7 @@ namespace VcuComm
         {
             Protocol.SetWatchElementReq request = new Protocol.SetWatchElementReq(ElementIndex, DictionaryIndex);
 
-            Byte[] txMessage = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
             m_CommDevice.SendDataToTarget(txMessage);
 
@@ -113,7 +116,7 @@ namespace VcuComm
         {
             Protocol.UpdateWatchElementsReq request = new Protocol.UpdateWatchElementsReq(ForceUpdate);
 
-            Byte[] txMessage = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
             Byte[] rxMessage;
@@ -128,7 +131,7 @@ namespace VcuComm
         {
             Protocol.SetCarIDReq request = new Protocol.SetCarIDReq(NewCarID);
 
-            Byte[] txMessage = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
             m_CommDevice.SendDataToTarget(txMessage);
 
@@ -177,7 +180,7 @@ namespace VcuComm
         {
             Protocol.GetChartIndexReq request = new Protocol.GetChartIndexReq((Byte)ChartIndex);
 
-            Byte[] txMessage = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
             Byte[] rxMessage;
@@ -186,7 +189,7 @@ namespace VcuComm
             VariableIndex = BitConverter.ToUInt16(rxMessage, 8);
 
             // TODO check for endianess
-            if (false)
+            if (m_CommDevice.IsTargetBigEndian())
             {
                 VariableIndex = Utils.ReverseByteOrder(VariableIndex);
             }
@@ -198,7 +201,7 @@ namespace VcuComm
         {
             Protocol.SetChartModeReq request = new Protocol.SetChartModeReq((byte)TargetChartMode);
 
-            Byte[] txMessage = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
             m_CommDevice.SendDataToTarget(txMessage);
 
@@ -209,7 +212,7 @@ namespace VcuComm
         {
             Protocol.DataPacketProlog request = new Protocol.DataPacketProlog();
 
-            Byte[] txMessage = request.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, false);
+            Byte[] txMessage = request.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
             Byte[] rxMessage;
@@ -217,8 +220,8 @@ namespace VcuComm
 
             CurrentChartMode = BitConverter.ToUInt16(rxMessage, 8);
 
-            // TODO check for endianess
-            if (false)
+            // check for endianess
+            if (m_CommDevice.IsTargetBigEndian())
             {
                 CurrentChartMode = Utils.ReverseByteOrder(CurrentChartMode);
             }

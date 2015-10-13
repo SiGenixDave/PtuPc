@@ -728,5 +728,49 @@ namespace VcuComm
             }
         }
 
+        public class SetFaultFlagReq : ICommRequest
+        {
+            private UInt16 TaskID;
+            private UInt16 FaultID;
+            private Byte EnableFlag;
+            private Byte DatalogFlag;
+
+            private const PacketType PACKET_TYPE = PacketType.SET_FAULT_FLAG;
+            private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
+
+            private SetFaultFlagReq()
+            {
+            }
+
+            public SetFaultFlagReq(UInt16 TaskID, UInt16 FaultID, Byte EnableFlag, Byte DatalogFlag)
+            {
+                this.TaskID = TaskID;
+                this.FaultID = FaultID;
+                this.EnableFlag = EnableFlag;
+                this.DatalogFlag = DatalogFlag;
+            }
+
+            public Byte[] GetByteArray(Boolean targetIsBigEndian)
+            {
+                DataPacketProlog dpp = new DataPacketProlog();
+
+                if (targetIsBigEndian)
+                {
+                    this.TaskID = Utils.ReverseByteOrder(this.TaskID);
+                    this.FaultID = Utils.ReverseByteOrder(this.FaultID);
+                    this.EnableFlag = Utils.ReverseByteOrder(this.EnableFlag);
+                    this.DatalogFlag = Utils.ReverseByteOrder(this.DatalogFlag);
+                }
+                MemoryStream ms = new MemoryStream(1024);
+                BinaryWriter bw = new BinaryWriter(ms);
+                bw.Write(this.TaskID);
+                bw.Write(this.FaultID);
+                bw.Write(this.EnableFlag);
+                bw.Write(this.DatalogFlag);
+                return dpp.GetByteArray(ms.ToArray(), PACKET_TYPE, RESPONSE_TYPE, targetIsBigEndian);
+            }
+
+        }
+
     }
 }

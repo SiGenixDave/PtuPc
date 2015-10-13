@@ -46,6 +46,7 @@
     <Compile Include="CommDevices\Serial.cs" />
     <Compile Include="CommDevices\ICommDevice.cs" />
     <Compile Include="CommDevices\TCP.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolClass\Protocol.cs" />
     <Compile Include="ProtocolClass\ProtocolEnum.cs" />

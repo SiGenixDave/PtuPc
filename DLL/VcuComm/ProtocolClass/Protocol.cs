@@ -200,7 +200,6 @@ namespace VcuComm
 
         public struct GetFaultDataRes
         {
-            public DataPacketProlog Header;
             public UInt16 BufferSize;
             public Byte[] Buffer; //MAXFAULTBUFFERSIZE;
         }
@@ -219,14 +218,7 @@ namespace VcuComm
             public UInt16[] DatalogFlag; //(MAXTASKS * MAXEVENTS / 16) + 1;
         }
 
-        public struct SetFaultFlagReq
-        {
-            public DataPacketProlog Header;
-            public UInt16 TaskID;
-            public UInt16 FaultID;
-            public Byte EnableFlag;
-            public Byte DatalogFlag;
-        }
+
 
         public struct GetFaultHistoryRes
         {
