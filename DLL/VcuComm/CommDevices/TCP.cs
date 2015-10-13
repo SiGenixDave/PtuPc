@@ -2,30 +2,20 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 
 namespace VcuComm
 {
-
-    public class IP
+    public class TCP : ICommDevice
     {
         private readonly UInt16 PTU_SERVER_SOCKET = 5001;
         private IPHostEntry m_Host;
         private TcpClient m_Client;
         private byte m_TargetStartOfMessage;
 
-
-        public void ReceiveTargetAcknowledge()
+        public Int16 Open(String commaDelimitedOptions)
         {
-        }
+            String url = commaDelimitedOptions;
 
-        public void ReceiveTargetDataPacket()
-        {
-        }
-
-
-        public Int16 InitializeSockets(String url)
-        {
             // Any PTU instance can only support 1 TCP client
             if (m_Client != null)
             {
@@ -70,28 +60,13 @@ namespace VcuComm
             return 0;
         }
 
-        // original function signature public Int16 SendDataPacket(Header_t DataPacket)
-        public Byte[] SendData(Byte []message)
-        {
-            Byte []receiveMsg = new Byte[4096];
-
-            SendStartOfMessage();
-            ReceiveStartOfMessage();
-
-            m_Client.Client.Send(message);
-            ReceiveStartOfMessage(); 
-            m_Client.Client.Receive(receiveMsg);
-
-            return receiveMsg;
-        }
-
         public Int16 SendStartOfMessage()
         {
             byte[] startOfMessage = { Protocol.THE_SOM };
 
             m_Client.Client.Send(startOfMessage);
 
-            return -1;
+            return 0;
         }
 
         public Int16 ReceiveStartOfMessage()
@@ -105,11 +80,38 @@ namespace VcuComm
             return -1;
         }
 
-        public void TerminateSocket()
+        public Int16 SendDataToTarget(Byte[] txMessage)
+        {
+            SendStartOfMessage();
+            ReceiveStartOfMessage();
+
+            m_Client.Client.Send(txMessage);
+
+            return 0;
+        }
+
+        public Int16 ReceiveTargetDataPacket(out Byte[] rxMessage)
+        {
+            rxMessage = new Byte[4096];
+            ReceiveStartOfMessage();
+            m_Client.Client.Receive(rxMessage);
+
+            return 0;
+        }
+
+        public Int16 ReceiveTargetAcknowledge()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Int16 Close(String commaDelimitedOptions)
         {
             m_Client.Client.Shutdown(SocketShutdown.Send);
             m_Client.Close();
+
+            return 0;
         }
+
         private Boolean TargetBigEndian()
         {
             // TODO determine if target big endian by examining returned SOM
@@ -119,6 +121,5 @@ namespace VcuComm
             }
             return false;
         }
-
     }
 }

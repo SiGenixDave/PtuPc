@@ -13,24 +13,24 @@ namespace VcuCommUnitTest
     {
 
         [TestMethod]
-        public void TestMethod1()
+        public void TestMethod2()
         {
-            IP ip1 = new IP();
-            Comm comm = new Comm(ip1);
+            TCP tcpDevice = new TCP();
+            Comm comm = new Comm(tcpDevice);
 
-            ip1.InitializeSockets("localhost");
+            tcpDevice.Open("localhost");
 
             comm.SetCarID(0x1234);
 
         }
         
         [TestMethod]
-        public void TestMethod2()
+        public void TestMethod1()
         {
-            IP ip1 = new IP();
-            Comm comm = new Comm(ip1);
+            TCP tcpDevice = new TCP();
+            Comm comm = new Comm(tcpDevice);
 
-            ip1.InitializeSockets("localhost");
+            tcpDevice.Open("localhost");
 
             Protocol.GetEmbeddedInfoRes emdRes = new Protocol.GetEmbeddedInfoRes();
             comm.GetEmbeddedInformation(ref emdRes);
@@ -42,8 +42,8 @@ namespace VcuCommUnitTest
         [TestMethod]
         public void TestMethod3()
         {
-            IP ip1 = new IP();
-            IP ip2 = new IP();
+            TCP tcpDevice1 = new TCP();
+            TCP tcpDevice2 = new TCP();
 
             Protocol.SetWatchElementReq setWatch = new Protocol.SetWatchElementReq(1,2);
 
@@ -53,13 +53,13 @@ namespace VcuCommUnitTest
             myTCP = dp.GetByteArray(null, (Protocol.PacketType)(0x1122), (Protocol.ResponseType)(0x3344), true);
 
 
-            ip1.InitializeSockets("www.google.com");
-            ip2.InitializeSockets("localhost");
-            ip2.SendStartOfMessage();
-            ip2.ReceiveStartOfMessage();
+            tcpDevice1.Open("www.google.com");
+            tcpDevice2.Open("localhost");
+            tcpDevice2.SendStartOfMessage();
+            tcpDevice2.ReceiveStartOfMessage();
            
             
-            ip2.TerminateSocket();
+            tcpDevice2.Close(null);
         }
     }
 }

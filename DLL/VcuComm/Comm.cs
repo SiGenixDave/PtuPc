@@ -6,54 +6,59 @@ namespace VcuComm
 {
     public class Comm
     {
-        private IP m_TCPComm;
+        private ICommDevice m_CommDevice;
 
-        public Comm(IP client)
+        public Comm(ICommDevice device)
         {
-            m_TCPComm = client;
+            m_CommDevice = device;
         }
 
         public CommunicationError GetEmbeddedInformation(ref Protocol.GetEmbeddedInfoRes getEmbInfo)
         {
             Protocol.DataPacketProlog dpp = new Protocol.DataPacketProlog();
 
-            Byte[] txData = dpp.GetByteArray(null, Protocol.PacketType.GET_EMBEDDED_INFORMATION, Protocol.ResponseType.DATAREQUEST, false);
+            Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.GET_EMBEDDED_INFORMATION, Protocol.ResponseType.DATAREQUEST, false);
 
-            Byte[] rxData = m_TCPComm.SendData(txData);
+            m_CommDevice.SendDataToTarget(txMessage);
 
-            // Map rxData to GetEmbeddedInfoRes;
-            getEmbInfo.SoftwareVersion = Encoding.UTF8.GetString(rxData, 8, 41).Replace("\0", String.Empty);
-            getEmbInfo.CarID = Encoding.UTF8.GetString(rxData, 49, 11).Replace("\0", String.Empty);
-            getEmbInfo.SubSystemName = Encoding.UTF8.GetString(rxData, 60, 41).Replace("\0", String.Empty);
-            getEmbInfo.IdentifierString = Encoding.UTF8.GetString(rxData, 101, 5).Replace("\0", String.Empty);
-            getEmbInfo.ConfigurationMask = BitConverter.ToUInt32(rxData, 106);
+            Byte[] rxMessage;
+            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
+
+            // Map rxMessage to GetEmbeddedInfoRes;
+            getEmbInfo.SoftwareVersion = Encoding.UTF8.GetString(rxMessage, 8, 41).Replace("\0", String.Empty);
+            getEmbInfo.CarID = Encoding.UTF8.GetString(rxMessage, 49, 11).Replace("\0", String.Empty);
+            getEmbInfo.SubSystemName = Encoding.UTF8.GetString(rxMessage, 60, 41).Replace("\0", String.Empty);
+            getEmbInfo.IdentifierString = Encoding.UTF8.GetString(rxMessage, 101, 5).Replace("\0", String.Empty);
+            getEmbInfo.ConfigurationMask = BitConverter.ToUInt32(rxMessage, 106);
 
             return CommunicationError.Success;
         }
 
-        public Protocol.GetChartModeRes GetChartMode()
+        public CommunicationError GetChartMode(ref Protocol.GetChartModeRes getChartMode)
         {
-            Protocol.GetChartModeRes getChartMode;
-
             Protocol.DataPacketProlog dpp = new Protocol.DataPacketProlog();
 
-            Byte[] txData = dpp.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, false);
+            Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, false);
 
-            Byte[] rxData = m_TCPComm.SendData(txData);
+            m_CommDevice.SendDataToTarget(txMessage);
+            
+            Byte[] rxMessage;
+            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
 
-            // Map rxData to GetEmbeddedInfoRes;
-            getChartMode.CurrentChartMode = rxData[8];
 
-            return getChartMode;
+            // Map rxMessage to GetEmbeddedInfoRes;
+            getChartMode.CurrentChartMode = rxMessage[8];
+
+            return CommunicationError.Success;
         }
 
         public CommunicationError StartClock()
         {
             Protocol.DataPacketProlog dpp = new Protocol.DataPacketProlog();
 
-            Byte[] txData = dpp.GetByteArray(null, Protocol.PacketType.START_CLOCK, Protocol.ResponseType.COMMANDREQUEST, false);
+            Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.START_CLOCK, Protocol.ResponseType.COMMANDREQUEST, false);
 
-            m_TCPComm.SendData(txData);
+            m_CommDevice.SendDataToTarget(txMessage);
 
             return CommunicationError.Success;
         }
@@ -62,9 +67,9 @@ namespace VcuComm
         {
             Protocol.DataPacketProlog dpp = new Protocol.DataPacketProlog();
 
-            Byte[] txData = dpp.GetByteArray(null, Protocol.PacketType.STOP_CLOCK, Protocol.ResponseType.COMMANDREQUEST, false);
+            Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.STOP_CLOCK, Protocol.ResponseType.COMMANDREQUEST, false);
 
-            m_TCPComm.SendData(txData);
+            m_CommDevice.SendDataToTarget(txMessage);
 
             return CommunicationError.Success;
         }
@@ -75,9 +80,9 @@ namespace VcuComm
 
             Protocol.SendVariableReq request = new Protocol.SendVariableReq(DictionaryIndex, data);
 
-            Byte[] txData = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(false);
 
-            m_TCPComm.SendData(txData);
+            m_CommDevice.SendDataToTarget(txMessage);
 
             return CommunicationError.Success;
         }
@@ -86,9 +91,9 @@ namespace VcuComm
         {
             Protocol.SetWatchElementsReq request = new Protocol.SetWatchElementsReq(WatchElements);
 
-            Byte[] txData = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(false);
 
-            m_TCPComm.SendData(txData);
+            m_CommDevice.SendDataToTarget(txMessage);
 
             return CommunicationError.Success;
         }
@@ -97,9 +102,9 @@ namespace VcuComm
         {
             Protocol.SetWatchElementReq request = new Protocol.SetWatchElementReq(ElementIndex, DictionaryIndex);
 
-            Byte[] txData = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(false);
 
-            m_TCPComm.SendData(txData);
+            m_CommDevice.SendDataToTarget(txMessage);
 
             return CommunicationError.Success;
         }
@@ -108,9 +113,11 @@ namespace VcuComm
         {
             Protocol.UpdateWatchElementsReq request = new Protocol.UpdateWatchElementsReq(ForceUpdate);
 
-            Byte[] txData = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(false);
+            m_CommDevice.SendDataToTarget(txMessage);
 
-            Byte[] rxData = m_TCPComm.SendData(txData);
+            Byte[] rxMessage;
+            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
 
             // TODO place data into arrays
 
@@ -121,9 +128,9 @@ namespace VcuComm
         {
             Protocol.SetCarIDReq request = new Protocol.SetCarIDReq(NewCarID);
 
-            Byte[] txData = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(false);
 
-            m_TCPComm.SendData(txData);
+            m_CommDevice.SendDataToTarget(txMessage);
 
             return CommunicationError.Success;
         }
@@ -170,18 +177,30 @@ namespace VcuComm
         {
             Protocol.GetChartIndexReq request = new Protocol.GetChartIndexReq((Byte)ChartIndex);
 
-            Byte[] txData = request.GetByteArray(false);
+            Byte[] txMessage = request.GetByteArray(false);
+            m_CommDevice.SendDataToTarget(txMessage);
 
-            Byte[] rxData = m_TCPComm.SendData(txData);
+            Byte[] rxMessage;
+            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
 
-            // TODO place response into VariableIndex
+            VariableIndex = BitConverter.ToUInt16(rxMessage, 8);
+
+            // TODO check for endianess
+            if (false)
+            {
+                VariableIndex = Utils.ReverseByteOrder(VariableIndex);
+            }
 
             return CommunicationError.Success;
         }
 
         public CommunicationError SetChartMode(UInt16 TargetChartMode)
         {
-            // TODO
+            Protocol.SetChartModeReq request = new Protocol.SetChartModeReq((byte)TargetChartMode);
+
+            Byte[] txMessage = request.GetByteArray(false);
+
+            m_CommDevice.SendDataToTarget(txMessage);
 
             return CommunicationError.Success;
         }
@@ -190,11 +209,19 @@ namespace VcuComm
         {
             Protocol.DataPacketProlog request = new Protocol.DataPacketProlog();
 
-            Byte[] txData = request.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, false);
+            Byte[] txMessage = request.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, false);
+            m_CommDevice.SendDataToTarget(txMessage);
 
-            Byte[] rxData = m_TCPComm.SendData(txData);
+            Byte[] rxMessage;
+            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
 
-            // TODO place response in CurrentChartMode
+            CurrentChartMode = BitConverter.ToUInt16(rxMessage, 8);
+
+            // TODO check for endianess
+            if (false)
+            {
+                CurrentChartMode = Utils.ReverseByteOrder(CurrentChartMode);
+            }
 
             return CommunicationError.Success;
         }
