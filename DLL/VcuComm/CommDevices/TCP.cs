@@ -90,7 +90,7 @@ namespace VcuComm
             return 0;
         }
 
-        public Int16 ReceiveTargetDataPacket(out Byte[] rxMessage)
+        public Int16 ReceiveTargetDataPacket(Byte[] rxMessage)
         {
             rxMessage = new Byte[4096];
             ReceiveStartOfMessage();
@@ -114,7 +114,6 @@ namespace VcuComm
 
         public Boolean IsTargetBigEndian()
         {
-            // TODO determine if target big endian by examining returned SOM
             if (m_TargetStartOfMessage == Protocol.TARGET_BIG_ENDIAN_SOM)
             {
                 return true;

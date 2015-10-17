@@ -238,7 +238,6 @@ namespace VcuComm
 
         public struct GetStreamInfoRes
         {
-            public DataPacketProlog Header;
             public StreamInformation Information;
         }
 

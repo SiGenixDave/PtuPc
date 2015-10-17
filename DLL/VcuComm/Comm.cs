@@ -8,6 +8,9 @@ namespace VcuComm
     {
         private ICommDevice m_CommDevice;
 
+        Byte[] m_RxMessage = new Byte[1024];
+
+
         private Comm () 
         {}
 
@@ -24,15 +27,14 @@ namespace VcuComm
 
             m_CommDevice.SendDataToTarget(txMessage);
 
-            Byte[] rxMessage;
-            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
             // Map rxMessage to GetEmbeddedInfoRes;
-            getEmbInfo.SoftwareVersion = Encoding.UTF8.GetString(rxMessage, 8, 41).Replace("\0", String.Empty);
-            getEmbInfo.CarID = Encoding.UTF8.GetString(rxMessage, 49, 11).Replace("\0", String.Empty);
-            getEmbInfo.SubSystemName = Encoding.UTF8.GetString(rxMessage, 60, 41).Replace("\0", String.Empty);
-            getEmbInfo.IdentifierString = Encoding.UTF8.GetString(rxMessage, 101, 5).Replace("\0", String.Empty);
-            getEmbInfo.ConfigurationMask = BitConverter.ToUInt32(rxMessage, 106);
+            getEmbInfo.SoftwareVersion = Encoding.UTF8.GetString(m_RxMessage, 8, 41).Replace("\0", String.Empty);
+            getEmbInfo.CarID = Encoding.UTF8.GetString(m_RxMessage, 49, 11).Replace("\0", String.Empty);
+            getEmbInfo.SubSystemName = Encoding.UTF8.GetString(m_RxMessage, 60, 41).Replace("\0", String.Empty);
+            getEmbInfo.IdentifierString = Encoding.UTF8.GetString(m_RxMessage, 101, 5).Replace("\0", String.Empty);
+            getEmbInfo.ConfigurationMask = BitConverter.ToUInt32(m_RxMessage, 106);
 
             return CommunicationError.Success;
         }
@@ -44,13 +46,12 @@ namespace VcuComm
             Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, false);
 
             m_CommDevice.SendDataToTarget(txMessage);
-            
-            Byte[] rxMessage;
-            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
+
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
 
             // Map rxMessage to GetEmbeddedInfoRes;
-            getChartMode.CurrentChartMode = rxMessage[8];
+            getChartMode.CurrentChartMode = m_RxMessage[8];
 
             return CommunicationError.Success;
         }
@@ -119,8 +120,7 @@ namespace VcuComm
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
-            Byte[] rxMessage;
-            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
             // TODO place data into arrays
 
@@ -183,10 +183,9 @@ namespace VcuComm
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
-            Byte[] rxMessage;
-            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
-            VariableIndex = BitConverter.ToUInt16(rxMessage, 8);
+            VariableIndex = BitConverter.ToUInt16(m_RxMessage, 8);
 
             // TODO check for endianess
             if (m_CommDevice.IsTargetBigEndian())
@@ -215,10 +214,9 @@ namespace VcuComm
             Byte[] txMessage = request.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
-            Byte[] rxMessage;
-            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
-            CurrentChartMode = BitConverter.ToUInt16(rxMessage, 8);
+            CurrentChartMode = BitConverter.ToUInt16(m_RxMessage, 8);
 
             // check for endianess
             if (m_CommDevice.IsTargetBigEndian())

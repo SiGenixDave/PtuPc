@@ -8,6 +8,8 @@ namespace VcuComm
     {
         private ICommDevice m_CommDevice;
 
+        private Byte[] m_RxMessage = new Byte[4096];
+
         const UInt16 MAX_FAULT_BUFFER_SIZE = 4096;
 
         private Event()
@@ -38,11 +40,10 @@ namespace VcuComm
             Byte[] txMessage = request.GetByteArray(null, Protocol.PacketType.GET_FAULT_INDICES, Protocol.ResponseType.COMMANDREQUEST, m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
-            Byte[] rxMessage;
-            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
-            Oldest = BitConverter.ToUInt32(rxMessage, 8);
-            Newest = BitConverter.ToUInt32(rxMessage, 12);
+            Oldest = BitConverter.ToUInt32(m_RxMessage, 8);
+            Newest = BitConverter.ToUInt32(m_RxMessage, 12);
 
             return CommunicationError.Success;
         }
@@ -54,10 +55,9 @@ namespace VcuComm
             Byte []txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
-            Byte []rxMessage;
-            m_CommDevice.ReceiveTargetDataPacket(out rxMessage);
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
-            getFaultData.BufferSize = BitConverter.ToUInt16(rxMessage, 8);
+            getFaultData.BufferSize = BitConverter.ToUInt16(m_RxMessage, 8);
             if (m_CommDevice.IsTargetBigEndian())
             {
                 Utils.ReverseByteOrder(getFaultData.BufferSize);
@@ -80,7 +80,7 @@ namespace VcuComm
 		    {
                 // TODO investigate GlobalIndex updates and address it
                 //getFaultData[GlobalIndex + Counter] = Response.Buffer[Counter];
-                getFaultData.Buffer[index] = rxMessage[index + 8 + sizeof(UInt16)];
+                getFaultData.Buffer[index] = m_RxMessage[index + 8 + sizeof(UInt16)];
             }
 
 
@@ -97,6 +97,43 @@ namespace VcuComm
 
             return CommunicationError.Success;
         }
+
+        public CommunicationError GetStreamInformation(UInt16 StreamNumber, ref Protocol.GetStreamInfoRes response, Int16 []VariableIndex, Int16 []VariableType)
+        {
+	        UInt16 Counter;
+	        Protocol.GetStreamInfoReq request = new Protocol.GetStreamInfoReq(StreamNumber);
+
+            Byte []txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
+            m_CommDevice.SendDataToTarget(txMessage);
+            
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+
+            response.Information.NumberOfVariables = BitConverter.ToUInt16(m_RxMessage, 8);
+            response.Information.NumberOfSamples = BitConverter.ToUInt16(m_RxMessage, 10);
+            response.Information.SampleRate = BitConverter.ToUInt16(m_RxMessage, 12);
+
+            if (m_CommDevice.IsTargetBigEndian())
+            {
+                response.Information.NumberOfVariables = Utils.ReverseByteOrder(response.Information.NumberOfVariables);
+                response.Information.NumberOfSamples = Utils.ReverseByteOrder(response.Information.NumberOfVariables);
+                response.Information.SampleRate = Utils.ReverseByteOrder(response.Information.NumberOfVariables);
+            }
+
+#if TODO            
+            if (*NumberOfVariables > MAXDLVARIABLES)
+			        *NumberOfVariables = MAXDLVARIABLES;
+
+            for (Counter = 0; Counter < *NumberOfVariables; Counter++)
+		    {
+			    VariableIndex[Counter] =
+				    MAPINT(Response.Information.StreamVariableInfo[Counter].StreamVariable);
+			    VariableType[Counter] =
+				    MAPINT(Response.Information.StreamVariableInfo[Counter].StreamVariableType);
+		    }
+#endif
+            return CommunicationError.Success;
+        }
+
 
 #if DAS
         public CommunicationError LoadFaultLog(ref UInt16 NumberOfFaults, ref UInt32 OldestIndex, ref UInt32 NewestIndex)

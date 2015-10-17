@@ -11,7 +11,22 @@ namespace VcuCommUnitTest
     [TestClass]
     public class UnitTest1
     {
+        [TestMethod]
+        public void TestMethod1()
+        {
+            Serial serialDevice = new Serial();
+            Comm comm = new Comm(serialDevice);
 
+            serialDevice.Open("COM1,19200,none,8,1");
+
+            Protocol.GetEmbeddedInfoRes emdRes = new Protocol.GetEmbeddedInfoRes();
+            comm.GetEmbeddedInformation(ref emdRes);
+
+            Debug.Print(emdRes.SoftwareVersion);
+
+        }
+
+#if DAS
         [TestMethod]
         public void TestMethod2()
         {
@@ -25,7 +40,7 @@ namespace VcuCommUnitTest
         }
         
         [TestMethod]
-        public void TestMethod1()
+        public void TestMethod3()
         {
             TCP tcpDevice = new TCP();
             Comm comm = new Comm(tcpDevice);
@@ -40,7 +55,7 @@ namespace VcuCommUnitTest
         }
         
         [TestMethod]
-        public void TestMethod3()
+        public void TestMethod4()
         {
             TCP tcpDevice1 = new TCP();
             TCP tcpDevice2 = new TCP();
@@ -61,5 +76,7 @@ namespace VcuCommUnitTest
             
             tcpDevice2.Close(null);
         }
+#endif
     }
+
 }

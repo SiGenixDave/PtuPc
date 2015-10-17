@@ -15,7 +15,7 @@ namespace VcuComm
 
         Int16 SendDataToTarget(Byte[] txMessage);
 
-        Int16 ReceiveTargetDataPacket(out Byte []rxMessage);
+        Int16 ReceiveTargetDataPacket(Byte []rxMessage);
 
         Int16 ReceiveTargetAcknowledge();
 
