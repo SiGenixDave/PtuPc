@@ -111,6 +111,10 @@ char RxAckValue;
 * Revised : 04/01/09		Vijay Kumar Bhoga @ BTECI
 - Constants are used in place of ReturnCode.
 - Changed sin_port value to htons(5001);
+* Revised : 11/03/15		D.Smail
+- Changed socket to non-blocking when connection is made to avoid large delays
+- in UI (circle of death) when multiple URIs are not present. The delay of
+- 500 msecs was picked as a compromise. 
 **************************************************************************/
 INT16 RPTUClient_InitializeSockets(LPSTR DestIp)
 {
@@ -118,6 +122,8 @@ INT16 RPTUClient_InitializeSockets(LPSTR DestIp)
 	WSADATA			WinSockData;
 	SOCKADDR_IN		ServiceAddress;
 	INT16				ReturnCode;
+	int iResult;
+	u_long iMode = 1;
 
 	VersionRequired = 0x0101;
 
@@ -127,9 +133,16 @@ INT16 RPTUClient_InitializeSockets(LPSTR DestIp)
 	/*	Create a socket for outgoing and incoming requests.	*/
 	/*  PF_INET		-	TCP\IP connection					*/
 	/*	SOCK_STREAM	-	Create a TCP\IP socket				*/
-	ClientSocket = socket(PF_INET, SOCK_STREAM, 0);
+	ClientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (ClientSocket == INVALID_SOCKET)
 		return HandleError();
+	/* set the socket to non-blocking to avoid large delay times (circle of death on UI
+	   when trying to connect to a non-existent PTU server */
+	iResult = ioctlsocket(ClientSocket, FIONBIO, &iMode);
+	if (iResult != NO_ERROR)
+	{
+		return HandleError();
+	}
 
 	struct addrinfo *result = NULL;
 	ReturnCode = getaddrinfo (DestIp, "5001", 0, &result);
@@ -146,12 +159,38 @@ INT16 RPTUClient_InitializeSockets(LPSTR DestIp)
 
 		struct hostent* host = gethostbyname(DestIp);
 
-		if (connect( ClientSocket,
-			(const struct sockaddr *)&ServiceAddress,
-			sizeof(ServiceAddress) ))
-			return HandleError();
+		ReturnCode = connect( ClientSocket,	(const struct sockaddr *)&ServiceAddress, sizeof(ServiceAddress) );
 
-
+		if ((0 == ReturnCode) || (ReturnCode == EINPROGRESS))
+		{
+			/* All is OK; intentionally do nothing
+			The chances of an immediate connection are nil (even to localhost) */
+		}
+		else
+		{
+			int error = WSAGetLastError(); 
+			if (error == WSAEWOULDBLOCK)
+			{
+				/* Sleep for a while */
+				Sleep(1000);
+				/* Reissue a connection */
+				ReturnCode = connect( ClientSocket,	(const struct sockaddr *)&ServiceAddress, sizeof(ServiceAddress) );
+				error = WSAGetLastError(); 
+				/* If the last error is WSAEISCON, then a successful connection was established */
+				if (error == WSAEISCONN)
+				{
+					/* return the socket to blocking */
+					iMode = 0;
+					iResult = ioctlsocket(ClientSocket, FIONBIO, &iMode);
+					if (iResult != NO_ERROR)
+					{
+						return HandleError();
+					}
+					return NOERROR;
+				}
+				return HandleError();
+			}
+		}
 		return NOERROR;
 	}
 	else
