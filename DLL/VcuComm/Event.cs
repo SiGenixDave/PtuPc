@@ -40,7 +40,8 @@ namespace VcuComm
             Byte[] txMessage = request.GetByteArray(null, Protocol.PacketType.GET_FAULT_INDICES, Protocol.ResponseType.COMMANDREQUEST, m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+            Int32 bytesReceived;
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
 
             Oldest = BitConverter.ToUInt32(m_RxMessage, 8);
             Newest = BitConverter.ToUInt32(m_RxMessage, 12);
@@ -55,7 +56,8 @@ namespace VcuComm
             Byte []txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+            Int32 bytesReceived;
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
 
             getFaultData.BufferSize = BitConverter.ToUInt16(m_RxMessage, 8);
             if (m_CommDevice.IsTargetBigEndian())
@@ -105,8 +107,9 @@ namespace VcuComm
 
             Byte []txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
-            
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+
+            Int32 bytesReceived;
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
 
             response.Information.NumberOfVariables = BitConverter.ToUInt16(m_RxMessage, 8);
             response.Information.NumberOfSamples = BitConverter.ToUInt16(m_RxMessage, 10);

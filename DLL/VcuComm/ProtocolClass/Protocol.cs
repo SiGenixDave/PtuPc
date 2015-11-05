@@ -7,6 +7,7 @@ namespace VcuComm
     {
         public static readonly byte TARGET_BIG_ENDIAN_SOM = (byte)'S';
         public static readonly byte THE_SOM = (byte)':';
+        public static readonly byte PTU_ACK = (byte)0x04;
         public const UInt16 MAX_WATCH_ELEMENTS = 40;
         public const UInt16 HEADER_SIZE_BYTES = 8;
 

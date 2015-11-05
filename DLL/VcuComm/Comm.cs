@@ -27,7 +27,8 @@ namespace VcuComm
 
             m_CommDevice.SendDataToTarget(txMessage);
 
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+            Int32 bytesReceived;
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
 
             // Map rxMessage to GetEmbeddedInfoRes;
             getEmbInfo.SoftwareVersion = Encoding.UTF8.GetString(m_RxMessage, 8, 41).Replace("\0", String.Empty);
@@ -47,7 +48,8 @@ namespace VcuComm
 
             m_CommDevice.SendDataToTarget(txMessage);
 
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+            Int32 bytesReceived;
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
 
 
             // Map rxMessage to GetEmbeddedInfoRes;
@@ -120,7 +122,8 @@ namespace VcuComm
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+            Int32 bytesReceived;
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
 
             // TODO place data into arrays
 
@@ -183,7 +186,8 @@ namespace VcuComm
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+            Int32 bytesReceived;
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
 
             VariableIndex = BitConverter.ToUInt16(m_RxMessage, 8);
 
@@ -214,7 +218,8 @@ namespace VcuComm
             Byte[] txMessage = request.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
             m_CommDevice.SendDataToTarget(txMessage);
 
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+            Int32 bytesReceived;
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
 
             CurrentChartMode = BitConverter.ToUInt16(m_RxMessage, 8);
 

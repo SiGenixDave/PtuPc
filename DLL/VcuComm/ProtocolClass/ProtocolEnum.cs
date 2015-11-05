@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace VcuComm
+﻿namespace VcuComm
 {
+
     public partial class Protocol
     {
         public enum ResponseType
@@ -85,6 +81,5 @@ namespace VcuComm
             INT_16_TYPE = 4,
             INT_32_TYPE = 5,
         }
-
     }
 }

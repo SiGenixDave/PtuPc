@@ -732,7 +732,7 @@ namespace Common.Configuration
 			// ----------------------
 			try
 			{
-				//DAS m_CommunicationType = (CommunicationTypeEnum)dataDictionary.CONFIGUREPTU[0].CommunicationType;
+				m_CommunicationType = (CommunicationTypeEnum)dataDictionary.CONFIGUREPTU[0].CommunicationType;
 			}
 			catch (Exception)
 			{

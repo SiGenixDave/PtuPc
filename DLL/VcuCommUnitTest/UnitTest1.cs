@@ -11,6 +11,7 @@ namespace VcuCommUnitTest
     [TestClass]
     public class UnitTest1
     {
+#if DAS
         [TestMethod]
         public void TestMethod1()
         {
@@ -23,25 +24,53 @@ namespace VcuCommUnitTest
             comm.GetEmbeddedInformation(ref emdRes);
 
             Debug.Print(emdRes.SoftwareVersion);
+            Debug.Print("Serial Error Message = " + serialDevice.SerialError);
+            Debug.Print("Exception Message = " + serialDevice.ExceptionMessage);
+
 
         }
+#endif
 
-#if DAS
+#if !DAS
         [TestMethod]
-        public void TestMethod2()
+        public void TestMethod1()
         {
             TCP tcpDevice = new TCP();
             Comm comm = new Comm(tcpDevice);
 
-            tcpDevice.Open("localhost");
+            tcpDevice.Open("127.0.0.1");
 
             comm.SetCarID(0x1234);
 
         }
-        
+#endif
+
+#if DAS
         [TestMethod]
-        public void TestMethod3()
+        public void TestMethod1()
         {
+            String[] serPorts = Serial.GetAvailableSerialPorts();
+
+            foreach (String s in serPorts)
+            {
+                Debug.WriteLine(s);
+            }
+
+            Serial sp = new Serial();
+            String cdo = serPorts[0] + ", 19200, none, 8, 1";
+            sp.Open(cdo);
+            Int16 result = sp.SendStartOfMessage();
+            if (result < 0)
+            {
+                Debug.WriteLine(sp.SerialError);
+                Debug.WriteLine(sp.ExceptionMessage);
+            }
+            else
+            {
+                Debug.WriteLine("SOM sent successfully");
+            }
+            sp.Close();
+
             TCP tcpDevice = new TCP();
             Comm comm = new Comm(tcpDevice);
 
@@ -53,7 +82,10 @@ namespace VcuCommUnitTest
             Debug.Print(emdRes.SoftwareVersion);
 
         }
+#endif
+
         
+#if DAS
         [TestMethod]
         public void TestMethod4()
         {

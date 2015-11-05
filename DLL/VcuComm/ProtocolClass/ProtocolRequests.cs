@@ -4,6 +4,9 @@ using System.Text;
 
 namespace VcuComm
 {
+    /// <summary>
+    /// 
+    /// </summary>
     internal interface ICommRequest
     {
         Byte[] GetByteArray(Boolean targetIsBigEndian);

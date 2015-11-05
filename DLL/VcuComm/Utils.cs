@@ -1,18 +1,27 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 
 namespace VcuComm
 {
+    /// <summary>
+    ///
+    /// </summary>
     public static class Utils
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static Byte ReverseByteOrder(Byte value)
         {
             return value;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static UInt32 ReverseByteOrder(UInt32 value)
         {
             UInt32 reversedValue;
@@ -23,6 +32,11 @@ namespace VcuComm
             return reversedValue;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static UInt16 ReverseByteOrder(UInt16 value)
         {
             UInt16 reversedValue;
@@ -31,6 +45,5 @@ namespace VcuComm
 
             return reversedValue;
         }
-
     }
 }
