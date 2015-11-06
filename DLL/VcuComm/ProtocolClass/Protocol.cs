@@ -11,6 +11,32 @@ namespace VcuComm
         public const UInt16 MAX_WATCH_ELEMENTS = 40;
         public const UInt16 HEADER_SIZE_BYTES = 8;
 
+        /// <summary>
+        /// These errors are logged whenever any error is detected when a TCP transaction occurs
+        /// </summary>
+        public enum Errors
+        {
+            None,
+            OptionsLengthIncorrect,
+            ClientPreviouslyCreated,
+            InvalidURL,
+            UnresolvableURL,
+            DataBitsConversion,
+            BaudRateConversion,
+            OpenSerialPort,
+            SerialBufferFlush,
+            ConnectionError,
+            TransmitMessage,
+            ReceiveMessage,
+            AckNotReceieved,
+            RxTimeout,
+            MessageEcho,
+            ExcessiveBytesReceived,
+            InvalidSOM,
+            Close,
+        }
+
+
         public class DataPacketProlog
         {
             private UInt16 packetLength;

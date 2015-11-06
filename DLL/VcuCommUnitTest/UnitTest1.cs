@@ -4,6 +4,8 @@ using System.Collections;
 using System;
 using System.Diagnostics;
 using Common;
+using Common.Communication;
+
 
 
 namespace VcuCommUnitTest
@@ -20,7 +22,7 @@ namespace VcuCommUnitTest
 
             serialDevice.Open("COM1,19200,none,8,1");
 
-            Protocol.GetEmbeddedInfoRes emdRes = new Protocol.GetEmbeddedInfoRes();
+            VcuComm.Protocol.GetEmbeddedInfoRes emdRes = new VcuComm.Protocol.GetEmbeddedInfoRes();
             comm.GetEmbeddedInformation(ref emdRes);
 
             Debug.Print(emdRes.SoftwareVersion);
@@ -35,13 +37,34 @@ namespace VcuCommUnitTest
         [TestMethod]
         public void TestMethod1()
         {
-            TCP tcpDevice = new TCP();
-            Comm comm = new Comm(tcpDevice);
+            TCP device = new TCP();
+            device.Open("127.0.0.1");
+            
+            //Serial device = new Serial();
+            //device.Open("COM2,19200,none,8,1");
+            
+            
+            Comm comm = new Comm(device);
 
-            tcpDevice.Open("127.0.0.1");
 
-            comm.SetCarID(0x1234);
+            CommunicationError errorCode = comm.SetCarID(0x1234);
+            if (errorCode != CommunicationError.Success)
+            {
+                Debug.Print("Set Car ID Failed --- Error: " + errorCode);
+            }
 
+            VcuComm.Protocol.GetEmbeddedInfoRes emdRes = new VcuComm.Protocol.GetEmbeddedInfoRes();
+            errorCode = comm.GetEmbeddedInformation(ref emdRes);
+            if (errorCode != CommunicationError.Success)
+            {
+                Debug.Print("Read Embedded Info Failed --- Error: " + errorCode);
+            }
+            else
+            {
+                Debug.Print(emdRes.SoftwareVersion);
+                Debug.Print("Error Message = " + device.Error);
+                Debug.Print("Exception Message = " + device.ExceptionMessage);
+            }
         }
 #endif
 

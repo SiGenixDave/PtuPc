@@ -10,7 +10,6 @@ namespace VcuComm
 
         Byte[] m_RxMessage = new Byte[1024];
 
-
         private Comm () 
         {}
 
@@ -25,10 +24,17 @@ namespace VcuComm
 
             Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.GET_EMBEDDED_INFORMATION, Protocol.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
 
-            m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             Int32 bytesReceived;
+            
             m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
+            // TODO verify the correct number of bytes are received
 
             // Map rxMessage to GetEmbeddedInfoRes;
             getEmbInfo.SoftwareVersion = Encoding.UTF8.GetString(m_RxMessage, 8, 41).Replace("\0", String.Empty);
@@ -46,7 +52,12 @@ namespace VcuComm
 
             Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, false);
 
-            m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             Int32 bytesReceived;
             m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
@@ -64,7 +75,12 @@ namespace VcuComm
 
             Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.START_CLOCK, Protocol.ResponseType.COMMANDREQUEST, false);
 
-            m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             return CommunicationError.Success;
         }
@@ -75,7 +91,12 @@ namespace VcuComm
 
             Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.STOP_CLOCK, Protocol.ResponseType.COMMANDREQUEST, false);
 
-            m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             return CommunicationError.Success;
         }
@@ -88,7 +109,12 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             return CommunicationError.Success;
         }
@@ -99,7 +125,12 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             return CommunicationError.Success;
         }
@@ -110,7 +141,12 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             return CommunicationError.Success;
         }
@@ -120,7 +156,13 @@ namespace VcuComm
             Protocol.UpdateWatchElementsReq request = new Protocol.UpdateWatchElementsReq(ForceUpdate);
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-            m_CommDevice.SendDataToTarget(txMessage);
+
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             Int32 bytesReceived;
             m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
@@ -136,7 +178,18 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
+
+            errorCode = m_CommDevice.ReceiveTargetAcknowledge();
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadResponse;
+            }
 
             return CommunicationError.Success;
         }
@@ -184,7 +237,13 @@ namespace VcuComm
             Protocol.GetChartIndexReq request = new Protocol.GetChartIndexReq((Byte)ChartIndex);
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-            m_CommDevice.SendDataToTarget(txMessage);
+
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             Int32 bytesReceived;
             m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
@@ -206,7 +265,12 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             return CommunicationError.Success;
         }
@@ -216,7 +280,13 @@ namespace VcuComm
             Protocol.DataPacketProlog request = new Protocol.DataPacketProlog();
 
             Byte[] txMessage = request.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
-            m_CommDevice.SendDataToTarget(txMessage);
+
+            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
 
             Int32 bytesReceived;
             m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);

@@ -11,28 +11,11 @@ namespace VcuComm
     {
         private static readonly String NO_SERIAL_ISSUES = "No Exceptions Raised";
 
-
         #region --- Enumerations ---
 
         /// <summary>
         /// Types of serial errors that can be encountered during the course of normal operation
         /// </summary>
-        public enum SerialErrors
-        {
-            None,
-            OptionsLengthIncorrect,
-            BaudRateConversion,
-            DataBitsConversion,
-            OpenSerialPort,
-            SerialBufferFlush,
-            TransmitMessage,
-            ReceiveMessage,
-            AckNotReceieved,
-            MessageEcho,
-            RxTimeout,
-            ExcessiveBytesReceived,
-            Close,
-        }
 
         #endregion --- Enumerations ---
 
@@ -69,16 +52,16 @@ namespace VcuComm
         /// <summary>
         /// Stores the most recent serial port error. Cleared whenever a calling function reads the state.
         /// </summary>
-        private SerialErrors m_SerialError = SerialErrors.None;
+        private Protocol.Errors m_SerialError = Protocol.Errors.None;
 
-        public SerialErrors SerialError
+        public Protocol.Errors Error
         {
             get
             {
-                SerialErrors serialErrCopy = m_SerialError;
+                Protocol.Errors serialErrCopy = m_SerialError;
                 // Reset the error after the error code is read; if it isn't read
                 // than the most recent error will be saved until another error occurs
-                m_SerialError = SerialErrors.None;
+                m_SerialError = Protocol.Errors.None;
                 return serialErrCopy;
             }
         }
@@ -114,7 +97,6 @@ namespace VcuComm
             return SerialPort.GetPortNames();
         }
 
-
         /// <summary>
         /// Opens the desired serial port based on the comma delimited string passed as the argument. The first argument
         /// is the COM port (e.g. COM1). The 2nd argument in the string is the baud rate (e.g. 19200). The 3rd argument is
@@ -123,7 +105,7 @@ namespace VcuComm
         /// </summary>
         /// <param name="commaDelimitedOptions">COM port settings - "COMX,BaudRate,Parity,DataBits,StopBits"</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int16 Open(string commaDelimitedOptions)
+        public Int32 Open(string commaDelimitedOptions)
         {
             String[] options;
             options = commaDelimitedOptions.Split(',');
@@ -131,7 +113,7 @@ namespace VcuComm
             // verify 5 comma delimited arguments
             if (options.Length != 5)
             {
-                m_SerialError = SerialErrors.OptionsLengthIncorrect;
+                m_SerialError = Protocol.Errors.OptionsLengthIncorrect;
                 return -1;
             }
 
@@ -145,7 +127,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = SerialErrors.BaudRateConversion;
+                m_SerialError = Protocol.Errors.BaudRateConversion;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -174,7 +156,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = SerialErrors.DataBitsConversion;
+                m_SerialError = Protocol.Errors.DataBitsConversion;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -204,13 +186,13 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = SerialErrors.OpenSerialPort;
+                m_SerialError = Protocol.Errors.OpenSerialPort;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
 
             // Flush the receive buffer
-            Int16 errorCode = FlushRxBuffer();
+            Int32 errorCode = FlushRxBuffer();
             if (errorCode < 0)
             {
                 return errorCode;
@@ -230,11 +212,11 @@ namespace VcuComm
         /// Sends the Start of Message byte to the target
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int16 SendStartOfMessage()
+        public Int32 SendStartOfMessage()
         {
             byte[] startOfMessage = { Protocol.THE_SOM };
 
-            Int16 errorCode = TransmitMessage(startOfMessage);
+            Int32 errorCode = TransmitMessage(startOfMessage);
 
             return errorCode;
         }
@@ -243,7 +225,7 @@ namespace VcuComm
         /// Receives the Start of Message byte from the target
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int16 ReceiveStartOfMessage()
+        public Int32 ReceiveStartOfMessage()
         {
             // Allocate memory for the received byte
             byte[] startOfMessage = new byte[1];
@@ -251,12 +233,12 @@ namespace VcuComm
             Int32 bytesRead = 0;
             while (bytesRead == 0)
             {
-                Int16 errorCode = ReceiveMessage(startOfMessage, 0, ref bytesRead);
+                bytesRead = ReceiveMessage(startOfMessage, 0);
 
                 // Verify a valid call was made to ReceiveMessage()
-                if (errorCode < 0)
+                if (bytesRead < 0)
                 {
-                    return errorCode;
+                    return bytesRead;
                 }
                 // Verify only 1 byte was read; if so save the byte
                 if (bytesRead == 1)
@@ -267,7 +249,7 @@ namespace VcuComm
                 else if (bytesRead > 1)
                 {
                     // too many bytes read
-                    m_SerialError = SerialErrors.ExcessiveBytesReceived;
+                    m_SerialError = Protocol.Errors.ExcessiveBytesReceived;
                     FlushRxBuffer();
                     return -1;
                 }
@@ -282,10 +264,10 @@ namespace VcuComm
         /// </summary>
         /// <param name="txMessage">the message to be sent to the target</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int16 SendDataToTarget(byte[] txMessage)
+        public Int32 SendDataToTarget(byte[] txMessage)
         {
             // Send the start of message
-            Int16 errorCode = SendStartOfMessage();
+            Int32 errorCode = SendStartOfMessage();
             if (errorCode < 0)
             {
                 return errorCode;
@@ -315,16 +297,16 @@ namespace VcuComm
             Int32 totalBytesRead = 0;
             while (totalBytesRead != rxMessage.Length)
             {
-                errorCode = ReceiveMessage(rxMessage, totalBytesRead, ref bytesRead);
-                if (errorCode < 0)
+                bytesRead = ReceiveMessage(rxMessage, totalBytesRead);
+                if (bytesRead < 0)
                 {
-                    return errorCode;
+                    return bytesRead;
                 }
                 totalBytesRead += bytesRead;
                 if (totalBytesRead > rxMessage.Length)
                 {
                     // too many bytes read
-                    m_SerialError = SerialErrors.ExcessiveBytesReceived;
+                    m_SerialError = Protocol.Errors.ExcessiveBytesReceived;
                     FlushRxBuffer();
                     return -1;
                 }
@@ -334,7 +316,7 @@ namespace VcuComm
             if (txMessage.SequenceEqual(rxMessage) == false)
             {
                 // log error
-                m_SerialError = SerialErrors.MessageEcho;
+                m_SerialError = Protocol.Errors.MessageEcho;
                 return -1;
             }
 
@@ -348,12 +330,12 @@ namespace VcuComm
         /// <param name="rxMessage">array where the received message will be stored</param>
         /// <param name="bytesReceived">number of bytes in the received message</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int16 ReceiveTargetDataPacket(Byte[] rxMessage, out Int32 bytesReceived)
+        public Int32 ReceiveTargetDataPacket(Byte[] rxMessage, out Int32 bytesReceived)
         {
             bytesReceived = 0;
 
             // Verify the target responds with a SOM first
-            Int16 errorCode = ReceiveStartOfMessage();
+            Int32 errorCode = ReceiveStartOfMessage();
             if (errorCode < 0)
             {
                 return errorCode;
@@ -362,11 +344,11 @@ namespace VcuComm
             Int32 bytesRead = 0;
             Int32 totalBytesRead = 0;
             // When the first 2 bytes are read, the received message size will be calculated
-            UInt32 messageSize = UInt32.MaxValue;
+            UInt16 messageSize = UInt16.MaxValue;
             while (totalBytesRead != messageSize)
             {
                 // read the serial receive buffer
-                errorCode = ReceiveMessage(rxMessage, totalBytesRead, ref bytesRead);
+                bytesRead = ReceiveMessage(rxMessage, totalBytesRead);
                 if (errorCode < 0)
                 {
                     return errorCode;
@@ -375,10 +357,10 @@ namespace VcuComm
                 // adjust the index into the receive buffer in case the entire message wasn't received
                 totalBytesRead += bytesRead;
 
-                if ((totalBytesRead >= 2) && (messageSize == UInt32.MaxValue))
+                if ((totalBytesRead >= 2) && (messageSize == UInt16.MaxValue))
                 {
                     // 1st 2 bytes of the message is the message length
-                    messageSize = (UInt32)BitConverter.ToUInt16(rxMessage, 0);
+                    messageSize = BitConverter.ToUInt16(rxMessage, 0);
                     if (IsTargetBigEndian())
                     {
                         messageSize = Utils.ReverseByteOrder(messageSize);
@@ -388,7 +370,7 @@ namespace VcuComm
                 if (totalBytesRead > messageSize)
                 {
                     // too many bytes read
-                    m_SerialError = SerialErrors.ExcessiveBytesReceived;
+                    m_SerialError = Protocol.Errors.ExcessiveBytesReceived;
                     FlushRxBuffer();
                     return -1;
                 }
@@ -402,7 +384,7 @@ namespace VcuComm
         /// the message sent from the application when no data is sent back from the target (i.e. a command was sent)
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int16 ReceiveTargetAcknowledge()
+        public Int32 ReceiveTargetAcknowledge()
         {
             // Allocate memory for the acknowledge
             byte[] rxMessage = new Byte[1];
@@ -411,10 +393,10 @@ namespace VcuComm
             while (bytesRead == 0)
             {
                 // Read the serial port
-                Int16 errorCode = ReceiveMessage(rxMessage, 0, ref bytesRead);
-                if (errorCode < 0)
+                bytesRead = ReceiveMessage(rxMessage, 0);
+                if (bytesRead < 0)
                 {
-                    return errorCode;
+                    return bytesRead;
                 }
 
                 if (bytesRead == 1)
@@ -422,14 +404,14 @@ namespace VcuComm
                     // Verify ACK received
                     if (rxMessage[0] != Protocol.PTU_ACK)
                     {
-                        m_SerialError = SerialErrors.AckNotReceieved;
+                        m_SerialError = Protocol.Errors.AckNotReceieved;
                         return -1;
                     }
                 }
                 else if (bytesRead > 1)
                 {
                     // too many bytes read
-                    m_SerialError = SerialErrors.ExcessiveBytesReceived;
+                    m_SerialError = Protocol.Errors.ExcessiveBytesReceived;
                     FlushRxBuffer();
                     return -1;
                 }
@@ -442,7 +424,7 @@ namespace VcuComm
         /// Closes the serial port
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int16 Close()
+        public Int32 Close()
         {
             try
             {
@@ -450,7 +432,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = SerialErrors.Close;
+                m_SerialError = Protocol.Errors.Close;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -462,6 +444,10 @@ namespace VcuComm
         /// The target is responsible for reporting whether it is a big or little endian machine. The start of
         /// message received from the target indicates the machine type of target
         /// </summary>
+        /// <remarks>It is imperative that the calling function perform all error checking prior to invoking this
+        /// method. That includes verification that the transmitted SOM was echoed before making assumptions that there
+        /// is an embedded PTU connected.
+        /// </remarks>
         /// <returns>true if target is Big Endian; false otherwise</returns>
         public bool IsTargetBigEndian()
         {
@@ -475,9 +461,9 @@ namespace VcuComm
         /// <summary>
         /// Sends a message to the target via the serial port
         /// </summary>
-        /// <param name="txMessage"></param>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        private Int16 TransmitMessage(Byte[] txMessage)
+        /// <param name="txMessage">the byte array to be sent to the embedded PTU</param>
+        /// <returns>less than 0 if any failure occurs; number of bytes sent if successful</returns>
+        private Int32 TransmitMessage(Byte[] txMessage)
         {
             // Send the entire message to the serial port
             try
@@ -486,40 +472,43 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = SerialErrors.TransmitMessage;
+                m_SerialError = Protocol.Errors.TransmitMessage;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
-            return 0;
+            return txMessage.Length;
         }
 
         /// <summary>
-        ///
+        /// This method is responsible for reading all available chars that are in the serial port
+        /// sent by the embedded PTU. All characters are copied to the <paramref name="rxMessage"/>
+        /// starting at the <paramref name="bufferOffset"/>. This feature allows multiple calls to
+        /// this method until the entire message is received.
         /// </summary>
         /// <param name="rxMessage">buffer where the received message is stored</param>
         /// <param name="bufferOffset">offset into the receive buffer</param>
-        /// <param name="bytesRead">updated with the number of bytes read</param>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        private Int16 ReceiveMessage(Byte[] rxMessage, Int32 bufferOffset, ref Int32 bytesRead)
+        /// <returns>less than 0 if any failure occurs; number of bytes read if successful</returns>
+        private Int32 ReceiveMessage(Byte[] rxMessage, Int32 bufferOffset)
         {
+            Int32 bytesRead = 0;
             try
             {
                 bytesRead = m_SerialPort.Read(rxMessage, bufferOffset, rxMessage.Length - bufferOffset);
             }
             catch (Exception e)
             {
-                m_SerialError = SerialErrors.ReceiveMessage;
+                m_SerialError = Protocol.Errors.ReceiveMessage;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
-            return 0;
+            return bytesRead;
         }
 
         /// <summary>
         /// Flushes the serial port receive buffer
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        private Int16 FlushRxBuffer()
+        private Int32 FlushRxBuffer()
         {
             try
             {
@@ -527,7 +516,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = SerialErrors.SerialBufferFlush;
+                m_SerialError = Protocol.Errors.SerialBufferFlush;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -539,7 +528,7 @@ namespace VcuComm
         /// Flushes the serial port transmit buffer
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        private Int16 FlushTxBuffer()
+        private Int32 FlushTxBuffer()
         {
             try
             {
@@ -547,7 +536,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = SerialErrors.SerialBufferFlush;
+                m_SerialError = Protocol.Errors.SerialBufferFlush;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
