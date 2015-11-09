@@ -243,8 +243,13 @@ namespace VcuComm
                 // Verify only 1 byte was read; if so save the byte
                 if (bytesRead == 1)
                 {
-                    // TODO verify a valid SOM
-                    m_TargetStartOfMessage = startOfMessage[0];
+                    // Verify a valid SOM
+                    if ((startOfMessage[0] != Protocol.THE_SOM) && (startOfMessage[0] != Protocol.TARGET_BIG_ENDIAN_SOM))
+                    {
+                        m_TargetStartOfMessage = 0;
+                        m_SerialError = Protocol.Errors.InvalidSOM;
+                        return -1;
+                    }
                 }
                 else if (bytesRead > 1)
                 {

@@ -158,6 +158,8 @@ namespace VcuComm
             // target
             try
             {
+                // This is an asynchronous (non--blocking) TCP connection attempt. If a successful connection
+                // occurs, the ConnectCallback() method will be invoked and m_Connected will be made true
                 m_Connected = false;
                 m_Client.BeginConnect(ipv4Addr, PTU_SERVER_SOCKET, new AsyncCallback(ConnectCallback), m_Client);
             }
@@ -170,7 +172,7 @@ namespace VcuComm
 
             try
             {
-                // Sleep for a while
+                // Sleep for a while so that ample time for a connection can be made
                 Thread.Sleep(1000);
                 // m_Connected becomes true (asynchronously) if a valid connection was made
                 if (m_Connected == false)
@@ -209,32 +211,38 @@ namespace VcuComm
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         public Int32 ReceiveStartOfMessage()
         {
+            // Allocate memory for the received byte
             byte[] startOfMessage = new byte[1];
 
-            // Read from the socket stream
-            Int32 bytesRead = ReceiveMessage(startOfMessage, 0);
-            if (bytesRead < 0)
+            Int32 bytesRead = 0;
+            while (bytesRead == 0)
             {
-                return bytesRead;
+                bytesRead = ReceiveMessage(startOfMessage, 0);
+
+                // Verify a valid call was made to ReceiveMessage()
+                if (bytesRead < 0)
+                {
+                    return bytesRead;
+                }
+                // Verify only 1 byte was read; if so save the byte
+                if (bytesRead == 1)
+                {
+                    // Verify a valid SOM
+                    if ((startOfMessage[0] != Protocol.THE_SOM) && (startOfMessage[0] != Protocol.TARGET_BIG_ENDIAN_SOM))
+                    {
+                        m_TargetStartOfMessage = 0;
+                        m_TCPError = Protocol.Errors.InvalidSOM;
+                        return -1;
+                    }
+                }
+                else if (bytesRead > 1)
+                {
+                    // too many bytes read
+                    m_TCPError = Protocol.Errors.ExcessiveBytesReceived;
+                    return -1;
+                }
             }
 
-            // Verify the correct number of bytes were read
-            if (bytesRead != 1)
-            {
-                m_TCPError = Protocol.Errors.ExcessiveBytesReceived;
-                return -1;
-            }
-
-            // Verify a valid SOM
-            if ((startOfMessage[0] != Protocol.THE_SOM) && (startOfMessage[0] != Protocol.TARGET_BIG_ENDIAN_SOM))
-            {
-                m_TargetStartOfMessage = 0;
-                m_TCPError = Protocol.Errors.InvalidSOM;
-                return -1;
-            }
-
-            // A valid Start of Message was received
-            m_TargetStartOfMessage = startOfMessage[0];
             return 0;
         }
 
@@ -289,7 +297,7 @@ namespace VcuComm
             UInt16 messageSize = UInt16.MaxValue;
             while (totalBytesRead != messageSize)
             {
-                // read the serial receive buffer
+                // read the TCP receive buffer
                 bytesRead = ReceiveMessage(rxMessage, totalBytesRead);
                 if (bytesRead < 0)
                 {
@@ -321,7 +329,8 @@ namespace VcuComm
         }
 
         /// <summary>
-        ///
+        /// Reads the data from the TCP port and verifies the target acknowledged the message. Target acknowledges
+        /// the message sent from the application when no data is sent back from the target (i.e. a command was sent)
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         public Int32 ReceiveTargetAcknowledge()
@@ -360,7 +369,8 @@ namespace VcuComm
         }
 
         /// <summary>
-        ///
+        /// Closes the TCP connection gracefully by issuing a shutdown which effectively disables sends
+        /// and receives on the socket and then closes the socket (issues a [FIN,ACK]).
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         public Int32 Close()
