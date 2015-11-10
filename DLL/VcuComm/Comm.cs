@@ -24,7 +24,7 @@ namespace VcuComm
 
             Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.GET_EMBEDDED_INFORMATION, Protocol.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -52,7 +52,7 @@ namespace VcuComm
 
             Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, false);
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -75,7 +75,7 @@ namespace VcuComm
 
             Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.START_CLOCK, Protocol.ResponseType.COMMANDREQUEST, false);
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -91,7 +91,7 @@ namespace VcuComm
 
             Byte[] txMessage = dpp.GetByteArray(null, Protocol.PacketType.STOP_CLOCK, Protocol.ResponseType.COMMANDREQUEST, false);
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -109,7 +109,7 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -125,7 +125,7 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -141,7 +141,7 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -157,7 +157,7 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -178,7 +178,7 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -238,7 +238,7 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -265,7 +265,7 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {
@@ -281,7 +281,7 @@ namespace VcuComm
 
             Byte[] txMessage = request.GetByteArray(null, Protocol.PacketType.GET_CHART_MODE, Protocol.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
 
-            Int32 errorCode = m_CommDevice.SendDataToTarget(txMessage);
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
             {

@@ -252,7 +252,7 @@ namespace VcuComm
         /// </summary>
         /// <param name="txMessage">the message to be sent to the target</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 SendDataToTarget(Byte[] txMessage)
+        public Int32 SendMessageToTarget(Byte[] txMessage)
         {
             Int32 errorCode;
             errorCode = SendStartOfMessage();

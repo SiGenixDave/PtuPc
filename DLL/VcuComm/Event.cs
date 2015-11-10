@@ -27,7 +27,7 @@ namespace VcuComm
         	Protocol.SetFaultLogReq request = new Protocol.SetFaultLogReq(faultLogEnable);
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-            m_CommDevice.SendDataToTarget(txMessage);
+            m_CommDevice.SendMessageToTarget(txMessage);
 
 	        return CommunicationError.Success;
 
@@ -38,7 +38,7 @@ namespace VcuComm
             Protocol.DataPacketProlog request = new Protocol.DataPacketProlog();
 
             Byte[] txMessage = request.GetByteArray(null, Protocol.PacketType.GET_FAULT_INDICES, Protocol.ResponseType.COMMANDREQUEST, m_CommDevice.IsTargetBigEndian());
-            m_CommDevice.SendDataToTarget(txMessage);
+            m_CommDevice.SendMessageToTarget(txMessage);
 
             Int32 bytesReceived;
             m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
@@ -54,7 +54,7 @@ namespace VcuComm
 
             Protocol.GetFaultDataReq request = new Protocol.GetFaultDataReq(FaultIndex, NumberOfFaults);
             Byte []txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-            m_CommDevice.SendDataToTarget(txMessage);
+            m_CommDevice.SendMessageToTarget(txMessage);
 
             Int32 bytesReceived;
             m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);
@@ -95,7 +95,7 @@ namespace VcuComm
 
             Byte []txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
-            m_CommDevice.SendDataToTarget(txMessage);
+            m_CommDevice.SendMessageToTarget(txMessage);
 
             return CommunicationError.Success;
         }
@@ -106,7 +106,7 @@ namespace VcuComm
 	        Protocol.GetStreamInfoReq request = new Protocol.GetStreamInfoReq(StreamNumber);
 
             Byte []txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-            m_CommDevice.SendDataToTarget(txMessage);
+            m_CommDevice.SendMessageToTarget(txMessage);
 
             Int32 bytesReceived;
             m_CommDevice.ReceiveTargetDataPacket(m_RxMessage, out bytesReceived);

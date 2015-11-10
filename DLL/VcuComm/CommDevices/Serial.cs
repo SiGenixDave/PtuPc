@@ -264,12 +264,12 @@ namespace VcuComm
         }
 
         /// <summary>
-        /// Send a message to the target. The SOM is sent and then waits for an echo from the target.
+        /// Send a message to the embedded PTU target. The SOM is sent and then waits for an echo from the target.
         /// The message is then sent and an echo that is identical to the message sent is verified.
         /// </summary>
         /// <param name="txMessage">the message to be sent to the target</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 SendDataToTarget(byte[] txMessage)
+        public Int32 SendMessageToTarget(byte[] txMessage)
         {
             // Send the start of message
             Int32 errorCode = SendStartOfMessage();
@@ -401,6 +401,7 @@ namespace VcuComm
                 bytesRead = ReceiveMessage(rxMessage, 0);
                 if (bytesRead < 0)
                 {
+                    // bytesRead in this case is an error code
                     return bytesRead;
                 }
 

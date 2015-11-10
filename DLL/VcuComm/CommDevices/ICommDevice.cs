@@ -34,7 +34,7 @@ namespace VcuComm
         /// </summary>
         /// <param name="txMessage">message that is sent to the target</param>
         /// <returns>less than 0 if any failure occurs; number of bytes sent otherwise</returns>
-        Int32 SendDataToTarget(Byte[] txMessage);
+        Int32 SendMessageToTarget(Byte[] txMessage);
 
         /// <summary>
         /// Receives a message from the target
