@@ -8,6 +8,22 @@ namespace VcuComm
     /// </summary>
     public interface ICommDevice
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        Protocol.Errors Error
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        String ExceptionMessage
+        {
+            get;
+        }
+
 
         /// <summary>
         /// Attempts to opens a port and establish communication with a target device
