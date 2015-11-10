@@ -33,17 +33,10 @@ namespace VcuComm
         Int32 Open(String commaDelimitedOptions);
 
         /// <summary>
-        /// Sends the start of message delimiter to the target
+        /// Closes the hardware device (TCP connection, RS-232 port, etc.)
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        Int32 SendStartOfMessage();
-
-        /// <summary>
-        /// Received the start of message delimiter from the target. The value of the start of message indicates
-        /// the "endianness" of the target.
-        /// </summary>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        Int32 ReceiveStartOfMessage();
+        Int32 Close();
 
         /// <summary>
         /// Sends a message to the target
@@ -60,21 +53,23 @@ namespace VcuComm
         Int32 ReceiveTargetDataPacket(Byte[] rxMessage, out Int32 bytesReceived);
 
         /// <summary>
-        /// Receives an acknowledge from the target
+        /// The target is responsible for reporting whether it is a big or little endian machine. The start of
+        /// message received from the target indicates the machine type of target
+        /// </summary>
+        /// <remarks>It is imperative that the calling function perform all error checking prior to invoking this
+        /// method. That includes verification that the transmitted SOM was echoed before making assumptions that there
+        /// is an embedded PTU connected.
+        /// </remarks>
+        /// <returns>true if target is Big Endian; false otherwise</returns>
+        bool IsTargetBigEndian();
+
+        /// <summary>
+        /// Reads the data from the  port and verifies the target acknowledged the message. Target acknowledges
+        /// the message sent from the application when no data is sent back from the target (i.e. a command was sent)
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         Int32 ReceiveTargetAcknowledge();
 
-        /// <summary>
-        /// Closes the hardware device (TCP connection, RS-232 port, etc.)
-        /// </summary>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        Int32 Close();
 
-        /// <summary>
-        /// Determines if the target is a big endian or little endian machine
-        /// </summary>
-        /// <returns>true if target is Big Endian; false otherwise</returns>
-        Boolean IsTargetBigEndian();
     }
 }

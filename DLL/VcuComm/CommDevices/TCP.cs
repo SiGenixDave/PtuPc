@@ -193,58 +193,28 @@ namespace VcuComm
         }
 
         /// <summary>
-        /// Sends the Start Of Message (SOM) to the embedded PTU.
+        /// Closes the TCP connection gracefully by issuing a shutdown which effectively disables sends
+        /// and receives on the socket and then closes the socket (issues a [FIN,ACK]).
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 SendStartOfMessage()
+        public Int32 Close()
         {
-            byte[] startOfMessage = { Protocol.THE_SOM };
-
-            Int32 errorCode = TransmitMessage(startOfMessage);
-
-            return errorCode;
-        }
-
-        /// <summary>
-        /// Receives the Start Of Message (SOM) from the embedded the embedded PTU
-        /// </summary>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 ReceiveStartOfMessage()
-        {
-            // Allocate memory for the received byte
-            byte[] startOfMessage = new byte[1];
-
-            Int32 bytesRead = 0;
-            while (bytesRead == 0)
+            try
             {
-                bytesRead = ReceiveMessage(startOfMessage, 0);
-
-                // Verify a valid call was made to ReceiveMessage()
-                if (bytesRead < 0)
-                {
-                    return bytesRead;
-                }
-                // Verify only 1 byte was read; if so save the byte
-                if (bytesRead == 1)
-                {
-                    // Verify a valid SOM
-                    if ((startOfMessage[0] != Protocol.THE_SOM) && (startOfMessage[0] != Protocol.TARGET_BIG_ENDIAN_SOM))
-                    {
-                        m_TargetStartOfMessage = 0;
-                        m_TCPError = Protocol.Errors.InvalidSOM;
-                        return -1;
-                    }
-                }
-                else if (bytesRead > 1)
-                {
-                    // too many bytes read
-                    m_TCPError = Protocol.Errors.ExcessiveBytesReceived;
-                    return -1;
-                }
+                m_Client.Client.Shutdown(SocketShutdown.Send);
+                m_Client.Close();
+            }
+            catch (Exception e)
+            {
+                m_TCPError = Protocol.Errors.Close;
+                m_ExceptionMessage = e.Message;
+                return -1;
             }
 
             return 0;
         }
+
+
 
         /// <summary>
         /// Send a message to the target. The SOM is sent and then waits for an echo from the target.
@@ -329,6 +299,24 @@ namespace VcuComm
         }
 
         /// <summary>
+        /// The target is responsible for reporting whether it is a big or little endian machine. The start of
+        /// message received from the target indicates the machine type of target
+        /// </summary>
+        /// <remarks>It is imperative that the calling function perform all error checking prior to invoking this
+        /// method. That includes verification that the transmitted SOM was echoed before making assumptions that there
+        /// is an embedded PTU connected.
+        /// </remarks>
+        /// <returns>true if target is Big Endian; false otherwise</returns>
+        public Boolean IsTargetBigEndian()
+        {
+            if (m_TargetStartOfMessage == Protocol.TARGET_BIG_ENDIAN_SOM)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Reads the data from the TCP port and verifies the target acknowledged the message. Target acknowledges
         /// the message sent from the application when no data is sent back from the target (i.e. a command was sent)
         /// </summary>
@@ -368,45 +356,61 @@ namespace VcuComm
             return 0;
         }
 
+
         /// <summary>
-        /// Closes the TCP connection gracefully by issuing a shutdown which effectively disables sends
-        /// and receives on the socket and then closes the socket (issues a [FIN,ACK]).
+        /// Sends the Start Of Message (SOM) to the embedded PTU.
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 Close()
+        private Int32 SendStartOfMessage()
         {
-            try
+            byte[] startOfMessage = { Protocol.THE_SOM };
+
+            Int32 errorCode = TransmitMessage(startOfMessage);
+
+            return errorCode;
+        }
+
+        /// <summary>
+        /// Receives the Start Of Message (SOM) from the embedded the embedded PTU
+        /// </summary>
+        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
+        private Int32 ReceiveStartOfMessage()
+        {
+            // Allocate memory for the received byte
+            byte[] startOfMessage = new byte[1];
+
+            Int32 bytesRead = 0;
+            while (bytesRead == 0)
             {
-                m_Client.Client.Shutdown(SocketShutdown.Send);
-                m_Client.Close();
-            }
-            catch (Exception e)
-            {
-                m_TCPError = Protocol.Errors.Close;
-                m_ExceptionMessage = e.Message;
-                return -1;
+                bytesRead = ReceiveMessage(startOfMessage, 0);
+
+                // Verify a valid call was made to ReceiveMessage()
+                if (bytesRead < 0)
+                {
+                    return bytesRead;
+                }
+                // Verify only 1 byte was read; if so save the byte
+                if (bytesRead == 1)
+                {
+                    // Verify a valid SOM
+                    if ((startOfMessage[0] != Protocol.THE_SOM) && (startOfMessage[0] != Protocol.TARGET_BIG_ENDIAN_SOM))
+                    {
+                        m_TargetStartOfMessage = 0;
+                        m_TCPError = Protocol.Errors.InvalidSOM;
+                        return -1;
+                    }
+                }
+                else if (bytesRead > 1)
+                {
+                    // too many bytes read
+                    m_TCPError = Protocol.Errors.ExcessiveBytesReceived;
+                    return -1;
+                }
             }
 
             return 0;
         }
 
-        /// <summary>
-        /// The target is responsible for reporting whether it is a big or little endian machine. The start of
-        /// message received from the target indicates the machine type of target
-        /// </summary>
-        /// <remarks>It is imperative that the calling function perform all error checking prior to invoking this
-        /// method. That includes verification that the transmitted SOM was echoed before making assumptions that there
-        /// is an embedded PTU connected.
-        /// </remarks>
-        /// <returns>true if target is Big Endian; false otherwise</returns>
-        public Boolean IsTargetBigEndian()
-        {
-            if (m_TargetStartOfMessage == Protocol.TARGET_BIG_ENDIAN_SOM)
-            {
-                return true;
-            }
-            return false;
-        }
 
         /// <summary>
         /// This method is invoked after a successful TCP connection (3 way handshake) with the embedded PTU
