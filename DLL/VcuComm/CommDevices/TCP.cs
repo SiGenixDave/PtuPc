@@ -248,12 +248,9 @@ namespace VcuComm
         /// indicating the size of the message.
         /// </summary>
         /// <param name="rxMessage">array where the received message will be stored</param>
-        /// <param name="bytesReceived">number of bytes in the received message</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 ReceiveTargetDataPacket(Byte[] rxMessage, out Int32 bytesReceived)
+        public Int32 ReceiveTargetDataPacket(Byte[] rxMessage)
         {
-            bytesReceived = 0;
-
             // Verify the target responds with a SOM first
             Int32 errorCode = ReceiveStartOfMessage();
             if (errorCode < 0)

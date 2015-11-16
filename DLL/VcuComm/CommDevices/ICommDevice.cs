@@ -50,7 +50,7 @@ namespace VcuComm
         /// </summary>
         /// <param name="rxMessage">the message received from the target is placed here</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        Int32 ReceiveTargetDataPacket(Byte[] rxMessage, out Int32 bytesReceived);
+        Int32 ReceiveTargetDataPacket(Byte[] rxMessage);
 
         /// <summary>
         /// The target is responsible for reporting whether it is a big or little endian machine. The start of

@@ -13,31 +13,27 @@ namespace VcuCommUnitTest
     [TestClass]
     public class UnitTest1
     {
-#if DAS
-        [TestMethod]
-        public void TestMethod1()
-        {
-            Serial serialDevice = new Serial();
-            Comm comm = new Comm(serialDevice);
-
-            serialDevice.Open("COM1,19200,none,8,1");
-
-            VcuComm.Protocol.GetEmbeddedInfoRes emdRes = new VcuComm.Protocol.GetEmbeddedInfoRes();
-            comm.GetEmbeddedInformation(ref emdRes);
-
-            Debug.Print(emdRes.SoftwareVersion);
-            Debug.Print("Serial Error Message = " + serialDevice.SerialError);
-            Debug.Print("Exception Message = " + serialDevice.ExceptionMessage);
-
-
-        }
-#endif
-
 #if !DAS
         [TestMethod]
         public void TestMethod1()
         {
-#if TCP
+            TCP device = new TCP();
+            device.Open("127.0.0.1");
+
+            Comm comm = new Comm(device);
+
+            Double []values = new Double[40];
+            short []types = new short[40];
+            comm.UpdateWatchElements(1, values, types);
+
+        }
+#endif
+
+#if DAS
+        [TestMethod]
+        public void TestMethod1()
+        {
+#if !TCP
             TCP device = new TCP();
             device.Open("127.0.0.1");
             //device.Open("10.0.1.21");

@@ -19,6 +19,11 @@ namespace VcuComm
 
     public partial class Protocol
     {
+        const UInt16 TX_STREAM_SIZE = 1024;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public class SetWatchElementReq : ICommRequest
         {
             private UInt16 ElementIndex;
@@ -26,6 +31,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SET_WATCH_ELEMENT;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private SetWatchElementReq()
             {
             }
@@ -45,7 +54,7 @@ namespace VcuComm
                     this.ElementIndex = Utils.ReverseByteOrder(this.ElementIndex);
                     this.DictionaryIndex = Utils.ReverseByteOrder(this.DictionaryIndex);
                 }
-                MemoryStream ms = new MemoryStream(1024);
+                MemoryStream ms = new MemoryStream(TX_STREAM_SIZE);
                 BinaryWriter bw = new BinaryWriter(ms);
                 bw.Write(this.ElementIndex);
                 bw.Write(this.DictionaryIndex);
@@ -60,6 +69,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SET_WATCH_ELEMENTS;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private SetWatchElementsReq()
             {
             }
@@ -101,6 +114,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.UPDATE_WATCH_ELEMENTS;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private UpdateWatchElementsReq()
             {
             }
@@ -131,6 +148,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SET_CHART_MODE;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private SetChartModeReq()
             {
             }
@@ -162,7 +183,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SET_CHART_INDEX;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
-
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private SetChartIndexReq()
             {
             }
@@ -229,6 +253,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SEND_VARIABLE_VALUE;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private SendVariableReq()
             {
             }
@@ -262,6 +290,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.GET_VARIABLE_INFORMATION;
             private const ResponseType RESPONSE_TYPE = ResponseType.DATAREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private GetVariableInfoReq()
             {
             }
@@ -292,6 +324,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.GET_CHART_INDEX;
             private const ResponseType RESPONSE_TYPE = ResponseType.DATAREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private GetChartIndexReq()
             {
             }
@@ -324,6 +360,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SET_CHART_SCALE;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private SetChartScaleReq()
             {
             }
@@ -406,6 +446,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SET_TIME_DATE;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private SetTimeDateReq()
             {
             }
@@ -459,6 +503,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SET_TIME_DATE;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private Set4TimeDateReq()
             {
             }
@@ -507,6 +555,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SET_FAULT_LOG;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private SetFaultLogReq()
             {
             }
@@ -539,6 +591,11 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.GET_FAULT_DATA;
             private const ResponseType RESPONSE_TYPE = ResponseType.DATAREQUEST;
 
+            
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private GetFaultDataReq()
             {
             }
@@ -573,6 +630,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.GET_FAULT_HISTORY;
             private const ResponseType RESPONSE_TYPE = ResponseType.DATAREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private GetFaultHistoryReq()
             {
             }
@@ -608,6 +669,11 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.GET_DATALOG_BUFFER;
             private const ResponseType RESPONSE_TYPE = ResponseType.DATAREQUEST;
 
+            
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private GetDatalogBufferReq()
             {
             }
@@ -639,6 +705,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SET_CARID;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private SetCarIDReq()
             {
             }
@@ -677,6 +747,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.GET_STREAM_INFORMATION;
             private const ResponseType RESPONSE_TYPE = ResponseType.DATAREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private GetStreamInfoReq()
             {
             }
@@ -707,6 +781,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.CHANGE_EVENT_LOG;
             private const ResponseType RESPONSE_TYPE = ResponseType.DATAREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private ChangeEventLogReq()
             {
             }
@@ -741,6 +819,10 @@ namespace VcuComm
             private const PacketType PACKET_TYPE = PacketType.SET_FAULT_FLAG;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
             private SetFaultFlagReq()
             {
             }
