@@ -85,10 +85,12 @@
   <ItemGroup>
     <Compile Include="CheckBoxUInt32.cs" />
     <Compile Include="Communication\AutoScale.cs" />
+    <Compile Include="Communication\Comm.cs" />
     <Compile Include="Communication\CommunicationException.cs" />
     <Compile Include="Communication\CommunicationParent.cs" />
     <Compile Include="Communication\CommunicationParentOffline.cs" />
     <Compile Include="Communication\DataStream.cs" />
+    <Compile Include="Communication\Event.cs" />
     <Compile Include="Communication\Interfaces\ICommunicationEvent.cs" />
     <Compile Include="Communication\Interfaces\ICommunicationApplication.cs" />
     <Compile Include="Communication\Interfaces\ICommunicationParent.cs" />
@@ -647,6 +649,10 @@
     <ProjectReference Include="..\..\CodeProject\GraphComponents\CodeProject.GraphComponents.csproj">
       <Project>{ADB98F2B-764D-4E27-B941-0153F6672DF6}</Project>
       <Name>CodeProject.GraphComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VcuComm\VcuComm.csproj">
+      <Project>{7DF2E400-C4E7-4C0E-B945-D85C728D7FCD}</Project>
+      <Name>VcuComm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

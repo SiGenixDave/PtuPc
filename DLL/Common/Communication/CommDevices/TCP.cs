@@ -1,60 +1,69 @@
 ﻿using System;
-using System.IO.Ports;
-using System.Linq;
+using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
 
-namespace VcuComm
+namespace Common.Communication.CommDevices
 {
     /// <summary>
-    /// Used to communicate to a target PTU via RS-232 (Serial)
+    /// Class that implements the TCP client communication with the embedded TCP PTU
     /// </summary>
-    public class Serial : ICommDevice
+    public class TCP : ICommDevice
     {
-        private static readonly String NO_SERIAL_ISSUES = "No Exceptions Raised";
+        #region --- Enumerations ---
+
+        #endregion --- Enumerations ---
+
+        #region --- Constants ---
+
+        /// <summary>
+        /// This is the fixed server port number for any embedded TCP PTU.
+        /// </summary>
+        private readonly UInt16 PTU_SERVER_SOCKET = 5001;
+
+        #endregion --- Constants ---
 
         #region --- Member Variables ---
 
         /// <summary>
-        /// object that contains the serial port object
+        /// Becomes true if the client connects to the PTU target. The client connection is done
+        /// via a non-blocking (asynchronous) call in order to prevent the PTU from locking up
+        /// because the connection can't be established.
         /// </summary>
-        private SerialPort m_SerialPort;
+        private Boolean m_Connected;
 
         /// <summary>
-        /// contains the start of message byte received from the target
+        /// TCP client object that is created and used to send requests to the embedded TCP PTU
+        /// server as well as read and process responses from the server.
+        /// </summary>
+        private TcpClient m_Client = null;
+
+        /// <summary>
+        /// Stores the most recent server start of message response. In theory, once updated by the
+        /// embedded PTU, this value should never change because it is not possible to establish
+        /// a TCP connection with another embedded PTU.
         /// </summary>
         private byte m_TargetStartOfMessage;
 
         /// <summary>
-        /// Used to adjust the read timeout of the serial port. -1 means the receive call will wait forever until
-        /// a character is received
+        /// Stores the most recent TCP error. Cleared whenever a calling function reads the state.
         /// </summary>
-        private Int32 m_ReadTimeout = -1;
-
-        public Int32 ReadTimeout
-        {
-            get
-            {
-                return m_ReadTimeout;
-            }
-            set
-            {
-                m_ReadTimeout = value;
-            }
-        }
+        private Common.Communication.ProtocolClass.Protocol.Errors m_TCPError = 
+                                    Common.Communication.ProtocolClass.Protocol.Errors.None;
 
         /// <summary>
-        /// Stores the most recent serial port error. Cleared whenever a calling function reads the state.
+        /// Property for m_TCPError
         /// </summary>
-        private ProtocolPTU.Errors m_SerialError = ProtocolPTU.Errors.None;
-
-        public ProtocolPTU.Errors Error
+        public Common.Communication.ProtocolClass.Protocol.Errors Error
         {
             get
             {
-                ProtocolPTU.Errors serialErrCopy = m_SerialError;
+                Common.Communication.ProtocolClass.Protocol.Errors tcpErrCopy = m_TCPError;
                 // Reset the error after the error code is read; if it isn't read
                 // than the most recent error will be saved until another error occurs
-                m_SerialError = ProtocolPTU.Errors.None;
-                return serialErrCopy;
+                m_TCPError = Common.Communication.ProtocolClass.Protocol.Errors.None;
+                return tcpErrCopy;
             }
         }
 
@@ -62,8 +71,11 @@ namespace VcuComm
         /// Maintains the exception message thrown when a serial port error occurs. Allows the calling function
         /// to ascertain more detail about the error.
         /// </summary>
-        private String m_ExceptionMessage = NO_SERIAL_ISSUES;
+        private String m_ExceptionMessage = "No Exceptions Raised";
 
+        /// <summary>
+        /// Property for m_ExceptionMessage
+        /// </summary>
         public String ExceptionMessage
         {
             get
@@ -71,7 +83,7 @@ namespace VcuComm
                 String exceptionMsgCopy = m_ExceptionMessage;
                 // Reset the error after the error message is read; if it isn't read
                 // than the most recent error will be saved until another error occurs
-                m_ExceptionMessage = NO_SERIAL_ISSUES;
+                m_ExceptionMessage = "No Exceptions Raised";
                 return exceptionMsgCopy;
             }
         }
@@ -81,138 +93,121 @@ namespace VcuComm
         #region --- Methods ---
 
         /// <summary>
-        /// Gets and returns all available serial ports that currently exist on the PC.
+        /// This function attempts to open a new connection with an embedded PTU.
         /// </summary>
-        /// <returns>All serial ports currently available on the PC</returns>
-        static public String[] GetAvailableSerialPorts()
-        {
-            return SerialPort.GetPortNames();
-        }
-
-        /// <summary>
-        /// Opens the desired serial port based on the comma delimited string passed as the argument. The first argument
-        /// is the COM port (e.g. COM1). The 2nd argument in the string is the baud rate (e.g. 19200). The 3rd argument is
-        /// the parity (e.g. none, odd, or even). The 4th argument is the number of data bits (e.g. 8). The 5th argument is
-        /// the number of stop bits (e.g. 1).
-        /// </summary>
-        /// <param name="commaDelimitedOptions">COM port settings - "COMX,BaudRate,Parity,DataBits,StopBits"</param>
+        /// <param name="commaDelimitedOptions">valid URL or valid IP address</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 Open(string commaDelimitedOptions)
+        public Int32 Open(String commaDelimitedOptions)
         {
-            String[] options;
-            options = commaDelimitedOptions.Split(',');
+            String url;
+            IPHostEntry ipHost;
 
-            // verify 5 comma delimited arguments
-            if (options.Length != 5)
+            // There are no other options supported except passing the URL (could be IP address or
+            // IPTCOM address)
+            url = commaDelimitedOptions;
+
+            // Any PTU object can only support 1 TCP client; ensures Open() is called only once per created object
+            if (m_Client != null)
             {
-                m_SerialError = ProtocolPTU.Errors.OptionsLengthIncorrect;
+                m_TCPError = Protocol.Errors.ClientPreviouslyCreated;
                 return -1;
             }
 
-            // Save the port name (e.g. COM1)
-            String portName = options[0];
+            // Create the TCPClient object
+            m_Client = new TcpClient();
 
-            Int32 baudRate;
+            // Attempt to resolve the URL to an IP address
             try
             {
-                baudRate = Convert.ToInt32(options[1]);
+                ipHost = Dns.GetHostEntry(url);
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.BaudRateConversion;
+                m_TCPError = Protocol.Errors.InvalidURL;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
 
-            // Default to no parity check
-            Parity parity = Parity.None;
-            switch (options[2].ToLower())
+            // Verify at least one IP address is resolved
+            if (ipHost.AddressList.Length == 0)
             {
-                case "odd":
-                    parity = Parity.Odd;
-                    break;
-
-                case "even":
-                    parity = Parity.Even;
-                    break;
-
-                default:
-                    break;
+                m_TCPError = Protocol.Errors.InvalidURL;
+                return -1;
             }
 
-            // Set the number of data bits
-            Int32 dataBits;
+            // Scan through all of the resolved IP addresses and try connecting to the first
+            // IP v4 address in the list; ignore the rest
+            IPAddress ipv4Addr = null;
+            foreach (IPAddress addr in ipHost.AddressList)
+            {
+                if (addr.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    Debug.WriteLine("IPv4 Address: {0}", addr);
+                    ipv4Addr = addr;
+                    break;
+                }
+            }
+
+            // Can't resolve URL into IPv4 Address
+            if (ipv4Addr == null)
+            {
+                m_TCPError = Protocol.Errors.UnresolvableURL;
+                return -1;
+            }
+
+            // Try to establish a connection with the embedded PTU. This establishes the 3 way handshake with the
+            // target
             try
             {
-                dataBits = Convert.ToInt32(options[3]);
+                // This is an asynchronous (non--blocking) TCP connection attempt. If a successful connection
+                // occurs, the ConnectCallback() method will be invoked and m_Connected will be made true
+                m_Connected = false;
+                m_Client.BeginConnect(ipv4Addr, PTU_SERVER_SOCKET, new AsyncCallback(ConnectCallback), m_Client);
             }
-            catch (Exception e)
+            catch (SocketException e)
             {
-                m_SerialError = ProtocolPTU.Errors.DataBitsConversion;
+                m_TCPError = Protocol.Errors.ConnectionError;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
 
-            // Default to 1 stop bit
-            StopBits stopBits = StopBits.One;
-            switch (options[4].ToLower())
-            {
-                case "0":
-                    stopBits = StopBits.None;
-                    break;
-
-                case "2":
-                    stopBits = StopBits.Two;
-                    break;
-
-                default:
-                    break;
-            }
-
-            // Open the serial port
             try
             {
-                m_SerialPort = new SerialPort(portName, baudRate, parity, dataBits, stopBits);
-                m_SerialPort.Open();
-                m_SerialPort.ReadTimeout = m_ReadTimeout;
+                // Sleep for a while so that ample time for a connection can be made
+                Thread.Sleep(1000);
+                // m_Connected becomes true (asynchronously) if a valid connection was made
+                if (m_Connected == false)
+                {
+                    m_TCPError = Protocol.Errors.ConnectionError;
+                    return -1;
+                }
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.OpenSerialPort;
+                m_TCPError = Protocol.Errors.ConnectionError;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
 
-            // Flush the receive buffer
-            Int32 errorCode = FlushRxBuffer();
-            if (errorCode < 0)
-            {
-                return errorCode;
-            }
-
-            // Flush the transmit buffer
-            errorCode = FlushTxBuffer();
-            if (errorCode < 0)
-            {
-                return errorCode;
-            }
-
+            // Connection to PTU server was successful
             return 0;
         }
 
         /// <summary>
-        /// Closes the serial port
+        /// Closes the TCP connection gracefully by issuing a shutdown which effectively disables sends
+        /// and receives on the socket and then closes the socket (issues a [FIN,ACK]).
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         public Int32 Close()
         {
             try
             {
-                m_SerialPort.Close();
+                m_Client.Client.Shutdown(SocketShutdown.Send);
+                m_Client.Close();
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.Close;
+                m_TCPError = Protocol.Errors.Close;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -221,69 +216,32 @@ namespace VcuComm
         }
 
 
+
         /// <summary>
-        /// Send a message to the embedded PTU target. The SOM is sent and then waits for an echo from the target.
+        /// Send a message to the target. The SOM is sent and then waits for an echo from the target.
         /// The message is then sent and an echo that is identical to the message sent is verified.
         /// </summary>
         /// <param name="txMessage">the message to be sent to the target</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 SendMessageToTarget(byte[] txMessage)
+        public Int32 SendMessageToTarget(Byte[] txMessage)
         {
-            // Send the start of message
-            Int32 errorCode = SendStartOfMessage();
+            Int32 errorCode;
+            errorCode = SendStartOfMessage();
+
             if (errorCode < 0)
             {
                 return errorCode;
             }
 
-            // Wait for the receive start of message
             errorCode = ReceiveStartOfMessage();
             if (errorCode < 0)
             {
                 return errorCode;
             }
 
-            // Transmit the message to the target
             errorCode = TransmitMessage(txMessage);
-            if (errorCode < 0)
-            {
-                return errorCode;
-            }
 
-            // Create a buffer for the receive message which should be identical to the
-            // message just sent
-            Byte[] rxMessage = new Byte[txMessage.Length];
-
-            // wait for the target logic to echo back the exact message just sent by the application
-            // (NOTE: this is different than TCP which doesn't expect an echo)
-            Int32 bytesRead = 0;
-            Int32 totalBytesRead = 0;
-            while (totalBytesRead != rxMessage.Length)
-            {
-                bytesRead = ReceiveMessage(rxMessage, totalBytesRead);
-                if (bytesRead < 0)
-                {
-                    return bytesRead;
-                }
-                totalBytesRead += bytesRead;
-                if (totalBytesRead > rxMessage.Length)
-                {
-                    // too many bytes read
-                    m_SerialError = ProtocolPTU.Errors.ExcessiveBytesReceived;
-                    FlushRxBuffer();
-                    return -1;
-                }
-            }
-
-            // This compares the contents of the 2 arrays
-            if (txMessage.SequenceEqual(rxMessage) == false)
-            {
-                // log error
-                m_SerialError = ProtocolPTU.Errors.MessageEcho;
-                return -1;
-            }
-
-            return 0;
+            return errorCode;
         }
 
         /// <summary>
@@ -307,11 +265,11 @@ namespace VcuComm
             UInt16 messageSize = UInt16.MaxValue;
             while (totalBytesRead != messageSize)
             {
-                // read the serial receive buffer
+                // read the TCP receive buffer
                 bytesRead = ReceiveMessage(rxMessage, totalBytesRead);
-                if (errorCode < 0)
+                if (bytesRead < 0)
                 {
-                    return errorCode;
+                    return bytesRead;
                 }
 
                 // adjust the index into the receive buffer in case the entire message wasn't received
@@ -330,15 +288,13 @@ namespace VcuComm
                 if (totalBytesRead > messageSize)
                 {
                     // too many bytes read
-                    m_SerialError = ProtocolPTU.Errors.ExcessiveBytesReceived;
-                    FlushRxBuffer();
+                    m_TCPError = Protocol.Errors.ExcessiveBytesReceived;
                     return -1;
                 }
             }
 
             return 0;
         }
-
 
         /// <summary>
         /// The target is responsible for reporting whether it is a big or little endian machine. The start of
@@ -349,9 +305,9 @@ namespace VcuComm
         /// is an embedded PTU connected.
         /// </remarks>
         /// <returns>true if target is Big Endian; false otherwise</returns>
-        public bool IsTargetBigEndian()
+        public Boolean IsTargetBigEndian()
         {
-            if (m_TargetStartOfMessage == ProtocolPTU.TARGET_BIG_ENDIAN_SOM)
+            if (m_TargetStartOfMessage == Protocol.TARGET_BIG_ENDIAN_SOM)
             {
                 return true;
             }
@@ -359,7 +315,7 @@ namespace VcuComm
         }
 
         /// <summary>
-        /// Reads the serial port and verifies the target acknowledged the message. Target acknowledges
+        /// Reads the data from the TCP port and verifies the target acknowledged the message. Target acknowledges
         /// the message sent from the application when no data is sent back from the target (i.e. a command was sent)
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
@@ -375,24 +331,22 @@ namespace VcuComm
                 bytesRead = ReceiveMessage(rxMessage, 0);
                 if (bytesRead < 0)
                 {
-                    // bytesRead in this case is an error code
                     return bytesRead;
                 }
 
                 if (bytesRead == 1)
                 {
                     // Verify ACK received
-                    if (rxMessage[0] != ProtocolPTU.PTU_ACK)
+                    if (rxMessage[0] != Protocol.PTU_ACK)
                     {
-                        m_SerialError = ProtocolPTU.Errors.AckNotReceieved;
+                        m_TCPError = Protocol.Errors.AckNotReceieved;
                         return -1;
                     }
                 }
                 else if (bytesRead > 1)
                 {
                     // too many bytes read
-                    m_SerialError = ProtocolPTU.Errors.ExcessiveBytesReceived;
-                    FlushRxBuffer();
+                    m_TCPError = Protocol.Errors.ExcessiveBytesReceived;
                     return -1;
                 }
             }
@@ -401,14 +355,13 @@ namespace VcuComm
         }
 
 
-
         /// <summary>
-        /// Sends the Start of Message byte to the target
+        /// Sends the Start Of Message (SOM) to the embedded PTU.
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         private Int32 SendStartOfMessage()
         {
-            byte[] startOfMessage = { ProtocolPTU.THE_SOM };
+            byte[] startOfMessage = { Protocol.THE_SOM };
 
             Int32 errorCode = TransmitMessage(startOfMessage);
 
@@ -416,7 +369,7 @@ namespace VcuComm
         }
 
         /// <summary>
-        /// Receives the Start of Message byte from the target
+        /// Receives the Start Of Message (SOM) from the embedded the embedded PTU
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         private Int32 ReceiveStartOfMessage()
@@ -438,18 +391,17 @@ namespace VcuComm
                 if (bytesRead == 1)
                 {
                     // Verify a valid SOM
-                    if ((startOfMessage[0] != ProtocolPTU.THE_SOM) && (startOfMessage[0] != ProtocolPTU.TARGET_BIG_ENDIAN_SOM))
+                    if ((startOfMessage[0] != Protocol.THE_SOM) && (startOfMessage[0] != Protocol.TARGET_BIG_ENDIAN_SOM))
                     {
                         m_TargetStartOfMessage = 0;
-                        m_SerialError = ProtocolPTU.Errors.InvalidSOM;
+                        m_TCPError = Protocol.Errors.InvalidSOM;
                         return -1;
                     }
                 }
                 else if (bytesRead > 1)
                 {
                     // too many bytes read
-                    m_SerialError = ProtocolPTU.Errors.ExcessiveBytesReceived;
-                    FlushRxBuffer();
+                    m_TCPError = Protocol.Errors.ExcessiveBytesReceived;
                     return -1;
                 }
             }
@@ -458,26 +410,37 @@ namespace VcuComm
         }
 
 
+        /// <summary>
+        /// This method is invoked after a successful TCP connection (3 way handshake) with the embedded PTU
+        /// is established. It sets a flag to inform the connection was established.
+        /// </summary>
+        /// <param name="result">delegate parameter required; UNUSED</param>
+        private void ConnectCallback(IAsyncResult result)
+        {
+            m_Connected = true;
+        }
 
         /// <summary>
-        /// Sends a message to the target via the serial port
+        /// Sends a message to the embedded TCP server target from the TCP client
         /// </summary>
         /// <param name="txMessage">the byte array to be sent to the embedded PTU</param>
         /// <returns>less than 0 if any failure occurs; number of bytes sent if successful</returns>
         private Int32 TransmitMessage(Byte[] txMessage)
         {
+            Int32 bytesSent = 0;
+
             // Send the entire message to the serial port
             try
             {
-                m_SerialPort.Write(txMessage, 0, txMessage.Length);
+                bytesSent = m_Client.Client.Send(txMessage);
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.TransmitMessage;
+                m_TCPError = Protocol.Errors.TransmitMessage;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
-            return txMessage.Length;
+            return bytesSent;
         }
 
         /// <summary>
@@ -492,56 +455,18 @@ namespace VcuComm
         private Int32 ReceiveMessage(Byte[] rxMessage, Int32 bufferOffset)
         {
             Int32 bytesRead = 0;
+
             try
             {
-                bytesRead = m_SerialPort.Read(rxMessage, bufferOffset, rxMessage.Length - bufferOffset);
+                bytesRead = m_Client.Client.Receive(rxMessage, bufferOffset, rxMessage.Length - bufferOffset, SocketFlags.None);
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.ReceiveMessage;
+                m_TCPError = Protocol.Errors.ReceiveMessage;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
             return bytesRead;
-        }
-
-        /// <summary>
-        /// Flushes the serial port receive buffer
-        /// </summary>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        private Int32 FlushRxBuffer()
-        {
-            try
-            {
-                m_SerialPort.DiscardInBuffer();
-            }
-            catch (Exception e)
-            {
-                m_SerialError = ProtocolPTU.Errors.SerialBufferFlush;
-                m_ExceptionMessage = e.Message;
-                return -1;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Flushes the serial port transmit buffer
-        /// </summary>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        private Int32 FlushTxBuffer()
-        {
-            try
-            {
-                m_SerialPort.DiscardOutBuffer();
-            }
-            catch (Exception e)
-            {
-                m_SerialError = ProtocolPTU.Errors.SerialBufferFlush;
-                m_ExceptionMessage = e.Message;
-                return -1;
-            }
-            return 0;
         }
 
         #endregion --- Methods ---

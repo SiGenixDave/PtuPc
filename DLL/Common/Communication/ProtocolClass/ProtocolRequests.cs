@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace VcuComm
+namespace Common.Communication.ProtocolClass
 {
     /// <summary>
     /// 

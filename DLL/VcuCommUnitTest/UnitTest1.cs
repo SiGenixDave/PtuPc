@@ -13,7 +13,7 @@ namespace VcuCommUnitTest
     [TestClass]
     public class UnitTest1
     {
-#if !DAS
+#if DAS
         [TestMethod]
         public void TestMethod1()
         {
@@ -29,11 +29,11 @@ namespace VcuCommUnitTest
         }
 #endif
 
-#if DAS
+#if !DAS
         [TestMethod]
         public void TestMethod1()
         {
-#if !TCP
+#if TCP
             TCP device = new TCP();
             device.Open("127.0.0.1");
             //device.Open("10.0.1.21");
@@ -44,14 +44,14 @@ namespace VcuCommUnitTest
             
             Comm comm = new Comm(device);
 
+            CommunicationError errorCode;
+            //errorCode = comm.SetCarID(0x1234);
+            //if (errorCode != CommunicationError.Success)
+            //{
+            //    Debug.Print("Set Car ID Failed --- Error: " + errorCode);
+            //}
 
-            CommunicationError errorCode = comm.SetCarID(0x1234);
-            if (errorCode != CommunicationError.Success)
-            {
-                Debug.Print("Set Car ID Failed --- Error: " + errorCode);
-            }
-
-            VcuComm.Protocol.GetEmbeddedInfoRes emdRes = new VcuComm.Protocol.GetEmbeddedInfoRes();
+            VcuComm.ProtocolPTU.GetEmbeddedInfoRes emdRes = new VcuComm.ProtocolPTU.GetEmbeddedInfoRes();
             errorCode = comm.GetEmbeddedInformation(ref emdRes);
             if (errorCode != CommunicationError.Success)
             {

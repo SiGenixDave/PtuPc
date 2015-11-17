@@ -49,19 +49,19 @@ namespace VcuComm
         /// <summary>
         /// Stores the most recent TCP error. Cleared whenever a calling function reads the state.
         /// </summary>
-        private Protocol.Errors m_TCPError = Protocol.Errors.None;
+        private ProtocolPTU.Errors m_TCPError = ProtocolPTU.Errors.None;
 
         /// <summary>
         /// Property for m_TCPError
         /// </summary>
-        public Protocol.Errors Error
+        public ProtocolPTU.Errors Error
         {
             get
             {
-                Protocol.Errors tcpErrCopy = m_TCPError;
+                ProtocolPTU.Errors tcpErrCopy = m_TCPError;
                 // Reset the error after the error code is read; if it isn't read
                 // than the most recent error will be saved until another error occurs
-                m_TCPError = Protocol.Errors.None;
+                m_TCPError = ProtocolPTU.Errors.None;
                 return tcpErrCopy;
             }
         }
@@ -108,7 +108,7 @@ namespace VcuComm
             // Any PTU object can only support 1 TCP client; ensures Open() is called only once per created object
             if (m_Client != null)
             {
-                m_TCPError = Protocol.Errors.ClientPreviouslyCreated;
+                m_TCPError = ProtocolPTU.Errors.ClientPreviouslyCreated;
                 return -1;
             }
 
@@ -122,7 +122,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_TCPError = Protocol.Errors.InvalidURL;
+                m_TCPError = ProtocolPTU.Errors.InvalidURL;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -130,7 +130,7 @@ namespace VcuComm
             // Verify at least one IP address is resolved
             if (ipHost.AddressList.Length == 0)
             {
-                m_TCPError = Protocol.Errors.InvalidURL;
+                m_TCPError = ProtocolPTU.Errors.InvalidURL;
                 return -1;
             }
 
@@ -150,7 +150,7 @@ namespace VcuComm
             // Can't resolve URL into IPv4 Address
             if (ipv4Addr == null)
             {
-                m_TCPError = Protocol.Errors.UnresolvableURL;
+                m_TCPError = ProtocolPTU.Errors.UnresolvableURL;
                 return -1;
             }
 
@@ -165,7 +165,7 @@ namespace VcuComm
             }
             catch (SocketException e)
             {
-                m_TCPError = Protocol.Errors.ConnectionError;
+                m_TCPError = ProtocolPTU.Errors.ConnectionError;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -177,13 +177,13 @@ namespace VcuComm
                 // m_Connected becomes true (asynchronously) if a valid connection was made
                 if (m_Connected == false)
                 {
-                    m_TCPError = Protocol.Errors.ConnectionError;
+                    m_TCPError = ProtocolPTU.Errors.ConnectionError;
                     return -1;
                 }
             }
             catch (Exception e)
             {
-                m_TCPError = Protocol.Errors.ConnectionError;
+                m_TCPError = ProtocolPTU.Errors.ConnectionError;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -206,7 +206,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_TCPError = Protocol.Errors.Close;
+                m_TCPError = ProtocolPTU.Errors.Close;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -287,7 +287,7 @@ namespace VcuComm
                 if (totalBytesRead > messageSize)
                 {
                     // too many bytes read
-                    m_TCPError = Protocol.Errors.ExcessiveBytesReceived;
+                    m_TCPError = ProtocolPTU.Errors.ExcessiveBytesReceived;
                     return -1;
                 }
             }
@@ -306,7 +306,7 @@ namespace VcuComm
         /// <returns>true if target is Big Endian; false otherwise</returns>
         public Boolean IsTargetBigEndian()
         {
-            if (m_TargetStartOfMessage == Protocol.TARGET_BIG_ENDIAN_SOM)
+            if (m_TargetStartOfMessage == ProtocolPTU.TARGET_BIG_ENDIAN_SOM)
             {
                 return true;
             }
@@ -336,16 +336,16 @@ namespace VcuComm
                 if (bytesRead == 1)
                 {
                     // Verify ACK received
-                    if (rxMessage[0] != Protocol.PTU_ACK)
+                    if (rxMessage[0] != ProtocolPTU.PTU_ACK)
                     {
-                        m_TCPError = Protocol.Errors.AckNotReceieved;
+                        m_TCPError = ProtocolPTU.Errors.AckNotReceieved;
                         return -1;
                     }
                 }
                 else if (bytesRead > 1)
                 {
                     // too many bytes read
-                    m_TCPError = Protocol.Errors.ExcessiveBytesReceived;
+                    m_TCPError = ProtocolPTU.Errors.ExcessiveBytesReceived;
                     return -1;
                 }
             }
@@ -360,7 +360,7 @@ namespace VcuComm
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         private Int32 SendStartOfMessage()
         {
-            byte[] startOfMessage = { Protocol.THE_SOM };
+            byte[] startOfMessage = { ProtocolPTU.THE_SOM };
 
             Int32 errorCode = TransmitMessage(startOfMessage);
 
@@ -390,17 +390,17 @@ namespace VcuComm
                 if (bytesRead == 1)
                 {
                     // Verify a valid SOM
-                    if ((startOfMessage[0] != Protocol.THE_SOM) && (startOfMessage[0] != Protocol.TARGET_BIG_ENDIAN_SOM))
+                    if ((startOfMessage[0] != ProtocolPTU.THE_SOM) && (startOfMessage[0] != ProtocolPTU.TARGET_BIG_ENDIAN_SOM))
                     {
                         m_TargetStartOfMessage = 0;
-                        m_TCPError = Protocol.Errors.InvalidSOM;
+                        m_TCPError = ProtocolPTU.Errors.InvalidSOM;
                         return -1;
                     }
                 }
                 else if (bytesRead > 1)
                 {
                     // too many bytes read
-                    m_TCPError = Protocol.Errors.ExcessiveBytesReceived;
+                    m_TCPError = ProtocolPTU.Errors.ExcessiveBytesReceived;
                     return -1;
                 }
             }
@@ -435,7 +435,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_TCPError = Protocol.Errors.TransmitMessage;
+                m_TCPError = ProtocolPTU.Errors.TransmitMessage;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -461,7 +461,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_TCPError = Protocol.Errors.ReceiveMessage;
+                m_TCPError = ProtocolPTU.Errors.ReceiveMessage;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }

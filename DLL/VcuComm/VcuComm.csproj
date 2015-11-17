@@ -42,22 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comm.cs" />
     <Compile Include="CommDevices\Serial.cs" />
     <Compile Include="CommDevices\ICommDevice.cs" />
     <Compile Include="CommDevices\TCP.cs" />
-    <Compile Include="Event.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtocolClass\Protocol.cs" />
-    <Compile Include="ProtocolClass\ProtocolEnum.cs" />
-    <Compile Include="ProtocolClass\ProtocolRequests.cs" />
+    <Compile Include="ProtocolClass\ProtocolPTU.cs" />
+    <Compile Include="ProtocolClass\ProtocolPTUEnum.cs" />
+    <Compile Include="ProtocolClass\ProtocolPTURequests.cs" />
     <Compile Include="Utils.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{4D060B1F-3148-4646-B847-8DBCF6F887F6}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

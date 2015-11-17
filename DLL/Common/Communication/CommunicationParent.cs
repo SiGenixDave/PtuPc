@@ -178,6 +178,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Common.Configuration;
 using Common.Properties;
+using VcuComm;
 
 namespace Common.Communication
 {
@@ -1036,6 +1037,9 @@ namespace Common.Communication
         #endregion --- Function Delegates ---
         #endregion --- Member Variables ---
 
+        ICommDevice device;
+        Comm comm;
+
         #region --- Constructors ---
         /// <summary>
         /// Initialize a new instance of the class and set the function delegates, properties and member variables.
@@ -1149,17 +1153,28 @@ namespace Common.Communication
         /// not CommunicationError.Success.</exception>
         public virtual void InitCommunication(CommunicationSetting_t communicationsSetting)
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_InitCommunication != null, "CommunicationParent.InitCommunication() - [m_InitCommunication != null]");
+            Int32 error = -1;
 
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
-                errorCode = (CommunicationError)m_InitCommunication((short)communicationsSetting.Protocol, communicationsSetting.PortIdentifier,
-                                                                    (int)communicationsSetting.SerialCommunicationParameters.BaudRate,
-                                                                    (short)communicationsSetting.SerialCommunicationParameters.BitsPerCharacter,
-                                                                    (short)communicationsSetting.SerialCommunicationParameters.Parity,
-                                                                    (short)communicationsSetting.SerialCommunicationParameters.StopBits);
+                String args;
+
+                //if (communicationsSetting.Protocol == Protocol.RS232)
+                //{
+                    device = new Serial();
+                    args = "COM" + communicationsSetting.PortIdentifier + ",19200,none,8,1";
+                //}
+                //else if (CommunicationSetting.Protocol == Protocol.TCPIP)
+                //{
+                //    device = new TCP();
+                //}
+
+                if (device != null)
+                {
+                    error = device.Open(args);
+                }
+
             }
             catch (Exception)
             {
@@ -1178,6 +1193,12 @@ namespace Common.Communication
                                                       communicationsSetting.SerialCommunicationParameters.StopBits,
                                                       errorCode);
                 DebugMode.Write(initCommunication.ToXML());
+            }
+
+            if (error >= 0)
+            {
+                errorCode = CommunicationError.Success;
+                comm = new Comm(device);
             }
 
             if (errorCode != CommunicationError.Success)
@@ -1199,7 +1220,7 @@ namespace Common.Communication
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
-                errorCode = (CommunicationError)m_CloseCommunication((short)protocol);
+                errorCode = (CommunicationError)device.Close();
             }
             catch (Exception)
             {
@@ -1234,14 +1255,12 @@ namespace Common.Communication
             targetConfiguration = new TargetConfiguration_t();
             TargetConfiguration_t localTargetConfiguration = new TargetConfiguration_t();
             CommunicationError errorCode = CommunicationError.UnknownError;
+            ProtocolPTU.GetEmbeddedInfoRes embInfo = new ProtocolPTU.GetEmbeddedInfoRes();
             try
             {
+                comm.GetEmbeddedInformation(ref embInfo);
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_GetEmbeddedInformation(   out localTargetConfiguration.Version,
-                                                                            out localTargetConfiguration.CarIdentifier,
-                                                                            out localTargetConfiguration.SubSystemName,
-                                                                            out localTargetConfiguration.ProjectIdentifier,
-                                                                            out localTargetConfiguration.ConversionMask);
+                errorCode = CommunicationError.Success;
             }
             catch (Exception)
             {
@@ -1269,12 +1288,12 @@ namespace Common.Communication
             {
                 throw new CommunicationException(Resources.EMGetTargetConfigurationFailed, errorCode);
             }
-
-            targetConfiguration.Version = localTargetConfiguration.Version.Trim();
-            targetConfiguration.CarIdentifier = localTargetConfiguration.CarIdentifier.Trim();
-            targetConfiguration.SubSystemName = localTargetConfiguration.SubSystemName.Trim();
-            targetConfiguration.ProjectIdentifier = localTargetConfiguration.ProjectIdentifier.Trim();
-            targetConfiguration.ConversionMask = localTargetConfiguration.ConversionMask;
+            
+            targetConfiguration.Version = embInfo.SoftwareVersion;
+            targetConfiguration.CarIdentifier = embInfo.CarID;
+            targetConfiguration.SubSystemName = embInfo.SubSystemName;
+            targetConfiguration.ProjectIdentifier = embInfo.IdentifierString;
+            targetConfiguration.ConversionMask = embInfo.ConfigurationMask;
         }
 
         /// <summary>

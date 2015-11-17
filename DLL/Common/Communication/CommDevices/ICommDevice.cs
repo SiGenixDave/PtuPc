@@ -1,6 +1,7 @@
 ﻿using System;
+using Common.Communication.ProtocolClass;
 
-namespace VcuComm
+namespace Common.Communication.CommDevices
 {
     /// <summary>
     /// Interface used to abstract calls so that any hardware connection (RS-232, TCP, etc) implements
@@ -11,7 +12,7 @@ namespace VcuComm
         /// <summary>
         /// 
         /// </summary>
-        ProtocolPTU.Errors Error
+        Common.Communication.ProtocolClass.Protocol.Errors Error
         {
             get;
         }

@@ -1,4 +1,4 @@
-﻿namespace VcuComm
+﻿namespace Common.Communication.ProtocolClass
 {
 
     public partial class Protocol

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO.Ports;
 using System.Linq;
+using Common.Communication.ProtocolClass;
 
-namespace VcuComm
+namespace Common.Communication.CommDevices
 {
     /// <summary>
     /// Used to communicate to a target PTU via RS-232 (Serial)
@@ -44,16 +45,16 @@ namespace VcuComm
         /// <summary>
         /// Stores the most recent serial port error. Cleared whenever a calling function reads the state.
         /// </summary>
-        private ProtocolPTU.Errors m_SerialError = ProtocolPTU.Errors.None;
+        private Common.Communication.ProtocolClass.Protocol.Errors m_SerialError = Protocol.Errors.None;
 
-        public ProtocolPTU.Errors Error
+        public Common.Communication.ProtocolClass.Protocol.Errors Error
         {
             get
             {
-                ProtocolPTU.Errors serialErrCopy = m_SerialError;
+                Common.Communication.ProtocolClass.Protocol.Errors serialErrCopy = m_SerialError;
                 // Reset the error after the error code is read; if it isn't read
                 // than the most recent error will be saved until another error occurs
-                m_SerialError = ProtocolPTU.Errors.None;
+                m_SerialError = Protocol.Errors.None;
                 return serialErrCopy;
             }
         }
@@ -105,7 +106,7 @@ namespace VcuComm
             // verify 5 comma delimited arguments
             if (options.Length != 5)
             {
-                m_SerialError = ProtocolPTU.Errors.OptionsLengthIncorrect;
+                m_SerialError = Protocol.Errors.OptionsLengthIncorrect;
                 return -1;
             }
 
@@ -119,7 +120,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.BaudRateConversion;
+                m_SerialError = Protocol.Errors.BaudRateConversion;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -148,7 +149,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.DataBitsConversion;
+                m_SerialError = Protocol.Errors.DataBitsConversion;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -178,7 +179,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.OpenSerialPort;
+                m_SerialError = Protocol.Errors.OpenSerialPort;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -212,7 +213,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.Close;
+                m_SerialError = Protocol.Errors.Close;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -269,7 +270,7 @@ namespace VcuComm
                 if (totalBytesRead > rxMessage.Length)
                 {
                     // too many bytes read
-                    m_SerialError = ProtocolPTU.Errors.ExcessiveBytesReceived;
+                    m_SerialError = Protocol.Errors.ExcessiveBytesReceived;
                     FlushRxBuffer();
                     return -1;
                 }
@@ -279,7 +280,7 @@ namespace VcuComm
             if (txMessage.SequenceEqual(rxMessage) == false)
             {
                 // log error
-                m_SerialError = ProtocolPTU.Errors.MessageEcho;
+                m_SerialError = Protocol.Errors.MessageEcho;
                 return -1;
             }
 
@@ -330,7 +331,7 @@ namespace VcuComm
                 if (totalBytesRead > messageSize)
                 {
                     // too many bytes read
-                    m_SerialError = ProtocolPTU.Errors.ExcessiveBytesReceived;
+                    m_SerialError = Protocol.Errors.ExcessiveBytesReceived;
                     FlushRxBuffer();
                     return -1;
                 }
@@ -351,7 +352,7 @@ namespace VcuComm
         /// <returns>true if target is Big Endian; false otherwise</returns>
         public bool IsTargetBigEndian()
         {
-            if (m_TargetStartOfMessage == ProtocolPTU.TARGET_BIG_ENDIAN_SOM)
+            if (m_TargetStartOfMessage == Protocol.TARGET_BIG_ENDIAN_SOM)
             {
                 return true;
             }
@@ -382,16 +383,16 @@ namespace VcuComm
                 if (bytesRead == 1)
                 {
                     // Verify ACK received
-                    if (rxMessage[0] != ProtocolPTU.PTU_ACK)
+                    if (rxMessage[0] != Protocol.PTU_ACK)
                     {
-                        m_SerialError = ProtocolPTU.Errors.AckNotReceieved;
+                        m_SerialError = Protocol.Errors.AckNotReceieved;
                         return -1;
                     }
                 }
                 else if (bytesRead > 1)
                 {
                     // too many bytes read
-                    m_SerialError = ProtocolPTU.Errors.ExcessiveBytesReceived;
+                    m_SerialError = Protocol.Errors.ExcessiveBytesReceived;
                     FlushRxBuffer();
                     return -1;
                 }
@@ -408,7 +409,7 @@ namespace VcuComm
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         private Int32 SendStartOfMessage()
         {
-            byte[] startOfMessage = { ProtocolPTU.THE_SOM };
+            byte[] startOfMessage = { Protocol.THE_SOM };
 
             Int32 errorCode = TransmitMessage(startOfMessage);
 
@@ -438,17 +439,17 @@ namespace VcuComm
                 if (bytesRead == 1)
                 {
                     // Verify a valid SOM
-                    if ((startOfMessage[0] != ProtocolPTU.THE_SOM) && (startOfMessage[0] != ProtocolPTU.TARGET_BIG_ENDIAN_SOM))
+                    if ((startOfMessage[0] != Protocol.THE_SOM) && (startOfMessage[0] != Protocol.TARGET_BIG_ENDIAN_SOM))
                     {
                         m_TargetStartOfMessage = 0;
-                        m_SerialError = ProtocolPTU.Errors.InvalidSOM;
+                        m_SerialError = Protocol.Errors.InvalidSOM;
                         return -1;
                     }
                 }
                 else if (bytesRead > 1)
                 {
                     // too many bytes read
-                    m_SerialError = ProtocolPTU.Errors.ExcessiveBytesReceived;
+                    m_SerialError = Protocol.Errors.ExcessiveBytesReceived;
                     FlushRxBuffer();
                     return -1;
                 }
@@ -473,7 +474,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.TransmitMessage;
+                m_SerialError = Protocol.Errors.TransmitMessage;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -498,7 +499,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.ReceiveMessage;
+                m_SerialError = Protocol.Errors.ReceiveMessage;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -517,7 +518,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.SerialBufferFlush;
+                m_SerialError = Protocol.Errors.SerialBufferFlush;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
@@ -537,7 +538,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
-                m_SerialError = ProtocolPTU.Errors.SerialBufferFlush;
+                m_SerialError = Protocol.Errors.SerialBufferFlush;
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
