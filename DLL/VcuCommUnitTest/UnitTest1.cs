@@ -42,7 +42,7 @@ namespace VcuCommUnitTest
             device.Open("COM2,19200,none,8,1");
 #endif            
             
-            Comm comm = new Comm(device);
+            CommGen comm = new CommGen(device);
 
             CommunicationError errorCode;
             //errorCode = comm.SetCarID(0x1234);

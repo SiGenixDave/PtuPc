@@ -115,6 +115,8 @@ namespace Common.Communication
         protected static string m_CarID = CarIdentifier;
         #endregion --- Member Variables ---
 
+        protected CommGen m_Comm;
+
         #region --- Constructors ---
         /// <summary>
         /// Initialize a new instance of the class.
@@ -254,6 +256,15 @@ namespace Common.Communication
         {
             get { return m_CommunicationSetting; }
             set { m_CommunicationSetting = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the communication general associated with the selected target.
+        /// </summary>
+        public CommGen Comm
+        {
+            get { return m_Comm; }
+            set { m_Comm = value; }
         }
         #endregion --- Properties ---
     }

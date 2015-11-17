@@ -107,6 +107,11 @@ namespace Common.Communication
         /// Gets or sets the communication settings associated with the selected VCU.
         /// </summary>
         CommunicationSetting_t CommunicationSetting { get; set; }
+
+        /// <summary>
+        /// Gets or sets the communication general associated with the selected VCU.
+        /// </summary>
+        CommGen Comm { get; set; }
         #endregion - [Properties] -
     }
 }

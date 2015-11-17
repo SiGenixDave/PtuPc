@@ -65,7 +65,7 @@ namespace VcuComm
 
         public class SetWatchElementsReq : ICommRequest
         {
-            private UInt16[] WatchElement;  // WatchSize
+            private Int16[] WatchElement;  // WatchSize
             private const PacketType PACKET_TYPE = PacketType.SET_WATCH_ELEMENTS;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
@@ -77,9 +77,9 @@ namespace VcuComm
             {
             }
 
-            public SetWatchElementsReq(UInt16[] WatchElement)
+            public SetWatchElementsReq(Int16[] WatchElement)
             {
-                this.WatchElement = new UInt16[WatchElement.Length];
+                this.WatchElement = new Int16[WatchElement.Length];
                 for (UInt16 i = 0; i < WatchElement.Length; i++)
                 {
                     this.WatchElement[i] = WatchElement[i];
@@ -94,7 +94,9 @@ namespace VcuComm
                 {
                     for (UInt16 i = 0; i < this.WatchElement.Length; i++)
                     {
-                        this.WatchElement[i] = Utils.ReverseByteOrder(this.WatchElement[i]);
+                        UInt16 tempElement = (UInt16)this.WatchElement[i];
+                        tempElement = Utils.ReverseByteOrder(tempElement);
+                        this.WatchElement[i] = (Int16)tempElement;
                     }
                 }
                 MemoryStream ms = new MemoryStream(1024);
@@ -110,7 +112,7 @@ namespace VcuComm
 
         public class UpdateWatchElementsReq : ICommRequest
         {
-            private byte ForceFullUpdate;
+            private Int16 ForceFullUpdate;
             private const PacketType PACKET_TYPE = PacketType.UPDATE_WATCH_ELEMENTS;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
 
@@ -122,7 +124,7 @@ namespace VcuComm
             {
             }
 
-            public UpdateWatchElementsReq(byte ForceFullUpdate)
+            public UpdateWatchElementsReq(Int16 ForceFullUpdate)
             {
                 this.ForceFullUpdate = ForceFullUpdate;
             }
@@ -131,12 +133,7 @@ namespace VcuComm
             {
                 DataPacketProlog dpp = new DataPacketProlog();
 
-                if (targetIsBigEndian)
-                {
-                    this.ForceFullUpdate = Utils.ReverseByteOrder(this.ForceFullUpdate);
-                }
-
-                Byte[] payload = { this.ForceFullUpdate };
+                Byte[] payload = { this.ForceFullUpdate != 0 ? (Byte)1 : (Byte)0 };
 
                 return dpp.GetByteArray(payload, PACKET_TYPE, RESPONSE_TYPE, targetIsBigEndian);
             }

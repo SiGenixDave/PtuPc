@@ -225,7 +225,7 @@ namespace Watch.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_SetWatchElements(watchElements);
+                m_Comm.SetWatchElements(watchElements);
             }
             catch (Exception)
             {
@@ -280,7 +280,7 @@ namespace Watch.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_UpdateWatchElements(forceUpdateAsShort, watchValues, watchDataTypes);
+                errorCode = (CommunicationError)m_Comm.UpdateWatchElements(forceUpdateAsShort, watchValues, watchDataTypes);
             }
             catch (Exception)
             {

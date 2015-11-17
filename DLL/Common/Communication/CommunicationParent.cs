@@ -1038,7 +1038,7 @@ namespace Common.Communication
         #endregion --- Member Variables ---
 
         ICommDevice device;
-        Comm comm;
+        protected CommGen m_Comm;
 
         #region --- Constructors ---
         /// <summary>
@@ -1138,6 +1138,7 @@ namespace Common.Communication
         public CommunicationParent(ICommunicationParent communicationInterface) : this()
         {
             m_CommunicationSetting = communicationInterface.CommunicationSetting;
+            m_Comm = communicationInterface.Comm;
         }
         #endregion --- Constructors ---
 
@@ -1200,7 +1201,7 @@ namespace Common.Communication
             if (error >= 0)
             {
                 errorCode = CommunicationError.Success;
-                comm = new Comm(device);
+                m_Comm = new CommGen(device);
             }
 
             if (errorCode != CommunicationError.Success)
@@ -1260,9 +1261,16 @@ namespace Common.Communication
             ProtocolPTU.GetEmbeddedInfoRes embInfo = new ProtocolPTU.GetEmbeddedInfoRes();
             try
             {
-                comm.GetEmbeddedInformation(ref embInfo);
+                errorCode = m_Comm.GetEmbeddedInformation(ref embInfo);
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = CommunicationError.Success;
+                if (errorCode == CommunicationError.Success)
+                {
+                    localTargetConfiguration.Version = embInfo.SoftwareVersion;
+                    localTargetConfiguration.CarIdentifier = embInfo.CarID;
+                    localTargetConfiguration.SubSystemName = embInfo.SubSystemName;
+                    localTargetConfiguration.ProjectIdentifier = embInfo.IdentifierString;
+                    localTargetConfiguration.ConversionMask = embInfo.ConfigurationMask;
+                }
             }
             catch (Exception)
             {
@@ -1290,12 +1298,12 @@ namespace Common.Communication
             {
                 throw new CommunicationException(Resources.EMGetTargetConfigurationFailed, errorCode);
             }
-            
-            targetConfiguration.Version = embInfo.SoftwareVersion;
-            targetConfiguration.CarIdentifier = embInfo.CarID;
-            targetConfiguration.SubSystemName = embInfo.SubSystemName;
-            targetConfiguration.ProjectIdentifier = embInfo.IdentifierString;
-            targetConfiguration.ConversionMask = embInfo.ConfigurationMask;
+
+            targetConfiguration.Version = localTargetConfiguration.Version;
+            targetConfiguration.CarIdentifier = localTargetConfiguration.CarIdentifier;
+            targetConfiguration.SubSystemName = localTargetConfiguration.SubSystemName;
+            targetConfiguration.ProjectIdentifier = localTargetConfiguration.ProjectIdentifier;
+            targetConfiguration.ConversionMask = localTargetConfiguration.ConversionMask;
         }
 
         /// <summary>
@@ -1553,6 +1561,15 @@ namespace Common.Communication
         {
             get { return m_CommunicationSetting; }
             set { m_CommunicationSetting = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the communication general associated with the selected target.
+        /// </summary>
+        public CommGen Comm
+        {
+            get { return m_Comm; }
+            set { m_Comm = value; }
         }
         #endregion --- Properties ---
     }

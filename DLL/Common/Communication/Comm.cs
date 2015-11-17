@@ -8,7 +8,7 @@ namespace Common.Communication
     /// <summary>
     /// 
     /// </summary>
-    public class Comm
+    public class CommGen
     {
         #region --- Member Variables ---
         
@@ -30,14 +30,14 @@ namespace Common.Communication
         /// Private 0 argument constructor that forces the instantiation of this class
         /// to use the constructor below
         /// </summary>
-        private Comm () 
+        private CommGen () 
         {}
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="device"></param>
-        public Comm(ICommDevice device)
+        public CommGen(ICommDevice device)
         {
             m_CommDevice = device;
         }
@@ -146,7 +146,7 @@ namespace Common.Communication
         /// </summary>
         /// <param name="WatchElements"></param>
         /// <returns></returns>
-        public CommunicationError SetWatchElements(UInt16[] WatchElements)
+        public CommunicationError SetWatchElements(Int16[] WatchElements)
         {
             ProtocolPTU.SetWatchElementsReq request = new ProtocolPTU.SetWatchElementsReq(WatchElements);
 
@@ -181,7 +181,7 @@ namespace Common.Communication
         /// <param name="WatchValues"></param>
         /// <param name="DataType"></param>
         /// <returns></returns>
-        public CommunicationError UpdateWatchElements(Byte ForceUpdate, Double[] WatchValues, Int16[] DataType)
+        public CommunicationError UpdateWatchElements(Int16 ForceUpdate, Double[] WatchValues, Int16[] DataType)
         {
             ProtocolPTU.UpdateWatchElementsReq request = new ProtocolPTU.UpdateWatchElementsReq(ForceUpdate);
 
@@ -199,9 +199,9 @@ namespace Common.Communication
 
                 for (UInt16 i = 0; i < numUpdates; i++)
                 {
-                    UInt16 index = BitConverter.ToUInt16(m_RxMessage, ((i * 8) + 9)) ;
-                    UInt32 newValue = BitConverter.ToUInt32(m_RxMessage, ((i * 8) + 11));
-                    UInt16 dataType = BitConverter.ToUInt16(m_RxMessage, ((i * 8) + 15));
+                    UInt16 index = BitConverter.ToUInt16(m_RxMessage, ((i * 8) + 10)) ;
+                    UInt32 newValue = BitConverter.ToUInt32(m_RxMessage, ((i * 8) + 12));
+                    UInt16 dataType = BitConverter.ToUInt16(m_RxMessage, ((i * 8) + 16));
                     
                     if (m_CommDevice.IsTargetBigEndian())
                     {

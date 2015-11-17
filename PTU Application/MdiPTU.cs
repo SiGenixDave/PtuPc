@@ -1605,7 +1605,11 @@ namespace Bombardier.PTU
             try
             {
                 // Get the current chart mode.
+#if DAS
                 chartMode = CommunicationInterface.GetChartMode();
+#else
+                chartMode = ChartMode.DataMode;
+#endif
                 switch (chartMode)
                 {
                     case ChartMode.DataMode:
