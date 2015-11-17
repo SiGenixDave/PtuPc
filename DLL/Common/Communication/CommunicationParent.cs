@@ -1158,17 +1158,19 @@ namespace Common.Communication
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
-                String args;
+                String args = "";
 
-                //if (communicationsSetting.Protocol == Protocol.RS232)
-                //{
+                if (communicationsSetting.Protocol == Protocol.RS232)
+                {
                     device = new Serial();
+                    //TODO need to add a function to parse communicationsSetting to yield string below
                     args = "COM" + communicationsSetting.PortIdentifier + ",19200,none,8,1";
-                //}
-                //else if (CommunicationSetting.Protocol == Protocol.TCPIP)
-                //{
-                //    device = new TCP();
-                //}
+                }
+                else if (communicationsSetting.Protocol == Protocol.TCPIP)
+                {
+                    device = new TCP();
+                    args = communicationsSetting.PortIdentifier;
+                }
 
                 if (device != null)
                 {
