@@ -245,7 +245,7 @@ namespace VcuComm
 
         public class SendVariableReq : ICommRequest
         {
-            private UInt16 DictionaryIndex;
+            private Int16 DictionaryIndex;
             private UInt32 NewValue;
             private const PacketType PACKET_TYPE = PacketType.SEND_VARIABLE_VALUE;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
@@ -258,7 +258,7 @@ namespace VcuComm
             {
             }
 
-            public SendVariableReq(UInt16 DictionaryIndex, UInt32 NewValue)
+            public SendVariableReq(Int16 DictionaryIndex, UInt32 NewValue)
             {
                 this.DictionaryIndex = DictionaryIndex;
                 this.NewValue = NewValue;
@@ -270,7 +270,7 @@ namespace VcuComm
 
                 if (targetIsBigEndian)
                 {
-                    this.DictionaryIndex = Utils.ReverseByteOrder(this.DictionaryIndex);
+                    this.DictionaryIndex = (Int16)Utils.ReverseByteOrder((UInt16)this.DictionaryIndex);
                     this.NewValue = Utils.ReverseByteOrder(this.NewValue);
                 }
                 MemoryStream ms = new MemoryStream(1024);

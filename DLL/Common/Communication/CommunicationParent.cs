@@ -1324,7 +1324,7 @@ namespace Common.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_GetChartMode(out chartModeAsShort);
+                errorCode = (CommunicationError)m_Comm.GetChartMode(ref chartModeAsShort);
             }
             catch (Exception)
             {

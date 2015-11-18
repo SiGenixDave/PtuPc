@@ -128,7 +128,7 @@ namespace Common.Communication
         /// <param name="DataType"></param>
         /// <param name="Data"></param>
         /// <returns></returns>
-        public CommunicationError SendVariable(UInt16 DictionaryIndex, UInt16 DataType, Double Data)
+        public CommunicationError SendVariable(Int16 DictionaryIndex, Int16 DataType, Double Data)
         {
             UInt32 data = (UInt32)Data;
 
@@ -314,7 +314,7 @@ namespace Common.Communication
         /// <param name="ChartIndex"></param>
         /// <param name="VariableIndex"></param>
         /// <returns></returns>
-        public CommunicationError GetChartIndex(UInt16 ChartIndex, ref UInt16 VariableIndex)
+        public CommunicationError GetChartIndex(Int16 ChartIndex, ref Int16 VariableIndex)
         {
             ProtocolPTU.GetChartIndexReq request = new ProtocolPTU.GetChartIndexReq((Byte)ChartIndex);
 
@@ -329,9 +329,9 @@ namespace Common.Communication
 
             m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
-            VariableIndex = BitConverter.ToUInt16(m_RxMessage, 8);
+            VariableIndex = BitConverter.ToInt16(m_RxMessage, 8);
 
-            // TODO check for endianess
+            // check for endianess
             if (m_CommDevice.IsTargetBigEndian())
             {
                 VariableIndex = Utils.ReverseByteOrder(VariableIndex);
@@ -361,7 +361,7 @@ namespace Common.Communication
         /// </summary>
         /// <param name="CurrentChartMode"></param>
         /// <returns></returns>
-        public CommunicationError GetChartMode(ref UInt16 CurrentChartMode)
+        public CommunicationError GetChartMode(ref Int16 CurrentChartMode)
         {
             ProtocolPTU.DataPacketProlog request = new ProtocolPTU.DataPacketProlog();
 
@@ -376,13 +376,16 @@ namespace Common.Communication
 
             m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
-            CurrentChartMode = BitConverter.ToUInt16(m_RxMessage, 8);
+            CurrentChartMode = BitConverter.ToInt16(m_RxMessage, 8);
 
             // check for endianess
             if (m_CommDevice.IsTargetBigEndian())
             {
                 CurrentChartMode = Utils.ReverseByteOrder(CurrentChartMode);
             }
+
+            // Use only the lower byte
+            CurrentChartMode &= 0x00FF;
 
             return CommunicationError.Success;
         }
