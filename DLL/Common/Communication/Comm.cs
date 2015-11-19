@@ -181,7 +181,7 @@ namespace Common.Communication
         /// <param name="WatchValues"></param>
         /// <param name="DataType"></param>
         /// <returns></returns>
-        public CommunicationError UpdateWatchElements(Int16 ForceUpdate, Double[] WatchValues, Int16[] DataType)
+        public CommunicationError UpdateWatchElements(Int16 ForceUpdate, ref Double[] WatchValues, ref Int16[] DataType)
         {
             ProtocolPTU.UpdateWatchElementsReq request = new ProtocolPTU.UpdateWatchElementsReq(ForceUpdate);
 
@@ -201,7 +201,7 @@ namespace Common.Communication
                 {
                     UInt16 index = BitConverter.ToUInt16(m_RxMessage, ((i * 8) + 10)) ;
                     UInt32 newValue = BitConverter.ToUInt32(m_RxMessage, ((i * 8) + 12));
-                    UInt16 dataType = BitConverter.ToUInt16(m_RxMessage, ((i * 8) + 16));
+                    Int16 dataType = BitConverter.ToInt16(m_RxMessage, ((i * 8) + 16));
                     
                     if (m_CommDevice.IsTargetBigEndian())
                     {
@@ -211,6 +211,7 @@ namespace Common.Communication
                     }
                     // TODO may have to adjust value based on data type
                     WatchValues[index] = newValue;
+                    DataType[index] = dataType;
 
                 }
 
