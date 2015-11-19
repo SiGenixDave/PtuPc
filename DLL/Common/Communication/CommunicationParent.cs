@@ -1478,6 +1478,7 @@ namespace Common.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
+                //TODO
                 errorCode = (CommunicationError)m_SetChartScale(watchIdentifier, maxChartScaleRaw, minChartScaleRaw);
             }
             catch (Exception)
@@ -1537,6 +1538,8 @@ namespace Common.Communication
             }
         }
 
+#if DAS
+        // SHouldn't need this anymore; used to support unmanaged code
         /// <summary>
         /// Set the number of watch variables associated with the project.
         /// </summary>
@@ -1551,6 +1554,7 @@ namespace Common.Communication
             short watchReturn = m_SetWatchSize(watchSize);
             return watchReturn;
         }
+#endif
         #endregion --- Methods ---
 
         #region --- Properties ---

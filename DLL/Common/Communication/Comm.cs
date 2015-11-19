@@ -301,12 +301,18 @@ namespace Common.Communication
         /// <param name="ChartIndex"></param>
         /// <param name="VariableIndex"></param>
         /// <returns></returns>
-        public CommunicationError SetChartIndex(UInt16 ChartIndex, UInt16 VariableIndex)
+        public CommunicationError SetChartIndex(Int16 VariableIndex, Int16 ChartIndex)
         {
-            // TODO
+            ProtocolPTU.SetChartIndexReq request = new ProtocolPTU.SetChartIndexReq(VariableIndex, ChartIndex);
 
-            return CommunicationError.Success;
+            Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
+
+            CommunicationError commError = SendCommandToEmbedded(txMessage);
+
+            return commError;
+
         }
+
 
         /// <summary>
         /// 

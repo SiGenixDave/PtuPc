@@ -175,7 +175,7 @@ namespace VcuComm
 
         public class SetChartIndexReq : ICommRequest
         {
-            private UInt16 VariableIndex;
+            private Int16 VariableIndex;
             private Byte ChartIndex;
             private const PacketType PACKET_TYPE = PacketType.SET_CHART_INDEX;
             private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
@@ -188,10 +188,10 @@ namespace VcuComm
             {
             }
 
-            public SetChartIndexReq(UInt16 VariableIndex, Byte ChartIndex)
+            public SetChartIndexReq(Int16 VariableIndex, Int16 ChartIndex)
             {
+                this.ChartIndex = (Byte)ChartIndex;
                 this.VariableIndex = VariableIndex;
-                this.ChartIndex = ChartIndex;
             }
 
             public Byte[] GetByteArray(Boolean targetIsBigEndian)
@@ -200,8 +200,8 @@ namespace VcuComm
 
                 if (targetIsBigEndian)
                 {
-                    this.VariableIndex = Utils.ReverseByteOrder(this.VariableIndex);
                     this.ChartIndex = Utils.ReverseByteOrder(this.ChartIndex);
+                    this.VariableIndex = Utils.ReverseByteOrder(this.VariableIndex);
                 }
                 MemoryStream ms = new MemoryStream(1024);
                 BinaryWriter bw = new BinaryWriter(ms);

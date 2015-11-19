@@ -600,11 +600,15 @@ namespace Common.Configuration
 			try
 			{
 				m_WatchSize = dataDictionary.CONFIGUREPTU[0].WatchSize;
+                // DAS now with C# code, the following shouldn't be necessary because arrays now have implicit size
+#if DAS
                 short watchReturn = (short)CommunicationError.UnknownError;
 
                 // Inform the VcuCommunication32/VcuCommunication64 dynamic link library of the number of watch variables that are associated with the
                 // project.
                 CommunicationParent communicationInterface = new CommunicationParent();
+
+
                 watchReturn = communicationInterface.SetWatchSize(m_WatchSize);
                 communicationInterface = null;
 
@@ -615,6 +619,7 @@ namespace Common.Configuration
 
                     MessageBox.Show(Resources.MBTWatchSizeInvalid, Resources.MBCaptionWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				}
+#endif
 			}
 			catch (System.EntryPointNotFoundException)
 			{
