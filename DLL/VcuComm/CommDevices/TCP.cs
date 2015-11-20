@@ -105,6 +105,8 @@ namespace VcuComm
             // IPTCOM address)
             url = commaDelimitedOptions;
 
+            Debug.Write("TCP Open: " + commaDelimitedOptions);
+
             // Any PTU object can only support 1 TCP client; ensures Open() is called only once per created object
             if (m_Client != null)
             {
@@ -214,15 +216,7 @@ namespace VcuComm
             return 0;
         }
 
-
-
-        /// <summary>
-        /// Send a message to the target. The SOM is sent and then waits for an echo from the target.
-        /// The message is then sent and an echo that is identical to the message sent is verified.
-        /// </summary>
-        /// <param name="txMessage">the message to be sent to the target</param>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 SendMessageToTarget(Byte[] txMessage)
+        public Int32 SendReceiveSOM()
         {
             Int32 errorCode;
             errorCode = SendStartOfMessage();
@@ -233,12 +227,18 @@ namespace VcuComm
             }
 
             errorCode = ReceiveStartOfMessage();
-            if (errorCode < 0)
-            {
-                return errorCode;
-            }
+            return errorCode;
+        }
 
-            errorCode = TransmitMessage(txMessage);
+        /// <summary>
+        /// Send a message to the target. The SOM is sent and then waits for an echo from the target.
+        /// The message is then sent and an echo that is identical to the message sent is verified.
+        /// </summary>
+        /// <param name="txMessage">the message to be sent to the target</param>
+        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
+        public Int32 SendMessageToTarget(Byte[] txMessage)
+        {
+            Int32 errorCode = TransmitMessage(txMessage);
 
             return errorCode;
         }
@@ -395,6 +395,10 @@ namespace VcuComm
                         m_TargetStartOfMessage = 0;
                         m_TCPError = ProtocolPTU.Errors.InvalidSOM;
                         return -1;
+                    }
+                    else
+                    {
+                        m_TargetStartOfMessage = startOfMessage[0];
                     }
                 }
                 else if (bytesRead > 1)

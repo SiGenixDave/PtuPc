@@ -39,6 +39,12 @@ namespace VcuComm
         Int32 Close();
 
         /// <summary>
+        /// Sends and receives the Start Of Message (SOM) to/from the target
+        /// </summary>
+        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
+        Int32 SendReceiveSOM();
+ 
+        /// <summary>
         /// Sends a message to the target
         /// </summary>
         /// <param name="txMessage">message that is sent to the target</param>

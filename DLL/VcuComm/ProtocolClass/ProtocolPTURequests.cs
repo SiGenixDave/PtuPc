@@ -94,9 +94,7 @@ namespace VcuComm
                 {
                     for (UInt16 i = 0; i < this.WatchElement.Length; i++)
                     {
-                        UInt16 tempElement = (UInt16)this.WatchElement[i];
-                        tempElement = Utils.ReverseByteOrder(tempElement);
-                        this.WatchElement[i] = (Int16)tempElement;
+                        this.WatchElement[i] = Utils.ReverseByteOrder(this.WatchElement[i]);
                     }
                 }
                 MemoryStream ms = new MemoryStream(1024);

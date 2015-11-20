@@ -220,6 +220,23 @@ namespace VcuComm
             return 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Int32 SendReceiveSOM()
+        {
+            Int32 errorCode;
+            errorCode = SendStartOfMessage();
+
+            if (errorCode < 0)
+            {
+                return errorCode;
+            }
+
+            errorCode = ReceiveStartOfMessage();
+            return errorCode;
+        }
 
         /// <summary>
         /// Send a message to the embedded PTU target. The SOM is sent and then waits for an echo from the target.
@@ -229,22 +246,8 @@ namespace VcuComm
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         public Int32 SendMessageToTarget(byte[] txMessage)
         {
-            // Send the start of message
-            Int32 errorCode = SendStartOfMessage();
-            if (errorCode < 0)
-            {
-                return errorCode;
-            }
-
-            // Wait for the receive start of message
-            errorCode = ReceiveStartOfMessage();
-            if (errorCode < 0)
-            {
-                return errorCode;
-            }
-
             // Transmit the message to the target
-            errorCode = TransmitMessage(txMessage);
+            Int32 errorCode = TransmitMessage(txMessage);
             if (errorCode < 0)
             {
                 return errorCode;
