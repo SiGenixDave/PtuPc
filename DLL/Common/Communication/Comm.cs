@@ -181,7 +181,7 @@ namespace Common.Communication
         /// <param name="WatchValues"></param>
         /// <param name="DataType"></param>
         /// <returns></returns>
-        public CommunicationError UpdateWatchElements(Int16 ForceUpdate, ref Double[] WatchValues, ref Int16[] DataType)
+        public CommunicationError UpdateWatchElements(Int16 ForceUpdate, Double[] WatchValues, Int16[] DataType)
         {
             ProtocolPTU.UpdateWatchElementsReq request = new ProtocolPTU.UpdateWatchElementsReq(ForceUpdate);
 
@@ -209,10 +209,8 @@ namespace Common.Communication
                         newValue = Utils.ReverseByteOrder(newValue);
                         dataType = Utils.ReverseByteOrder(dataType);
                     }
-                    // TODO may have to adjust value based on data type
                     WatchValues[index] = newValue;
                     DataType[index] = dataType;
-
                 }
 
             }
@@ -274,12 +272,35 @@ namespace Common.Communication
         /// <param name="Minute"></param>
         /// <param name="Second"></param>
         /// <returns></returns>
-        public CommunicationError GetTimeDate(Boolean Use4DigitYearCode, ref UInt16 Year, ref Byte Month, ref Byte Day, ref Byte Hour, ref Byte Minute, ref Byte Second)
+        public CommunicationError GetTimeDate(Boolean Use4DigitYearCode, ref Int16 Year, ref Byte Month, ref Byte Day, ref Byte Hour, ref Byte Minute, ref Byte Second)
         {
-            // TODO
+            ProtocolPTU.GetDateTime request = new ProtocolPTU.GetDateTime();
+
+            Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
+
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
+
+            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+
+            Hour = m_RxMessage[8];
+            Minute = m_RxMessage[9];
+            Second = m_RxMessage[10];
+            Year = m_RxMessage[11];
+            Month = m_RxMessage[12];
+            Day = m_RxMessage[13];
+
+            // check for endianess
+            if (m_CommDevice.IsTargetBigEndian())
+            {
+                //TODO
+            }
 
             return CommunicationError.Success;
-
         }
 
         /// <summary>
@@ -289,11 +310,19 @@ namespace Common.Communication
         /// <param name="MaxScale"></param>
         /// <param name="MinScale"></param>
         /// <returns></returns>
-        public CommunicationError SetChartScale(UInt16 DictionaryIndex, Double MaxScale, Double MinScale)
+        public CommunicationError SetChartScale(Int16 DictionaryIndex, Double MaxScale, Double MinScale)
         {
-            // TODO
+            Int32 maxScale = (Int32)MaxScale;
+            Int32 minScale = (Int32)MinScale;
 
-            return CommunicationError.Success;
+            ProtocolPTU.SetChartScaleReq request =
+                new ProtocolPTU.SetChartScaleReq(DictionaryIndex, maxScale, minScale);
+
+            Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
+
+            CommunicationError commError = SendCommandToEmbedded(txMessage);
+
+            return commError;
         }
 
         /// <summary>
@@ -302,9 +331,9 @@ namespace Common.Communication
         /// <param name="ChartIndex"></param>
         /// <param name="VariableIndex"></param>
         /// <returns></returns>
-        public CommunicationError SetChartIndex(Int16 VariableIndex, Int16 ChartIndex)
+        public CommunicationError SetChartIndex(Int16 ChartIndex, Int16 VariableIndex)
         {
-            ProtocolPTU.SetChartIndexReq request = new ProtocolPTU.SetChartIndexReq(VariableIndex, ChartIndex);
+            ProtocolPTU.SetChartIndexReq request = new ProtocolPTU.SetChartIndexReq(ChartIndex, VariableIndex);
 
             Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
 
@@ -352,7 +381,7 @@ namespace Common.Communication
         /// </summary>
         /// <param name="TargetChartMode"></param>
         /// <returns></returns>
-        public CommunicationError SetChartMode(UInt16 TargetChartMode)
+        public CommunicationError SetChartMode(Int16 TargetChartMode)
         {
             ProtocolPTU.SetChartModeReq request = new ProtocolPTU.SetChartModeReq((byte)TargetChartMode);
 

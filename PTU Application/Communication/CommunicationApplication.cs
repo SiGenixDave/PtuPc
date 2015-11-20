@@ -196,18 +196,16 @@ namespace Bombardier.PTU.Communication
         public void GetTimeDate(bool use4DigitYearCode, out DateTime dateTime)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_GetTimeDate != null, "CommunicationApplication.GetTimeDate() - [m_GetTimeDate != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationApplication.GetTimeDate() - [m_MutexCommuncationInterface != null]");
 
-            // Set the use4DigitYearCodeAsShort parameter according to whether the VCU uses 2 or 4 digit year code. 
-            short use4DigitYearCodeAsShort = (use4DigitYearCode == true) ? Use4DigitYearCodeTrue : Use4DigitYearCodeFalse;
-
-            short year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0;
+            Int16 year = 0; ;
+            Byte month = 0, day = 0, hour = 0, minute = 0, second = 0;
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_GetTimeDate(use4DigitYearCodeAsShort, out year, out month, out day, out hour, out minute, out second);
+                errorCode = m_Comm.GetTimeDate(use4DigitYearCode, ref year, ref month, ref day, ref hour, ref minute, ref second);
+                //errorCode = (CommunicationError)m_GetTimeDate(use4DigitYearCodeAsShort, out year, out month, out day, out hour, out minute, out second);
             }
             catch (Exception)
             {

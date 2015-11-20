@@ -1360,7 +1360,6 @@ namespace Common.Communication
         public void SetChartMode(ChartMode chartMode)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_SetChartMode != null, "CommunicationParent.SetChartMode() - [m_SetChartMode != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationParent.SetChartMode() - [m_MutexCommuncationInterface != null]");
 
             short chartModeAsShort = (short)chartMode;
@@ -1368,7 +1367,7 @@ namespace Common.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_SetChartMode(chartModeAsShort);
+                errorCode = m_Comm.SetChartMode(chartModeAsShort);
             }
             catch (Exception)
             {
@@ -1402,13 +1401,13 @@ namespace Common.Communication
         public void SetChartIndex(short channelIndex, short watchIdentifier)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_SetChartIndex != null, "CommunicationParent.SetChartIndex() - [m_SetChartIndex != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationParent.SetChartIndex() - [m_MutexCommuncationInterface != null]");
 
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
+                errorCode = m_Comm.SetChartIndex(channelIndex, watchIdentifier);
                 errorCode = (CommunicationError)m_SetChartIndex(channelIndex, watchIdentifier);
             }
             catch (Exception)
@@ -1478,8 +1477,7 @@ namespace Common.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                //TODO
-                errorCode = (CommunicationError)m_SetChartScale(watchIdentifier, maxChartScaleRaw, minChartScaleRaw);
+                errorCode = m_Comm.SetChartScale(watchIdentifier, maxChartScaleRaw, minChartScaleRaw);
             }
             catch (Exception)
             {

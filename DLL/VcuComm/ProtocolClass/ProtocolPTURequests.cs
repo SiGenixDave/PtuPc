@@ -188,9 +188,9 @@ namespace VcuComm
             {
             }
 
-            public SetChartIndexReq(Int16 VariableIndex, Int16 ChartIndex)
+            public SetChartIndexReq(Int16 ChartIndex, Int16 VariableIndex)
             {
-                this.ChartIndex = (Byte)ChartIndex;
+                this.ChartIndex = (Byte)ChartIndex; 
                 this.VariableIndex = VariableIndex;
             }
 
@@ -200,8 +200,8 @@ namespace VcuComm
 
                 if (targetIsBigEndian)
                 {
-                    this.ChartIndex = Utils.ReverseByteOrder(this.ChartIndex);
-                    this.VariableIndex = Utils.ReverseByteOrder(this.VariableIndex);
+                    this.ChartIndex = Utils.ReverseByteOrder(this.ChartIndex); 
+                    this.VariableIndex = Utils.ReverseByteOrder(this.VariableIndex); 
                 }
                 MemoryStream ms = new MemoryStream(1024);
                 BinaryWriter bw = new BinaryWriter(ms);
@@ -351,7 +351,7 @@ namespace VcuComm
 
         public class SetChartScaleReq : ICommRequest
         {
-            private UInt16 DictionaryIndex;
+            private Int16 DictionaryIndex;
             private Int32 MaxScale;
             private Int32 MinScale;
             private const PacketType PACKET_TYPE = PacketType.SET_CHART_SCALE;
@@ -365,7 +365,7 @@ namespace VcuComm
             {
             }
 
-            public SetChartScaleReq(UInt16 DictionaryIndex, Int32 MaxScale, Int32 MinScale)
+            public SetChartScaleReq(Int16 DictionaryIndex, Int32 MaxScale, Int32 MinScale)
             {
                 this.DictionaryIndex = DictionaryIndex;
                 this.MaxScale = MaxScale;
@@ -379,8 +379,8 @@ namespace VcuComm
                 if (targetIsBigEndian)
                 {
                     this.DictionaryIndex = Utils.ReverseByteOrder(this.DictionaryIndex);
-                    this.MaxScale = (Int32)Utils.ReverseByteOrder((UInt32)(this.MaxScale));
-                    this.MinScale = (Int32)Utils.ReverseByteOrder((UInt32)(this.MinScale));
+                    this.MaxScale = Utils.ReverseByteOrder(this.MaxScale);
+                    this.MinScale = Utils.ReverseByteOrder(this.MinScale);
                 }
                 MemoryStream ms = new MemoryStream(1024);
                 BinaryWriter bw = new BinaryWriter(ms);
@@ -430,6 +430,19 @@ namespace VcuComm
             }
         }
 #endif
+
+        public class GetDateTime : ICommRequest
+        {
+            private const PacketType PACKET_TYPE = PacketType.GET_TIME_DATE;
+            private const ResponseType RESPONSE_TYPE = ResponseType.DATAREQUEST;
+
+            public Byte[] GetByteArray(Boolean targetIsBigEndian)
+            {
+                DataPacketProlog dpp = new DataPacketProlog();
+
+                return dpp.GetByteArray(null, PACKET_TYPE, RESPONSE_TYPE, targetIsBigEndian);
+            }
+        }
 
         public class SetTimeDateReq: ICommRequest
         {
