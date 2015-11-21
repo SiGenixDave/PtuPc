@@ -62,7 +62,7 @@ namespace Common.Communication
 
             if (commError == CommunicationError.Success)
             {
-                // Map rxMessage to GetEmbeddedInfoRes;
+                // Map bytes in m_RxMessage to GetEmbeddedInfoRes
                 getEmbInfo.SoftwareVersion = Encoding.UTF8.GetString(m_RxMessage, 8, 41).Replace("\0", String.Empty);
                 getEmbInfo.CarID = Encoding.UTF8.GetString(m_RxMessage, 49, 11).Replace("\0", String.Empty);
                 getEmbInfo.SubSystemName = Encoding.UTF8.GetString(m_RxMessage, 60, 41).Replace("\0", String.Empty);
