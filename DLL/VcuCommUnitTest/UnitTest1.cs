@@ -47,7 +47,6 @@ namespace VcuCommUnitTest
             CommunicationError errorCode;
             Int16 Year = 0;
             Byte Month = 0, Day = 0, Hour = 0, Minute = 0, Second = 0;
-            VcuComm.ProtocolPTU.GetDateTime dateTime = new ProtocolPTU.GetDateTime();
             errorCode = comm.GetTimeDate(true, ref Year, ref Month, ref Day, ref Hour, ref Minute, ref Second);
 
             //errorCode = comm.SetCarID(0x1234);

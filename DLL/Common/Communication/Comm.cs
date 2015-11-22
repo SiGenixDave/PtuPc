@@ -50,15 +50,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetEmbeddedInformation(ref ProtocolPTU.GetEmbeddedInfoRes getEmbInfo)
         {
-            ProtocolPTU.DataPacketProlog dpp = new ProtocolPTU.DataPacketProlog();
-
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = dpp.GetByteArray(null, ProtocolPTU.PacketType.GET_EMBEDDED_INFORMATION, ProtocolPTU.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
-                commError = SendDataRequestToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendDataRequestToEmbedded(ProtocolPTU.PacketType.GET_EMBEDDED_INFORMATION);
 
             if (commError == CommunicationError.Success)
             {
@@ -80,16 +72,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetChartMode(ref ProtocolPTU.GetChartModeRes getChartMode)
         {
-            ProtocolPTU.DataPacketProlog dpp = new ProtocolPTU.DataPacketProlog();
-
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = dpp.GetByteArray(null, ProtocolPTU.PacketType.GET_CHART_MODE, ProtocolPTU.ResponseType.DATAREQUEST, false);
-
-                commError = SendDataRequestToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendDataRequestToEmbedded(ProtocolPTU.PacketType.GET_CHART_MODE);
 
             if (commError == CommunicationError.Success)
             {
@@ -105,17 +88,8 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError StartClock()
         {
-            ProtocolPTU.DataPacketProlog dpp = new ProtocolPTU.DataPacketProlog();
-
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = dpp.GetByteArray(null, ProtocolPTU.PacketType.START_CLOCK, ProtocolPTU.ResponseType.COMMANDREQUEST, false);
-
-                commError = SendCommandToEmbedded(txMessage);
-            }
-
+            CommunicationError commError = SendCommandToEmbedded(ProtocolPTU.PacketType.START_CLOCK);
+            
             return commError;
         }
 
@@ -125,16 +99,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError StopClock()
         {
-            ProtocolPTU.DataPacketProlog dpp = new ProtocolPTU.DataPacketProlog();
-
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = dpp.GetByteArray(null, ProtocolPTU.PacketType.STOP_CLOCK, ProtocolPTU.ResponseType.COMMANDREQUEST, false);
-
-                commError = SendCommandToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendCommandToEmbedded(ProtocolPTU.PacketType.STOP_CLOCK);
 
             return commError;
         }
@@ -152,14 +117,7 @@ namespace Common.Communication
 
             ProtocolPTU.SendVariableReq request = new ProtocolPTU.SendVariableReq(DictionaryIndex, data);
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-
-                commError = SendCommandToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendCommandToEmbedded(request);
 
             return commError;
         }
@@ -173,14 +131,7 @@ namespace Common.Communication
         {
             ProtocolPTU.SetWatchElementsReq request = new ProtocolPTU.SetWatchElementsReq(WatchElements);
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-
-                commError = SendCommandToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendCommandToEmbedded(request);
 
             return commError;
         }
@@ -195,14 +146,7 @@ namespace Common.Communication
         {
             ProtocolPTU.SetWatchElementReq request = new ProtocolPTU.SetWatchElementReq(ElementIndex, DictionaryIndex);
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-
-                commError = SendCommandToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendCommandToEmbedded(request);
 
             return commError;
         }
@@ -218,14 +162,7 @@ namespace Common.Communication
         {
             ProtocolPTU.UpdateWatchElementsReq request = new ProtocolPTU.UpdateWatchElementsReq(ForceUpdate);
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-
-                commError = SendDataRequestToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendDataRequestToEmbedded(request);
 
             if (commError == CommunicationError.Success)
             {
@@ -260,20 +197,17 @@ namespace Common.Communication
         /// </summary>
         /// <param name="NewCarID"></param>
         /// <returns></returns>
-        public CommunicationError SetCarID(UInt16 NewCarID)
+        public CommunicationError SetCarID(String NewCarID)
         {
+#if TODO
             ProtocolPTU.SetCarIDReq request = new ProtocolPTU.SetCarIDReq(NewCarID);
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-
-                commError = SendCommandToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendCommandToEmbedded(request);
 
             return commError;
+#else
+            return CommunicationError.Success;
+#endif
         }
 
         /// <summary>
@@ -287,7 +221,7 @@ namespace Common.Communication
         /// <param name="Minute"></param>
         /// <param name="Second"></param>
         /// <returns></returns>
-        public CommunicationError SetTimeDate(Boolean Use4DigitYearCode, UInt16 Year, Byte Month, Byte Day, Byte Hour, Byte Minute, Byte Second)
+        public CommunicationError SetTimeDate(Boolean Use4DigitYearCode, Int16 Year, Int16 Month, Int16 Day, Int16 Hour, Int16 Minute, Int16 Second)
         {
             // TODO
             // ProtocolPTU.SetTimeDateReq();
@@ -314,25 +248,14 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetTimeDate(Boolean Use4DigitYearCode, ref Int16 Year, ref Byte Month, ref Byte Day, ref Byte Hour, ref Byte Minute, ref Byte Second)
         {
-            Int32 errorCode = -1;
-
             ProtocolPTU.GetDateTime request = new ProtocolPTU.GetDateTime();
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
+            CommunicationError commError = SendDataRequestToEmbedded(request);
 
-            if (commError == CommunicationError.Success)
+            if (commError != CommunicationError.Success)
             {
-                Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-
-                errorCode = m_CommDevice.SendMessageToTarget(txMessage);
+                return commError;
             }
-
-            if (errorCode < 0)
-            {
-                return CommunicationError.BadRequest;
-            }
-
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
             Hour = m_RxMessage[8];
             Minute = m_RxMessage[9];
@@ -365,14 +288,7 @@ namespace Common.Communication
             ProtocolPTU.SetChartScaleReq request =
                 new ProtocolPTU.SetChartScaleReq(DictionaryIndex, maxScale, minScale);
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-
-                commError = SendCommandToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendCommandToEmbedded(request);
 
             return commError;
         }
@@ -387,14 +303,7 @@ namespace Common.Communication
         {
             ProtocolPTU.SetChartIndexReq request = new ProtocolPTU.SetChartIndexReq(ChartIndex, VariableIndex);
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-
-                commError = SendCommandToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendCommandToEmbedded(request);
 
             return commError;
         }
@@ -407,25 +316,14 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetChartIndex(Int16 ChartIndex, ref Int16 VariableIndex)
         {
-            Int32 errorCode = -1;
-
             ProtocolPTU.GetChartIndexReq request = new ProtocolPTU.GetChartIndexReq((Byte)ChartIndex);
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
+            CommunicationError commError = SendDataRequestToEmbedded(request);
 
-            if (commError == CommunicationError.Success)
+            if (commError != CommunicationError.Success)
             {
-                Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-
-                errorCode = m_CommDevice.SendMessageToTarget(txMessage);
+                return commError;
             }
-
-            if (errorCode < 0)
-            {
-                return CommunicationError.BadRequest;
-            }
-
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
             VariableIndex = BitConverter.ToInt16(m_RxMessage, 8);
 
@@ -447,14 +345,7 @@ namespace Common.Communication
         {
             ProtocolPTU.SetChartModeReq request = new ProtocolPTU.SetChartModeReq((byte)TargetChartMode);
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
-
-            if (commError == CommunicationError.Success)
-            {
-                Byte[] txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-
-                commError = SendCommandToEmbedded(txMessage);
-            }
+            CommunicationError commError = SendCommandToEmbedded(request);
 
             return commError;
         }
@@ -466,24 +357,13 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetChartMode(ref Int16 CurrentChartMode)
         {
-            Int32 errorCode = -1;
-            ProtocolPTU.DataPacketProlog request = new ProtocolPTU.DataPacketProlog();
 
-            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
+            CommunicationError commError = SendDataRequestToEmbedded(ProtocolPTU.PacketType.GET_CHART_MODE);
 
-            if (commError == CommunicationError.Success)
+            if (commError != CommunicationError.Success)
             {
-                Byte[] txMessage = request.GetByteArray(null, ProtocolPTU.PacketType.GET_CHART_MODE, ProtocolPTU.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
-
-                errorCode = m_CommDevice.SendMessageToTarget(txMessage);
+                return commError;
             }
-
-            if (errorCode < 0)
-            {
-                return CommunicationError.BadRequest;
-            }
-
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
 
             CurrentChartMode = BitConverter.ToInt16(m_RxMessage, 8);
 
@@ -504,10 +384,20 @@ namespace Common.Communication
         /// </summary>
         /// <param name="txMessage"></param>
         /// <returns></returns>
-        private CommunicationError SendDataRequestToEmbedded(byte[] txMessage)
+        private CommunicationError SendDataRequestToEmbedded(ICommRequest requestObj)
         {
-            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
+            // Send the SOM and receive it
+            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
+
+            if (commError != CommunicationError.Success)
+            {
+                return commError;
+            }
+
+            Byte[] txMessage = requestObj.GetByteArray(m_CommDevice.IsTargetBigEndian());
+            
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
             if (errorCode < 0)
             {
                 return CommunicationError.BadRequest;
@@ -527,8 +417,58 @@ namespace Common.Communication
         /// </summary>
         /// <param name="txMessage"></param>
         /// <returns></returns>
-        private CommunicationError SendCommandToEmbedded(byte[] txMessage)
+        private CommunicationError SendDataRequestToEmbedded(ProtocolPTU.PacketType packetRequestType)
         {
+
+            // Send the SOM and receive it
+            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
+
+            if (commError != CommunicationError.Success)
+            {
+                return commError;
+            }
+
+            ProtocolPTU.DataPacketProlog dpp = new ProtocolPTU.DataPacketProlog();
+
+            Byte[] txMessage = dpp.GetByteArray(null, packetRequestType, ProtocolPTU.ResponseType.DATAREQUEST, m_CommDevice.IsTargetBigEndian());
+
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
+
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
+
+            errorCode = m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadResponse;
+            }
+
+            return CommunicationError.Success;
+        }
+
+
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="txMessage"></param>
+        /// <returns></returns>
+        private CommunicationError SendCommandToEmbedded(ProtocolPTU.PacketType packetRequestType)
+        {
+            // Send the SOM and receive it
+            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
+
+            if (commError != CommunicationError.Success)
+            {
+                return commError;
+            }
+
+            ProtocolPTU.DataPacketProlog dpp = new ProtocolPTU.DataPacketProlog();
+
+            Byte []txMessage = dpp.GetByteArray(null, packetRequestType, ProtocolPTU.ResponseType.COMMANDREQUEST, m_CommDevice.IsTargetBigEndian());
+
             Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
 
             if (errorCode < 0)
@@ -544,5 +484,38 @@ namespace Common.Communication
 
             return CommunicationError.Success;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="txMessage"></param>
+        /// <returns></returns>
+        private CommunicationError SendCommandToEmbedded(ICommRequest requestObj)
+        {
+            // Send the SOM and receive it
+            CommunicationError commError = (CommunicationError)m_CommDevice.SendReceiveSOM();
+
+            if (commError != CommunicationError.Success)
+            {
+                return commError;
+            }
+
+            Byte[] txMessage = requestObj.GetByteArray(m_CommDevice.IsTargetBigEndian());
+
+            Int32 errorCode = m_CommDevice.SendMessageToTarget(txMessage);
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadRequest;
+            }
+
+            errorCode = m_CommDevice.ReceiveTargetAcknowledge();
+            if (errorCode < 0)
+            {
+                return CommunicationError.BadResponse;
+            }
+
+            return CommunicationError.Success;
+        }
+
     }
 }

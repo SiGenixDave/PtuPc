@@ -364,8 +364,6 @@ namespace Watch.Communication
                 {
                     m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
                     errorCode = m_Comm.GetChartIndex(chartIndex, ref watchIdentifiers[chartIndex]);
-                    
-                    errorCode = (CommunicationError)m_GetChartIndex(chartIndex, out watchIdentifiers[chartIndex]);
                 }
                 catch (Exception)
                 {
@@ -400,7 +398,6 @@ namespace Watch.Communication
             Debug.Assert(watchIdentifiers != null, "CommunicationWatch.ConfigureChartRecorderChannels() - [watchIdentifiers != null]");
             Debug.Assert(watchIdentifiers.Length == Parameter.WatchSizeChartRecorder,
                          "CommunicationWatch.ConfigureChartRecorderChannels() - [watchIdentifiers.Length == Parameter.WatchSizeChartRecorder]");
-            Debug.Assert(m_SetChartIndex != null, "CommunicationWatch.ConfigureChartRecorderChannels() - [m_SetChartIndexDelegate != null]");
             Debug.Assert(m_MutexCommuncationInterface != null,
                          "CommunicationWatch.ConfigureChartRecorderChannels() - [m_MutexCommuncationInterface != null]");
 
@@ -411,7 +408,7 @@ namespace Watch.Communication
                 try
                 {
                     m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                    errorCode = (CommunicationError)m_SetChartIndex(channelIndex, watchIdentifiers[channelIndex]);
+                    errorCode = m_Comm.SetChartIndex(channelIndex, watchIdentifiers[channelIndex]);
                 }
                 catch (Exception)
                 {

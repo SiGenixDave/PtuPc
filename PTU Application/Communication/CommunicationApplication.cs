@@ -248,18 +248,16 @@ namespace Bombardier.PTU.Communication
         public void SetTimeDate(bool use4DigitYearCode, DateTime dateTime)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_SetTimeDate != null, "CommunicationApplication.SetTimeDate() - [m_SetTimeDate != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationApplication.SetTimeDate() - [m_MutexCommuncationInterface != null]");
 
             // Set the parameters according to whether the VCU uses 2 or 4 digit year code. 
-            short use4DigitYearCodeAsShort = (use4DigitYearCode == true) ? Use4DigitYearCodeTrue : Use4DigitYearCodeFalse;
             short year = (use4DigitYearCode == true) ? (short)dateTime.Year : ConvertYearTo2DigitFormat((short)dateTime.Year);
 
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_SetTimeDate(use4DigitYearCodeAsShort, year, (short)dateTime.Month, (short)dateTime.Day, (short)dateTime.Hour,
+                errorCode = m_Comm.SetTimeDate(use4DigitYearCode, year, (short)dateTime.Month, (short)dateTime.Day, (short)dateTime.Hour,
                                                                                    (short)dateTime.Minute, (short)dateTime.Second);
             }
             catch (Exception)
@@ -285,14 +283,13 @@ namespace Bombardier.PTU.Communication
         public void SetCarID(string carIdentifier)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_SetCarID != null, "CommunicationApplication.SetCarID() - [m_SetCarID != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationApplication.SetCarID() - [m_MutexCommuncationInterface != null]");
 
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_SetCarID(carIdentifier);
+                errorCode = m_Comm.SetCarID(carIdentifier);
             }
             catch (Exception)
             {

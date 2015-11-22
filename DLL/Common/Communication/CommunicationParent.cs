@@ -695,189 +695,6 @@ namespace Common.Communication
     /// </summary>
     public class CommunicationParent : ICommunicationParent
     {
-        #region --- Delegate Declarations ---
-        /// <summary>
-        /// Delegate declaration for the InitCommunication() method of VcuCommunication32.dll/VcuCommunication64.dll. This method initializes the
-        /// specified communication port.
-        /// </summary>
-        /// <param name="protocol">The protocol associated with the communication port.</param>
-        /// <param name="portID">The port identifier, this varies depending upon the protocol setting. For physical and virtual serial COM ports this
-        /// takes the form 1, 2, ... etc.</param>
-        /// <param name="baudRate">The baud rate: 110, 150, 300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200. Only applicable to RS232
-        /// communication.</param>
-        /// <param name="bitsPerByte">The number of bits per byte: 4-8. Only applicable to RS232 communication.</param>
-        /// <param name="parity">The parity: 0-4 represent None, Odd, Even, Mark, Space respectively. Only applicable to RS232 communication.</param>
-        /// <param name="stopBits">The number of stop bits: 0, 1, 2 represent 1, 1.5, 2 respectively. Only applicable to RS232 communication.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short InitCommunicationDelegate(short protocol, string portID, int baudRate, short bitsPerByte, short parity,
-                                                           short stopBits);
-
-        /// <summary>
-        /// Delegate declaration for the CloseCommunication() method of VcuCommunication32.dll/VcuCommunication64.dll. This method closes the specified
-        /// communication port.
-        /// </summary>
-        /// <param name="protocol">The protocol associated with the communication port.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short CloseCommunicationDelegate(short protocol);
-
-        /// <summary>
-        /// Delegate declaration for the SendVariable() method of VcuCommunication32.dll/VcuCommunication64.dll. This method writes the specified data
-        /// to the watch variable 
-        /// specified by the <paramref name="dictionaryIndex"/> parameter.
-        /// </summary>
-        /// <param name="dictionaryIndex">The disctionary index.</param>
-        /// <param name="dataType">The data type.</param>
-        /// <param name="data">The data.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short SendVariableDelegate(short dictionaryIndex, short dataType, double data);
-
-        /// <summary>
-        /// Delegate declaration for the SetWatchElements() method of VcuCommunication32.dll/VcuCommunication64.dll. This method sets the watch
-        /// variables that are to be monitored by the target hardware i.e. the watch elements. The target hardware is only capable of monitoring
-        /// <c>WatchSize</c> watch variables at a time. The array of <c>WatchSize</c> watch elements specifies the watch identifier and corresponding
-        /// data value and type for each of the watch elements.
-        /// </summary>
-        /// <param name="watchElements">An array of watch identifier defining the watch variables that are to be monitored.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short SetWatchElementsDelegate(short[] watchElements);
-
-        /// <summary>
-        /// Delegate declaration for the UpdateWatchElements() method of VcuCommunication32.dll/VcuCommunication64.dll. This method retrieves the array
-        /// of watch variable data values defined by the SetWatchElements()/SetWatchElement() functions.
-        /// </summary>
-        /// <param name="forceUpdate">True, to force a full update; otherwise, false.</param>
-        /// <param name="watchValues">An array of watch variable values mapped to the watch elements defined by the SetWatchElements() function.
-        /// </param>
-        /// <param name="watchDataType">An array of watch variable data types mapped to the watch elements defined by the SetWatchElements() 
-        /// function.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short UpdateWatchElementsDelegate(short forceUpdate, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] double[] watchValues, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] short []watchDataType);
-
-        /// <summary>
-        /// Delegate declaration for the GetEmbeddedInformation() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets the
-        /// configuration information associated with the target hardware.
-        /// </summary>
-        /// <remarks>The function uses 16 bit unicode strings, therefore all strings must be declared using the <c>String</c> typedef.</remarks>
-        /// <param name="softwareVersion">The sofware version.</param>
-        /// <param name="carID">The car identifier.</param>
-        /// <param name="subSystemName">The title of the sub-system.</param>
-        /// <param name="identifierString">The project identifier.</param>
-        /// <param name="conversionMask">The conversion bitmask.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short GetEmbeddedInformationDelegate([MarshalAs(UnmanagedType.BStr)] out String softwareVersion,
-                                                                [MarshalAs(UnmanagedType.BStr)] out String carID,
-                                                                [MarshalAs(UnmanagedType.BStr)] out String subSystemName,
-                                                                [MarshalAs(UnmanagedType.BStr)] out String identifierString,
-                                                                out double conversionMask);
-
-        /// <summary>
-        /// Delegate declaration for the GetChartMode() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets the mode of the chart
-        /// recorder.
-        /// </summary>
-        /// <param name="chartMode">The current mode of the chart recorder: ramp, zero-output, full-scale, data.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short GetChartModeDelegate(out short chartMode);
-
-        /// <summary>
-        /// Delegate declaration for the SetChartMode() method of VcuCommunication32.dll/VcuCommunication64.dll. This method sets the mode of the chart
-        /// recorder.
-        /// </summary>
-        /// <param name="chartMode">The required mode of the chart recorder: ramp, zero-output, full-scale, data.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short SetChartModeDelegate(short chartMode);
-
-        /// <summary>
-        /// Delegate declaration for the GetChartIndex() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets the watch variable
-        /// identifier that is currently assigned to the specified chart recorder channel index.
-        /// </summary>
-        /// <param name="chartIndex">The channel index of the chart recorder: 0 - 7.</param>
-        /// <param name="watchIdentifier">The watch identifier of the watch variable that is assigned to the specified channel.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short GetChartIndexDelegate(short chartIndex, out short watchIdentifier);
-
-        /// <summary>
-        /// Delegate declaration for the SetChartIndex() method of VcuCommunication32.dll/VcuCommunication64.dll. This method sets the watch variable
-        /// identifier 
-        /// that is to be assigned to the specified chart recorder channel index.
-        /// </summary>
-        /// <param name="chartIndex">The chart index of the chart recorder channel that is to be configured: 0 - 7.</param>
-        /// <param name="watchIdentifier">The watch identifier of the watch variable that is to be assigned to the specified channel.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short SetChartIndexDelegate(short chartIndex, short watchIdentifier);
-
-        /// <summary>
-        /// Delegate declaration for the SetChartScale() method of VcuCommunication32.dll/VcuCommunication64.dll. This method sets the scale of the
-        /// chart recorder.
-        /// </summary>
-        /// <param name="watchIdentifier">The watch identifier of the watch variable that is to be configured.</param>
-        /// <param name="maxChartScaleRaw">The maximum raw value of the Y scale.</param>
-        /// <param name="minChartScaleRaw">The minimum raw value of the Y scale.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short SetChartScaleDelegate(short watchIdentifier, double maxChartScaleRaw, double minChartScaleRaw);
-
-        /// <summary>
-        /// Delegate declaration for the GetTimeDate() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets the time and date from
-        /// the VCU. This delegate is also used for the Get4TimeDate() method that gets the time and date from VCU's that use 4 digit year codes.
-        /// </summary>
-        /// <param name="use4DigitYearCode">A flag that specifies whether the Vehicle Control Unit uses a 2 or 4 digit year code. True (0x01), if it
-        /// uses a 4 digit year code; otherwise, false (0x00).</param>
-        /// <param name="year">The year, as a value between 0-99. Values above 70 are assumed to be associated with years 1970-1999, values below 70
-        /// are assumed to be associated with years 2000-2069.</param>
-        /// <param name="month">The month value.</param>
-        /// <param name="day">The day value.</param>
-        /// <param name="hour">The hours value.</param>
-        /// <param name="minute">The minutes value</param>
-        /// <param name="second">The seconds value.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short GetTimeDateDelegate(short use4DigitYearCode, out short year, out short month, out short day, out short hour, out short minute,
-                                                     out short second);
-        /// <summary>
-        /// Delegate declaration for the SetTimeDate() method of VcuCommunication32.dll/VcuCommunication64.dll. This method sets the time and date on
-        /// VCU. This delegate is also used for the Set4TimeDate() method that sets the time and date on VCU's that use 4 digit year codes.
-        /// </summary>
-        /// <param name="use4DigitYearCode">A flag that specifies whether the Vehicle Control Unit uses a 2 or 4 digit year code. True (0x01), if it
-        /// uses a 4 digit year code; otherwise, false (0x00).</param>
-        /// <param name="year">The year, as a value between 0-99. Values above 70 are assumed to be associated with years 1970-1999, values below 70
-        /// are assumed to be associated with years 2000-2069.</param>
-        /// <param name="month">The month value.</param>
-        /// <param name="day">The day value.</param>
-        /// <param name="hour">The hours value.</param>
-        /// <param name="minute">The minutes value</param>
-        /// <param name="second">The seconds value.</param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short SetTimeDateDelegate(short use4DigitYearCode, short year, short month, short day, short hour, short minute, short second);
-
-        /// <summary>
-        /// Delegate declaration for the SetCarID() method of VcuCommunication32.dll/VcuCommunication64.dll. This method sets the car identifier on the
-        /// VCU.
-        /// </summary>
-        /// <param name="carIdentifier"></param>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short SetCarIDDelegate(string carIdentifier);
-
-        /// <summary>
-        /// Delegate declaration for the StartClock() method of VcuCommunication32.dll/VcuCommunication64.dll. This method starts the real time clock
-        /// on the VCU.
-        /// </summary>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short StartClockDelegate();
-
-        /// <summary>
-        /// Delegate declaration for the StopClock() method of VcuCommunication32.dll/VcuCommunication64.dll. This method stops the real time clock on
-        /// the VCU.
-        /// </summary>
-        /// <returns>Zero, if successful; otherwise, an error code.</returns>
-        protected delegate short StopClockDelegate();
-
-        /// <summary>
-        /// Delegate declaration for the SetWatchSize() method of VcuCommunication32.dll/VcuCommunication64.dll. This method sets the number of watch
-        /// variables associated with the project.
-        /// </summary>
-        /// <param name="watchSize">The number of watch variables associated with the project. Watch sizes of {20, 40 and 80} are currently 
-        /// supported.</param>
-        /// <returns>The number of watch variables currently supported by PTUDLL32.</returns>
-        protected delegate short SetWatchSizeDelegate(short watchSize);
-        #endregion --- Delegate Declarations ---
 
         #region --- Constants ---
         /// <summary>
@@ -949,92 +766,6 @@ namespace Common.Communication
         /// </summary>
         protected bool m_Is64BitOperatingSystem = false;
 
-        #region --- Function Delegates  ---
-        /// <summary>
-        ///  Delegate for the InitCommunication() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected InitCommunicationDelegate m_InitCommunication;
-
-        /// <summary>
-        ///  Delegate for the CloseCommunication() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected CloseCommunicationDelegate m_CloseCommunication;
-
-        /// <summary>
-        ///  Delegate for the SendVariable() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected SendVariableDelegate m_SendVariable;
-
-        /// <summary>
-        /// Delegate for the SetWatchElements() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected SetWatchElementsDelegate m_SetWatchElements;
-
-        /// <summary>
-        /// Delegate for the UpdateWatchElements() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected UpdateWatchElementsDelegate m_UpdateWatchElements;
-
-        /// <summary>
-        /// Delegate for the GetEmbeddedInformation() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetEmbeddedInformationDelegate m_GetEmbeddedInformation;
-
-        /// <summary>
-        /// Delegate for the GetChartMode() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetChartModeDelegate m_GetChartMode;
-
-        /// <summary>
-        /// Delegate for the SetChartMode() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected SetChartModeDelegate m_SetChartMode;
-
-        /// <summary>
-        /// Delegate for the GetChartIndex() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetChartIndexDelegate m_GetChartIndex;
-
-        /// <summary>
-        /// Delegate for the SetChartIndex() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected SetChartIndexDelegate m_SetChartIndex;
-
-        /// <summary>
-        /// Delegate for the SetChartScale() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected SetChartScaleDelegate m_SetChartScale;
-
-        /// <summary>
-        /// Delegate for the GetTimeDate() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetTimeDateDelegate m_GetTimeDate;
-
-        /// <summary>
-        /// Delegate for the SetTimeDate() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected SetTimeDateDelegate m_SetTimeDate;
-
-        /// <summary>
-        /// Delegate for the SetCarID() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected SetCarIDDelegate m_SetCarID;
-
-        /// <summary>
-        /// Delegate for the StartClock() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected StartClockDelegate m_StartClock;
-
-        /// <summary>
-        /// Delegate for the StopClock() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected StopClockDelegate m_StopClock;
-
-        /// <summary>
-        /// Delegate for the SetWatchSize() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected SetWatchSizeDelegate m_SetWatchSize;
-        #endregion --- Function Delegates ---
         #endregion --- Member Variables ---
 
         ICommDevice device;
@@ -1055,69 +786,6 @@ namespace Common.Communication
             m_CommunicationSetting = new CommunicationSetting_t();
             m_MutexCommuncationInterface = new Mutex();
 
-            #region - [Initialize VcuCommunication.comm.cpp Function Delegates] -
-            // ----------------------------------------------------------------------
-            // Initialize the function delegates to either the VcuCommunication32.dll  
-            // or VcuCommunication64.dll functions depending upon whether the 
-            // Windows operating system is 64 bit or 32 bit.
-            // ----------------------------------------------------------------------
-            if (Environment.Is64BitOperatingSystem == true)
-            {
-                m_Is64BitOperatingSystem = true;
-
-                // CommunicationParent
-                m_InitCommunication = VcuCommunication64.InitCommunication;
-                m_CloseCommunication = VcuCommunication64.CloseCommunication;
-                m_GetEmbeddedInformation = VcuCommunication64.GetEmbeddedInformation;
-                m_GetChartMode = VcuCommunication64.GetChartMode;
-                m_SetChartMode = VcuCommunication64.SetChartMode;
-                m_GetChartIndex = VcuCommunication64.GetChartIndex;
-                m_SetChartIndex = VcuCommunication64.SetChartIndex;
-                m_SetChartScale = VcuCommunication64.SetChartScale;
-                m_SetWatchSize = VcuCommunication64.SetWatchSize;
-
-                // CommunicationWatch
-                m_SendVariable = VcuCommunication64.SendVariable;
-                m_SetWatchElements = VcuCommunication64.SetWatchElements;
-                m_UpdateWatchElements = VcuCommunication64.UpdateWatchElements;
-
-                // CommunicationPTUApplication
-                m_GetTimeDate = VcuCommunication64.GetTimeDate;
-                m_SetTimeDate = VcuCommunication64.SetTimeDate;
-                m_SetCarID = VcuCommunication64.SetCarID;
-
-                // Not Used
-                m_StartClock = VcuCommunication64.StartClock;
-                m_StopClock = VcuCommunication64.StopClock;
-            }
-            else
-            {
-                // CommunicationParent
-                m_InitCommunication = VcuCommunication32.InitCommunication;
-                m_CloseCommunication = VcuCommunication32.CloseCommunication;
-                m_GetEmbeddedInformation = VcuCommunication32.GetEmbeddedInformation;
-                m_GetChartMode = VcuCommunication32.GetChartMode;
-                m_SetChartMode = VcuCommunication32.SetChartMode;
-                m_GetChartIndex = VcuCommunication32.GetChartIndex;
-                m_SetChartIndex = VcuCommunication32.SetChartIndex;
-                m_SetChartScale = VcuCommunication32.SetChartScale;
-                m_SetWatchSize = VcuCommunication32.SetWatchSize;
-
-                // CommunicationWatch
-                m_SendVariable = VcuCommunication32.SendVariable;
-                m_SetWatchElements = VcuCommunication32.SetWatchElements;
-                m_UpdateWatchElements = VcuCommunication32.UpdateWatchElements;
-
-                // CommunicationPTUApplication
-                m_GetTimeDate = VcuCommunication32.GetTimeDate;
-                m_SetTimeDate = VcuCommunication32.SetTimeDate;
-                m_SetCarID = VcuCommunication32.SetCarID;
-
-                // Not Used
-                m_StartClock = VcuCommunication32.StartClock;
-                m_StopClock = VcuCommunication32.StopClock;
-            }
-            #endregion - [Initialize VcuCommunication.comm.cpp Function Delegates] -
         }
 
         /// <summary>
@@ -1217,9 +885,6 @@ namespace Common.Communication
         /// not CommunicationError.Success.</exception>
         public virtual void CloseCommunication(Protocol protocol)
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_CloseCommunication != null, "CommunicationParent.CloseCommunication() - [m_CloseCommunication != null]");
-
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
@@ -1252,7 +917,6 @@ namespace Common.Communication
         public void GetEmbeddedInformation(out TargetConfiguration_t targetConfiguration)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_GetEmbeddedInformation != null, "CommunicationParent.GetEmbeddedInformation() - [m_GetEmbeddedInformation != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationParent.GetEmbeddedInformation() - [m_MutexCommuncation != null]");
 
             targetConfiguration = new TargetConfiguration_t();
@@ -1315,7 +979,6 @@ namespace Common.Communication
         public ChartMode GetChartMode()
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_GetChartMode != null, "CommunicationParent.GetChartMode() - [m_GetChartMode != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationParent.GetChartMode() - [m_MutexCommuncationInterface != null]");
 
             ChartMode chartMode = ChartMode.Undefined;
@@ -1408,7 +1071,6 @@ namespace Common.Communication
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
                 errorCode = m_Comm.SetChartIndex(channelIndex, watchIdentifier);
-                errorCode = (CommunicationError)m_SetChartIndex(channelIndex, watchIdentifier);
             }
             catch (Exception)
             {
@@ -1447,7 +1109,6 @@ namespace Common.Communication
         public void SetChartScale(short watchIdentifier, double maxChartScale, double minChartScale)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_SetChartScale != null, "CommunicationParent.SetChartScale() - [m_SetChartScale != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationParent.SetChartScale() - [m_MutexCommuncationInterface != null]");
 
             // Convert the engineering values back to raw Values.
@@ -1536,23 +1197,7 @@ namespace Common.Communication
             }
         }
 
-#if DAS
-        // SHouldn't need this anymore; used to support unmanaged code
-        /// <summary>
-        /// Set the number of watch variables associated with the project.
-        /// </summary>
-        /// <param name="watchSize">The number of watch variables associated with the project. Watch sizes of {20, 40 and 80} are currently
-        /// supported.</param>
-        /// <returns>The number of watch variables currently supported by VcuCommunication32/VcuCommunication64.</returns>
-        public short SetWatchSize(short watchSize)
-        {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_SetWatchSize != null, "CommunicationParent.SetWatchSize() - [m_SetWatchSize != null]");
 
-            short watchReturn = m_SetWatchSize(watchSize);
-            return watchReturn;
-        }
-#endif
         #endregion --- Methods ---
 
         #region --- Properties ---

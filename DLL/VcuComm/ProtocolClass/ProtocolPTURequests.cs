@@ -7,7 +7,7 @@ namespace VcuComm
     /// <summary>
     /// 
     /// </summary>
-    internal interface ICommRequest
+    public interface ICommRequest
     {
         Byte[] GetByteArray(Boolean targetIsBigEndian);
     }
