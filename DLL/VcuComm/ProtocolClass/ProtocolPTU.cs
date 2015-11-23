@@ -36,7 +36,6 @@ namespace VcuComm
             Close,
         }
 
-
         public class DataPacketProlog
         {
             private UInt16 packetLength;
@@ -100,7 +99,6 @@ namespace VcuComm
             public StreamVariable[] StreamVariableInfo; //256
         }
 
-
         public struct UpdateWatchElementsRes
         {
             public DataPacketProlog Header;
@@ -149,7 +147,6 @@ namespace VcuComm
         {
             public Byte CurrentChartMode;
         }
-
 
         public struct GetChartIndexRes
         {
@@ -223,8 +220,6 @@ namespace VcuComm
             public UInt32 Oldest;
         }
 
-
-
         public struct GetFaultDataRes
         {
             public UInt16 BufferSize;
@@ -245,15 +240,12 @@ namespace VcuComm
             public UInt16[] DatalogFlag; //(MAXTASKS * MAXEVENTS / 16) + 1;
         }
 
-
-
         public struct GetFaultHistoryRes
         {
             public DataPacketProlog Header;
             public UInt16 StaticHistory;
             public UInt16 DynamicHistory;
         }
-
 
         public struct GetDatalogBufferRes
         {
@@ -274,7 +266,6 @@ namespace VcuComm
             public UInt16 CurrentEventLog;
             public UInt16 NumberEventLogs;
         }
-
 
         public struct ChangeEventLogRes
         {

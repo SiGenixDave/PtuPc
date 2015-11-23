@@ -96,6 +96,7 @@
     <Compile Include="Communication\Interfaces\ICommunicationParent.cs" />
     <Compile Include="Communication\Interfaces\ICommunicationSelfTest.cs" />
     <Compile Include="Communication\Interfaces\ICommunicationWatch.cs" />
+    <Compile Include="Communication\VcuCommunication.cs" />
     <Compile Include="Communication\VcuCommunication32.cs" />
     <Compile Include="Communication\VcuCommunication64.cs" />
     <Compile Include="Communication\WatchFrame.cs" />
