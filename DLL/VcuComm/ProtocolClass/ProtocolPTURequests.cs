@@ -785,7 +785,7 @@ namespace VcuComm
 
         public class ChangeEventLogReq : ICommRequest
         {
-            private UInt16 NewEventLog;
+            private Int16 NewEventLog;
             private const PacketType PACKET_TYPE = PacketType.CHANGE_EVENT_LOG;
             private const ResponseType RESPONSE_TYPE = ResponseType.DATAREQUEST;
 
@@ -797,7 +797,7 @@ namespace VcuComm
             {
             }
 
-            public ChangeEventLogReq(UInt16 NewEventLog)
+            public ChangeEventLogReq(Int16 NewEventLog)
             {
                 this.NewEventLog = NewEventLog;
             }

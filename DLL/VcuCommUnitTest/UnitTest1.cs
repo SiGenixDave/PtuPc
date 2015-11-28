@@ -43,6 +43,7 @@ namespace VcuCommUnitTest
 #endif            
             
             CommGen comm = new CommGen(device);
+            EventGen ev = new EventGen(device);
 
             CommunicationError errorCode;
             Int16 Year = 0;
@@ -67,6 +68,28 @@ namespace VcuCommUnitTest
                 Debug.Print("Error Message = " + device.Error);
                 Debug.Print("Exception Message = " + device.ExceptionMessage);
             }
+
+            UInt16 numFaults = 0;
+            UInt32 oldest = 0, neweset = 0;
+            ev.LoadFaultLog(ref numFaults, ref oldest, ref neweset);
+
+            Int16 NewEventLogNumber = 0, DataRecordingRate = 0, ChangeStatus = 0, MaxTasks = 0, MaxEventsPerTask = 0;
+            ev.ChangeEventLog(NewEventLogNumber, ref DataRecordingRate, ref ChangeStatus, ref MaxTasks, ref MaxEventsPerTask);
+
+            Debug.Print(DataRecordingRate.ToString("X4") + " " + ChangeStatus.ToString("X4") + " " + 
+                        MaxTasks.ToString("X4") + " " + MaxEventsPerTask.ToString("X4"));
+
+            ev.SetFaultLog(false);
+
+            UInt32 OldestIndex = 0, NewestIndex = 0;
+            ev.GetFaultIndices(ref OldestIndex, ref NewestIndex);
+
+            Debug.Print(OldestIndex.ToString("X8") + " " + NewestIndex.ToString("X8"));
+
+            ev.GetFaultData(OldestIndex, (UInt16)(NewestIndex - OldestIndex));
+
+
+
         }
 #endif
 
