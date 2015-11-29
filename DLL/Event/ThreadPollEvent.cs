@@ -217,7 +217,7 @@ namespace Event
                         try
                         {
                             m_Watchdog++;
-                            CommunicationInterface.CheckFaultlogger(out newEventCount, out newEventIndex);
+                            CommunicationInterface.CheckFaultlogger(ref newEventCount, ref newEventIndex);
                             m_ReadTimeoutCountdown = ReadTimeoutCountdown;
                         }
                         catch(CommunicationException)

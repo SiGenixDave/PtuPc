@@ -64,7 +64,7 @@ namespace Common.Communication
         /// <summary>
         /// 
         /// </summary>
-        private UInt16 m_CurrentNumberOfFaults;
+        private Int16 m_CurrentNumberOfFaults;
 
         /// <summary>
         /// 
@@ -150,8 +150,11 @@ namespace Common.Communication
         /// <param name="Oldest"></param>
         /// <param name="Newest"></param>
         /// <returns></returns>
-        public CommunicationError GetFaultIndices(ref UInt32 Oldest, ref UInt32 Newest)
+        public CommunicationError GetFaultIndices(out UInt32 Oldest, out UInt32 Newest)
         {
+            Oldest = UInt32.MaxValue;
+            Newest = UInt32.MaxValue;
+
             CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_FAULT_INDICES, m_RxMessage);
 
             if (commError == CommunicationError.Success)
@@ -211,34 +214,48 @@ namespace Common.Communication
             return commError;
         }
 
-#if DAS
-typedef struct date_time_type
-{
-    unsigned char  hr;
-    unsigned char  min;
-    unsigned char  sec;
-    unsigned char  month;
-    unsigned char  day;
-    unsigned char  year;
-} DATETIMETYPE;
+        private Boolean VerifyTime(Byte hr, Byte min, Byte sec)
+        {
+	        if ((hr < 0) || (hr > 23))
+            {
+		        return false;
+            }
 
-struct flthdr
-{
-    UINT16			faultnum;
-    UINT16			tasknum;
-    unsigned long	index;
-    DATETIMETYPE	datetime;
-    UINT16			datalognum;
-};
+            if ((min < 0) || (min > 59))
+            {
+                return false;
+            }
+
+            if ((sec < 0) || (sec > 59))
+            {
+                return false;
+            }
+
+	        return true;
+        }
+
+        private Boolean VerifyDate(Byte month, Byte day, Byte year)
+        {
+            if ((month < 1) || (month > 12))
+            {
+                return false;
+            }
+
+            if ((day < 1) || (day > 31))
+            {
+                return false;
+            }
+
+            if ((year < 00) || (year > 99))
+            {
+                return false;
+            }
+            return true;
+        }
 
         public CommunicationError GetFaultHdr(Int16	index, ref Int16 faultnum, ref Int16 tasknum,
 	                                          ref String Flttime, ref String Fltdate, ref Int16 datalognum)
         {
-	        //struct flthdr	FaultHeader;
-	        String			TempString;
-	        Byte            []FaultBuffer = new Byte[MAX_FAULT_BUFFER_SIZE];
-	        Int16			FaultStartLocation;
-
 	        /* Check the Validity of the desired index */
 	        if (index >= m_CurrentNumberOfFaults)
 	        {
@@ -250,57 +267,143 @@ struct flthdr
 		        return CommunicationError.UnknownError;
 	        }
 
-            m_faultStorage[index][0];
+            const UInt16 DATE_OFFSET_IN_FAULT_LOG = 10;
 
-	        /* Check Time */
-	        if (VerifyTime(	(INT16)FaultHeader.datetime.hr,
-					        (INT16)FaultHeader.datetime.min,
-					        (INT16)FaultHeader.datetime.sec))
+            Byte hour = m_faultStorage[index][DATE_OFFSET_IN_FAULT_LOG];
+            Byte minute = m_faultStorage[index][DATE_OFFSET_IN_FAULT_LOG + 1];
+            Byte second = m_faultStorage[index][DATE_OFFSET_IN_FAULT_LOG + 2];
+            Byte month = m_faultStorage[index][DATE_OFFSET_IN_FAULT_LOG + 3];
+            Byte day = m_faultStorage[index][DATE_OFFSET_IN_FAULT_LOG + 4];
+            Byte year = m_faultStorage[index][DATE_OFFSET_IN_FAULT_LOG + 5];
+
+            if (m_CommDevice.IsTargetBigEndian())
+            {
+                hour = Utils.ReverseByteOrder(hour);
+                minute = Utils.ReverseByteOrder(minute);
+                second = Utils.ReverseByteOrder(second);
+                month = Utils.ReverseByteOrder(month);
+                day = Utils.ReverseByteOrder(day);
+                year = Utils.ReverseByteOrder(year);
+            }
+
+
+	        // Check Time
+            if (VerifyTime(hour, minute, second))
 	        {
-		        wsprintf((_TCHAR *)TempString, "%.2d:%.2d:%.2d",
-				         (INT16)FaultHeader.datetime.hr,
-				         (INT16)FaultHeader.datetime.min,
-				         (INT16)FaultHeader.datetime.sec);
+                Flttime = hour.ToString("D2") + ":" + minute.ToString("D2") + ":" + second.ToString("D2");
 	        }
 	        else
 	        {
-		        _tcscpy_s(TempString, "N/A");
+		        Flttime = "N/A";
 	        }
-
-	        // The Flttime and Fltdate output parameters must be passed as a BSTR type for them 
-	        // to be accessible in managed C#. Used the '_bstr_t()' approach as there were problems 
-	        // associated with SysReAllocString().
-
-	        //VBSetHlstr(&Flttime, TempString, strlen(TempString));
-	        //SysReAllocString(Flttime, (BSTR)TempString);
-	        *Flttime = _bstr_t(TempString).copy();
 
 	        /* Check Date */
-	        if (VerifyDate(	(INT16)FaultHeader.datetime.month,
-					        (INT16)FaultHeader.datetime.day,
-					        (INT16)FaultHeader.datetime.year))
-	        {
-		        wsprintf(	(_TCHAR *)TempString,
-		        "%.2d/%.2d/%.2d",
-		        (INT16)FaultHeader.datetime.month,
-		        (INT16)FaultHeader.datetime.day,
-		        (INT16)FaultHeader.datetime.year );
-	        }
-	        else
-	        {
-		        _tcscpy_s(TempString, "N/A");
-	        }
+            if (VerifyDate(month, day, year))
+            {
+                Fltdate = month.ToString("D2") + "/" + day.ToString("D2") + "/" + year.ToString("D2");
+            }
+            else
+            {
+                Fltdate = "N/A";
+            }
 
-	        //SysReAllocString(Fltdate, (BSTR)TempString);
-	        *Fltdate = _bstr_t(TempString).copy();
-	        *datalognum = MAPINT((INT16)FaultHeader.datalognum);
-	        *faultnum 	= MAPINT((INT16)FaultHeader.faultnum);
-	        *tasknum	= MAPINT((INT16)FaultHeader.tasknum);
+	        faultnum = BitConverter.ToInt16(m_faultStorage[index], 2);
+            tasknum = BitConverter.ToInt16(m_faultStorage[index], 4);
+            datalognum = BitConverter.ToInt16(m_faultStorage[index], 18);
+
+            if (m_CommDevice.IsTargetBigEndian())
+            {
+                faultnum = Utils.ReverseByteOrder(faultnum);
+                tasknum = Utils.ReverseByteOrder(tasknum);
+                datalognum = Utils.ReverseByteOrder(datalognum);
+            }
 
 	        return CommunicationError.Success;
         }
 
-#endif
+
+        public CommunicationError GetFaultVar(Int16 FaultIndex, Int16 NumberOfVariables, Int16 []VariableType, Double []VariableValue)
+        {
+	        /* Check the Validity of the desired index */
+	        if (FaultIndex >= m_CurrentNumberOfFaults)
+            {
+		        return CommunicationError.UnknownError;
+            }
+
+            UInt16 variableOffset = 18;
+
+            for (Int16 var = 0; var < NumberOfVariables; var++)
+            {
+                switch ((ProtocolPTU.VariableType)VariableType[var])
+                {
+                    case ProtocolPTU.VariableType.UINT_8_TYPE:
+                        Byte bVal = m_faultStorage[FaultIndex][variableOffset];
+                        if (m_CommDevice.IsTargetBigEndian())
+                        {
+                            bVal = Utils.ReverseByteOrder(bVal);
+                        }
+                        VariableValue[var] = (Double)bVal;
+                        variableOffset += sizeof(Byte);
+                        break;
+
+                    case ProtocolPTU.VariableType.INT_8_TYPE:
+                        Char cVal = BitConverter.ToChar(m_faultStorage[FaultIndex], variableOffset);
+                        if (m_CommDevice.IsTargetBigEndian())
+                        {
+                            cVal = Utils.ReverseByteOrder(cVal);
+                        }
+                        VariableValue[var] = (Double)cVal;
+                        variableOffset += sizeof(Char);
+                        break;
+
+                    case ProtocolPTU.VariableType.UINT_16_TYPE:
+                        UInt16 u16 = BitConverter.ToUInt16(m_faultStorage[FaultIndex], variableOffset);
+                        if (m_CommDevice.IsTargetBigEndian())
+                        {
+                            u16 = Utils.ReverseByteOrder(u16);
+                        }
+                        VariableValue[var] = (Double)u16;
+                        variableOffset += sizeof(UInt16);
+                        break;
+
+                    case ProtocolPTU.VariableType.INT_16_TYPE:
+                        Int16 i16 = BitConverter.ToInt16(m_faultStorage[FaultIndex], variableOffset);
+                        if (m_CommDevice.IsTargetBigEndian())
+                        {
+                           i16 = Utils.ReverseByteOrder(i16);
+                        }
+                        VariableValue[var] = (Double)i16;
+                        variableOffset += sizeof(Int16);
+                        break;
+
+                    case ProtocolPTU.VariableType.UINT_32_TYPE:
+                        UInt32 u32 = BitConverter.ToUInt32(m_faultStorage[FaultIndex], variableOffset);
+                        if (m_CommDevice.IsTargetBigEndian())
+                        {
+                            u32 = Utils.ReverseByteOrder(u32);
+                        }
+                        VariableValue[var] = (Double)u32;
+                        variableOffset += sizeof(UInt32);
+                        break;
+
+                    case ProtocolPTU.VariableType.INT_32_TYPE:
+                        Int32 i32 = BitConverter.ToInt32(m_faultStorage[FaultIndex], variableOffset);
+                        if (m_CommDevice.IsTargetBigEndian())
+                        {
+                            i32 = Utils.ReverseByteOrder(i32);
+                        }
+                        VariableValue[var] = (Double)i32;
+                        variableOffset += sizeof(Int32);
+                        break;
+
+                    default:
+                        return CommunicationError.UnknownError;
+                }               
+
+            }
+
+            return CommunicationError.Success;
+        }
 
 
 
@@ -352,8 +455,12 @@ struct flthdr
         }
 
 
-        public CommunicationError LoadFaultLog(ref UInt16 NumberOfFaults, ref UInt32 OldestIndex, ref UInt32 NewestIndex)
+        public CommunicationError LoadFaultLog(out Int16 NumberOfFaults, out UInt32 OldestIndex, out UInt32 NewestIndex)
         {
+
+            NumberOfFaults = Int16.MaxValue;
+            OldestIndex = UInt32.MaxValue;
+            NewestIndex = UInt32.MaxValue;
 
             CommunicationError  commError;
 
@@ -371,7 +478,7 @@ struct flthdr
                 }
 
 		        /* Get Fault Log Indexes */
-                commError = GetFaultIndices (ref OldestIndex, ref NewestIndex);
+                commError = GetFaultIndices (out OldestIndex, out NewestIndex);
 		        if (commError != CommunicationError.Success)
                 {
                     break;
@@ -435,9 +542,9 @@ struct flthdr
 				        if (FaultSize < MAX_FAULT_SIZE_BYTES && FaultSize > 0)
 				        {
                             // Add new member with size "FaultSize" to jagged 2 dimensional array
-                            m_faultStorage[m_CurrentNumberOfFaults] = new Byte[FaultSize];
+                            m_faultStorage[m_CurrentNumberOfFaults] = new Byte[FaultSize + 2];
                             // Copy all data into newly created array
-                            Buffer.BlockCopy(m_FaultDataFromTarget.Buffer, Index, m_faultStorage[m_CurrentNumberOfFaults], 0, FaultSize);
+                            Buffer.BlockCopy(m_FaultDataFromTarget.Buffer, Index, m_faultStorage[m_CurrentNumberOfFaults], 0, FaultSize + 2);
 
                             m_CurrentNumberOfFaults++;
 				        }
@@ -469,5 +576,115 @@ struct flthdr
 	        return commError;
 
         }
+
+        public CommunicationError CheckFaultlogger(ref Int16 PassedNumOfFaults, ref UInt32 orig_new)
+        {
+            UInt32 		OldestIndex = UInt32.MaxValue;
+            UInt32      NewestIndex = UInt32.MaxValue;
+	        Int16		RemoteFaults = -1;
+            CommunicationError  commError;
+            UInt32      FaultIndex;
+
+	        /* LOOP ONCE ... EXIT ON ERROR */
+	        do
+	        {
+		        /* Disable Fault Logging */
+                commError = SetFaultLog (false);
+		        if (commError != CommunicationError.Success)
+                {
+                    break;
+                }
+
+		        /* Get Fault Log Indexes */
+                commError = GetFaultIndices (out OldestIndex, out NewestIndex);
+		        if (commError != CommunicationError.Success)
+                {
+                    break;
+                }
+
+		        if (orig_new == 0xFFFFFFFF)
+                {
+			        FaultIndex = OldestIndex;
+                }
+		        else
+                {
+			        FaultIndex = (UInt32)(orig_new + 1);
+                }
+
+		        /* Check if Fault Log is Empty */
+		        if ((NewestIndex == UInt32.MaxValue) && (OldestIndex == UInt32.MaxValue))
+		        {
+			        RemoteFaults = 0;
+			        break;
+		        }
+
+		        /* Compute number of Faults */
+                RemoteFaults = (Int16)(NewestIndex - FaultIndex + 1);
+		        if (RemoteFaults == 0)
+                {
+			        break;
+                }
+
+                commError = GetFaultData((UInt32)FaultIndex, (UInt16)RemoteFaults);
+			    if (commError != CommunicationError.Success)
+                {
+				    break;
+                }
+
+			    if (m_FaultDataFromTarget.BufferSize == 0) 
+                {
+                    break;
+                }
+
+		        /* Enable Fault Logging */
+		        commError = SetFaultLog(true);
+			    if (commError != CommunicationError.Success)
+                {
+				    break;
+                }
+
+		        /* Loop thru the fault buffer, pulling out the size and data */
+		        /* for each fault */
+		        for (Int32 Index = 0; Index < m_FaultDataFromTarget.BufferSize;)
+		        {
+                    Int16 FaultSize;
+                    // Get the size of the next fault 
+                    FaultSize = BitConverter.ToInt16(m_FaultDataFromTarget.Buffer, Index);
+
+                    // Allocate jagged array dynamically and store fault data there
+                    if (FaultSize < MAX_FAULT_SIZE_BYTES && FaultSize > 0)
+                    {
+                        // Add new member with size "FaultSize" to jagged 2 dimensional array
+                        m_faultStorage[m_CurrentNumberOfFaults] = new Byte[FaultSize + 2];
+                        // Copy all data into newly created array
+                        Buffer.BlockCopy(m_FaultDataFromTarget.Buffer, Index, m_faultStorage[m_CurrentNumberOfFaults], 0, FaultSize + 2);
+
+                        m_CurrentNumberOfFaults++;
+                    }
+                    else
+                    {
+                        /* Fault Buffer is corrupt beyond hope at this point */
+                        commError = CommunicationError.UnknownError;
+                        break;
+                    }
+
+			        /* Increment the Index to point to the size of the next fault */
+			        Index += (FaultSize + 2);
+		        }
+
+	        } while (false);
+
+	        /* Enable Fault Logging here in case we left the while loop early */
+	        commError = SetFaultLog(true);
+
+	        if ((commError == CommunicationError.Success) && (RemoteFaults > 0))
+	        {
+		        orig_new			= NewestIndex;
+		        PassedNumOfFaults	= m_CurrentNumberOfFaults;
+	        }
+
+	        return commError;
+        }
+
     }
 }

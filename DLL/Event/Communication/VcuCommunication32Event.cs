@@ -109,7 +109,7 @@ namespace Common.Communication
         /// <param name="newIndex">The index of the first new event.</param>
         /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
         [DllImport("VcuCommunication32.dll")]
-        public static extern unsafe short CheckFaultlogger(out short eventCount, out uint newIndex);
+        public static extern unsafe short CheckFaultlogger(ref short eventCount, ref uint newIndex);
 
         /// <summary>
         /// Get the event record corresponding to the specified index for the event log that is currently loaded into memory.

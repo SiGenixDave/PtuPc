@@ -116,6 +116,7 @@ namespace Common.Communication
         #endregion --- Member Variables ---
 
         protected CommGen m_Comm;
+        protected EventGen m_Event;
 
         #region --- Constructors ---
         /// <summary>
@@ -265,6 +266,15 @@ namespace Common.Communication
         {
             get { return m_Comm; }
             set { m_Comm = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the event general associated with the selected target.
+        /// </summary>
+        public EventGen Event
+        {
+            get { return m_Event; }
+            set { m_Event = value; }
         }
         #endregion --- Properties ---
     }

@@ -112,6 +112,11 @@ namespace Common.Communication
         /// Gets or sets the communication general associated with the selected VCU.
         /// </summary>
         CommGen Comm { get; set; }
+
+        /// <summary>
+        /// Gets or sets the event general associated with the selected VCU.
+        /// </summary>
+        EventGen Event { get; set; }
         #endregion - [Properties] -
     }
 }

@@ -770,6 +770,7 @@ namespace Common.Communication
 
         ICommDevice device;
         protected CommGen m_Comm;
+        protected EventGen m_Event;
 
         #region --- Constructors ---
         /// <summary>
@@ -807,6 +808,7 @@ namespace Common.Communication
         {
             m_CommunicationSetting = communicationInterface.CommunicationSetting;
             m_Comm = communicationInterface.Comm;
+            m_Event = communicationInterface.Event; 
         }
         #endregion --- Constructors ---
 
@@ -870,6 +872,7 @@ namespace Common.Communication
             {
                 errorCode = CommunicationError.Success;
                 m_Comm = new CommGen(device);
+                m_Event = new EventGen(device);
             }
 
             if (errorCode != CommunicationError.Success)
@@ -1217,6 +1220,16 @@ namespace Common.Communication
         {
             get { return m_Comm; }
             set { m_Comm = value; }
+        }
+
+
+        /// <summary>
+        /// Gets or sets the event general associated with the selected target.
+        /// </summary>
+        public EventGen Event
+        {
+            get { return m_Event; }
+            set { m_Event = value; }
         }
         #endregion --- Properties ---
     }

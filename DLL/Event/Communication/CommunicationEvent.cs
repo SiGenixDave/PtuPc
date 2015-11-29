@@ -197,7 +197,7 @@ namespace Event.Communication
         /// <param name="eventCount">The number of new events that have been added to the active event log.</param>
         /// <param name="newIndex">The index of the first new event.</param>
         /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short CheckFaultloggerDelegate(out short eventCount, out uint newIndex);
+        protected delegate short CheckFaultloggerDelegate(ref short eventCount, ref uint newIndex);
 
         /// <summary>
         /// Delegate declaration for the GetFaultHdr() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets 
@@ -570,7 +570,7 @@ namespace Event.Communication
             Debug.Assert(m_ChangeEventLog != null, "CommunicationEvent.ChangeEventLog() - [m_ChangeEventLog != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.ChangeEventLog() - [m_MutexCommuncationInterface != null]");
 
-            short logIndex, sampleIntervalMs, changeStatus, maxTasks, maxEventsPerTask;
+            short logIndex, sampleIntervalMs = -1, changeStatus = -1, maxTasks = -1, maxEventsPerTask = -1;
             logIndex = (short)(log.Identifier - 1);
             Debug.Assert(logIndex >= 0, "CommunicationEvent.ChangeEventLog() - [logIndex >= 0]");
 
@@ -578,8 +578,9 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_ChangeEventLog(logIndex, out sampleIntervalMs, out changeStatus, out maxTasks,
-                                                                 out maxEventsPerTask);
+                errorCode = m_Event.ChangeEventLog(logIndex, ref sampleIntervalMs, ref changeStatus, ref maxTasks, ref maxEventsPerTask);
+                //DAS errorCode = (CommunicationError)m_ChangeEventLog(logIndex, out sampleIntervalMs, out changeStatus, out maxTasks,
+                //DAS                                                 out maxEventsPerTask);
             }
             catch (Exception)
             {
@@ -627,7 +628,8 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_LoadFaultlog(out eventCount, out oldIndex, out newIndex);
+                errorCode = m_Event.LoadFaultLog(out eventCount, out oldIndex, out newIndex);
+                //DAS errorCode = (CommunicationError)m_LoadFaultlog(out eventCount, out oldIndex, out newIndex);
             }
             catch (Exception)
             {
@@ -666,15 +668,16 @@ namespace Event.Communication
             Debug.Assert(m_GetFaultHdr != null, "CommunicationEvent.GetEventRecord() - [m_GetFaultHdr != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.GetEventRecord() - [m_MutexCommuncationInterface != null]");
 
-            short eventIdentifier, taskIdentifier, streamNumber;
-            String time, date;
+            short eventIdentifier = -1, taskIdentifier = -1, streamNumber = -1;
+            String time = "", date = "";
 
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_GetFaultHdr(eventIndex, out eventIdentifier, out taskIdentifier, out time, out date,
-                                                              out streamNumber);
+                errorCode = m_Event.GetFaultHdr(eventIndex, ref eventIdentifier, ref taskIdentifier, ref time, ref date, ref streamNumber);
+                //DAS errorCode = (CommunicationError)m_GetFaultHdr(eventIndex, out eventIdentifier, out taskIdentifier, out time, out date,
+                //DAS                                              out streamNumber);
             }
             catch (Exception)
             {
@@ -870,7 +873,8 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_GetFaultVar(eventIndex, eventVariableCount, dataTypes, values);
+                errorCode = m_Event.GetFaultVar(eventIndex, eventVariableCount, dataTypes, values);
+                //DAS errorCode = (CommunicationError)m_GetFaultVar(eventIndex, eventVariableCount, dataTypes, values);
             }
             catch (Exception)
             {
@@ -1285,7 +1289,7 @@ namespace Event.Communication
         /// <param name="newIndex">The new index of the latest event.</param>
         /// <exception cref="CommunicationException">Thrown if the error code returned from the call to the PTUDLL32.CheckFaultlogger() method is not 
         /// CommunicationError.Success.</exception>
-        public void CheckFaultlogger(out short eventCount, out uint newIndex)
+        public void CheckFaultlogger(ref short eventCount, ref uint newIndex)
         {
             // Check that the function delegate has been initialized.
             Debug.Assert(m_CheckFaultlogger != null, "CommunicationEvent.CheckFaultlogger() - [m_CheckFaultlogger != null]");
@@ -1295,7 +1299,8 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_CheckFaultlogger(out eventCount, out newIndex);
+                errorCode = m_Event.CheckFaultlogger(ref eventCount, ref newIndex);
+                //DAS errorCode = (CommunicationError)m_CheckFaultlogger(out eventCount, out newIndex);
             }
             catch (Exception)
             {

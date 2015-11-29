@@ -72,7 +72,7 @@
             TERMINATECONNECTION = 102,
         }
 
-        private enum VariableType
+        public enum VariableType
         {
             UINT_8_TYPE = 0,
             UINT_16_TYPE = 1,

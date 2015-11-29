@@ -552,7 +552,7 @@ namespace Event.Communication
         /// <param name="newIndex">The new index of the latest event.</param>
         /// <exception cref="CommunicationException">Thrown if the error code returned from the call to the PTUDLL32.CheckFaultlogger() method is not 
         /// CommunicationError.Success.</exception>
-        public void CheckFaultlogger(out short eventCount, out uint newIndex)
+        public void CheckFaultlogger(ref short eventCount, ref uint newIndex)
         {
             eventCount = 1;
             newIndex = 0;

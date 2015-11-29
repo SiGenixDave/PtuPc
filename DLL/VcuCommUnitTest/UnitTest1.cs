@@ -69,9 +69,9 @@ namespace VcuCommUnitTest
                 Debug.Print("Exception Message = " + device.ExceptionMessage);
             }
 
-            UInt16 numFaults = 0;
+            Int16 numFaults = 0;
             UInt32 oldest = 0, neweset = 0;
-            ev.LoadFaultLog(ref numFaults, ref oldest, ref neweset);
+            ev.LoadFaultLog(out numFaults, out oldest, out neweset);
 
             Int16 NewEventLogNumber = 0, DataRecordingRate = 0, ChangeStatus = 0, MaxTasks = 0, MaxEventsPerTask = 0;
             ev.ChangeEventLog(NewEventLogNumber, ref DataRecordingRate, ref ChangeStatus, ref MaxTasks, ref MaxEventsPerTask);
@@ -82,7 +82,7 @@ namespace VcuCommUnitTest
             ev.SetFaultLog(false);
 
             UInt32 OldestIndex = 0, NewestIndex = 0;
-            ev.GetFaultIndices(ref OldestIndex, ref NewestIndex);
+            ev.GetFaultIndices(out OldestIndex, out NewestIndex);
 
             Debug.Print(OldestIndex.ToString("X8") + " " + NewestIndex.ToString("X8"));
 
