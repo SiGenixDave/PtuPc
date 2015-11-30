@@ -180,50 +180,6 @@ namespace Event.Communication
     public class CommunicationEvent : CommunicationParent, ICommunicationEvent
     {
         #region --- Delegate Declarations ---
-        /// <summary>
-        /// Delegate declaration for the LoadFaultlog() method of VcuCommunication32.dll/VcuCommunication64.dll. This method Loads 
-        /// the current event log into memory.
-        /// </summary>
-        /// <param name="eventCount">The number of events that have been loaded into memory.</param>
-        /// <param name="oldIndex">The old event index.</param>
-        /// <param name="newIndex">The new event index.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short LoadFaultlogDelegate(out short eventCount, out uint oldIndex, out uint newIndex);
-
-        /// <summary>
-        /// Delegate declaration for the CheckFaultlogger() method of VcuCommunication32.dll/VcuCommunication64.dll. This method checks 
-        /// whether any new events have been added to the active event log.
-        /// </summary>
-        /// <param name="eventCount">The number of new events that have been added to the active event log.</param>
-        /// <param name="newIndex">The index of the first new event.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short CheckFaultloggerDelegate(ref short eventCount, ref uint newIndex);
-
-        /// <summary>
-        /// Delegate declaration for the GetFaultHdr() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets 
-        /// the event record corresponding to the specified index for the event log that is currently loaded into memory.
-        /// </summary>
-        /// <param name="eventIndex">The event index of the required event.</param>
-        /// <param name="eventIdentifier">The event identifier associated with the event.</param>
-        /// <param name="taskIdentifier">The task identifier associated with the event.</param>
-        /// <param name="time">The time that the event was raised.</param>
-        /// <param name="date">The date that the event was raised.</param>
-        /// <param name="streamNumber">The stream number of the data stream associated with the event, if one is available; otherwise, -1.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short GetFaultHdrDelegate(short eventIndex, out short eventIdentifier, out short taskIdentifier,
-                                                     [MarshalAs(UnmanagedType.BStr)] out String time,
-                                                     [MarshalAs(UnmanagedType.BStr)] out String date, out short streamNumber);
-
-        /// <summary>
-        /// Delegate declaration for the GetFaultVar() method of VcuCommunication32.dll/VcuCommunication64.dll. This method retrieves 
-        /// the event variables associated with the specified event.
-        /// </summary>
-        /// <param name="eventIndex">The index of the event.</param>
-        /// <param name="eventVariableCount">The number of event variables that are to be retrieved.</param>
-        /// <param name="dataTypes">The data types associated with each of the event variables.</param>
-        /// <param name="values">The values associated with each event variable.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short GetFaultVarDelegate(short eventIndex, short eventVariableCount, short[] dataTypes, double[] values);
 
         /// <summary>
         /// Delegate declaration for the GetFltFlagInfo() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets 
@@ -370,18 +326,6 @@ namespace Event.Communication
         /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
         protected delegate short GetEventLogDelegate(out short eventLogIndex, out short eventLogCount);
 
-        /// <summary>
-        /// Delegate declaration for the ChangeEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll. This method changes 
-        /// the current event log on the VCU to the specified log.
-        /// </summary>
-        /// <param name="eventLogIndex">The index of the required event log.</param>
-        /// <param name="sampleIntervalMs">The base interval, in ms, between samples.</param>
-        /// <param name="changeStatus">A flag to indicate whether new events have been added to the log.</param>
-        /// <param name="maxTasks">The maximum number of tasks associated with the log.</param>
-        /// <param name="maxEventsPerTask">The maximum number of events per task.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short ChangeEventLogDelegate(short eventLogIndex, out short sampleIntervalMs, out short changeStatus,
-                                                        out short maxTasks, out short maxEventsPerTask);
 
         /// <summary>
         /// Delegate declaration for the ExitEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll. This method exits the event 
@@ -405,26 +349,6 @@ namespace Event.Communication
 
         #region --- Member Variables ---
         #region --- Function Delegates  ---
-        /// <summary>
-        /// Delegate for the LoadFaultlog() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected LoadFaultlogDelegate m_LoadFaultlog;
-
-        /// <summary>
-        /// Delegate for the LoadFaultlog() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected CheckFaultloggerDelegate m_CheckFaultlogger;
-
-        /// <summary>
-        /// Delegate for the CheckFaultlogger() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetFaultHdrDelegate m_GetFaultHdr;
-
-        /// <summary>
-        /// Delegate for the GetFaultVar() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetFaultVarDelegate m_GetFaultVar;
-
         /// <summary>
         /// Delegate for the GetFltFlagInfo() method of VcuCommunication32.dll/VcuCommunication64.dll.
         /// </summary>
@@ -481,11 +405,6 @@ namespace Event.Communication
         protected GetEventLogDelegate m_GetEventLog;
 
         /// <summary>
-        /// Delegate for the ChangeEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected ChangeEventLogDelegate m_ChangeEventLog;
-
-        /// <summary>
         /// Delegate for the ExitEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll.
         /// </summary>
         protected ExitEventLogDelegate m_ExitEventLog;
@@ -510,10 +429,6 @@ namespace Event.Communication
             // ----------------------------------------------------------------------
             if (m_Is64BitOperatingSystem == true)
             {
-                m_LoadFaultlog = VcuCommunication64Event.LoadFaultlog;
-                m_CheckFaultlogger = VcuCommunication64Event.CheckFaultlogger;
-                m_GetFaultHdr = VcuCommunication64Event.GetFaultHdr;
-                m_GetFaultVar = VcuCommunication64Event.GetFaultVar;
                 m_GetFltFlagInfo = VcuCommunication64Event.GetFltFlagInfo;
                 m_GetFltHistInfo = VcuCommunication64Event.GetFltHistInfo;
                 m_FreeEventLogMemory = VcuCommunication64Event.FreeEventLogMemory;
@@ -525,15 +440,10 @@ namespace Event.Communication
                 m_GetDefaultStreamInformation = VcuCommunication64Event.GetDefaultStreamInformation;
                 m_SetDefaultStreamInformation = VcuCommunication64Event.SetDefaultStreamInformation;
                 m_GetEventLog = VcuCommunication64Event.GetEventLog;
-                m_ChangeEventLog = VcuCommunication64Event.ChangeEventLog;
                 m_ExitEventLog = VcuCommunication64Event.ExitEventLog;
             }
             else
             {
-                m_LoadFaultlog = VcuCommunication32Event.LoadFaultlog;
-                m_CheckFaultlogger = VcuCommunication32Event.CheckFaultlogger;
-                m_GetFaultHdr = VcuCommunication32Event.GetFaultHdr;
-                m_GetFaultVar = VcuCommunication32Event.GetFaultVar;
                 m_GetFltFlagInfo = VcuCommunication32Event.GetFltFlagInfo;
                 m_GetFltHistInfo = VcuCommunication32Event.GetFltHistInfo;
                 m_FreeEventLogMemory = VcuCommunication32Event.FreeEventLogMemory;
@@ -545,7 +455,6 @@ namespace Event.Communication
                 m_GetDefaultStreamInformation = VcuCommunication32Event.GetDefaultStreamInformation;
                 m_SetDefaultStreamInformation = VcuCommunication32Event.SetDefaultStreamInformation;
                 m_GetEventLog = VcuCommunication32Event.GetEventLog;
-                m_ChangeEventLog = VcuCommunication32Event.ChangeEventLog;
                 m_ExitEventLog = VcuCommunication32Event.ExitEventLog;
             }
             #endregion - [Initialize VcuCommunication.event.cpp Function Delegates] -
@@ -567,7 +476,6 @@ namespace Event.Communication
         public void ChangeEventLog(Log log)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_ChangeEventLog != null, "CommunicationEvent.ChangeEventLog() - [m_ChangeEventLog != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.ChangeEventLog() - [m_MutexCommuncationInterface != null]");
 
             short logIndex, sampleIntervalMs = -1, changeStatus = -1, maxTasks = -1, maxEventsPerTask = -1;
@@ -579,8 +487,6 @@ namespace Event.Communication
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
                 errorCode = m_Event.ChangeEventLog(logIndex, ref sampleIntervalMs, ref changeStatus, ref maxTasks, ref maxEventsPerTask);
-                //DAS errorCode = (CommunicationError)m_ChangeEventLog(logIndex, out sampleIntervalMs, out changeStatus, out maxTasks,
-                //DAS                                                 out maxEventsPerTask);
             }
             catch (Exception)
             {
@@ -621,7 +527,6 @@ namespace Event.Communication
         public void LoadEventLog(out short eventCount, out uint oldIndex, out uint newIndex)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_LoadFaultlog != null, "CommunicationEvent.LoadEventLog() - [m_LoadFaultlog != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.LoadEventLog() - [m_MutexCommuncationInterface != null]");
 
             CommunicationError errorCode = CommunicationError.UnknownError;
@@ -629,7 +534,6 @@ namespace Event.Communication
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
                 errorCode = m_Event.LoadFaultLog(out eventCount, out oldIndex, out newIndex);
-                //DAS errorCode = (CommunicationError)m_LoadFaultlog(out eventCount, out oldIndex, out newIndex);
             }
             catch (Exception)
             {
@@ -665,7 +569,6 @@ namespace Event.Communication
         public void GetEventRecord(Log currentEventLog, short eventIndex, out EventRecord eventRecord)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_GetFaultHdr != null, "CommunicationEvent.GetEventRecord() - [m_GetFaultHdr != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.GetEventRecord() - [m_MutexCommuncationInterface != null]");
 
             short eventIdentifier = -1, taskIdentifier = -1, streamNumber = -1;
@@ -676,8 +579,6 @@ namespace Event.Communication
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
                 errorCode = m_Event.GetFaultHdr(eventIndex, ref eventIdentifier, ref taskIdentifier, ref time, ref date, ref streamNumber);
-                //DAS errorCode = (CommunicationError)m_GetFaultHdr(eventIndex, out eventIdentifier, out taskIdentifier, out time, out date,
-                //DAS                                              out streamNumber);
             }
             catch (Exception)
             {
@@ -863,7 +764,6 @@ namespace Event.Communication
         public void GetFaultVar(short eventIndex, short eventVariableCount, short[] dataTypes, out double[] values)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_GetFaultVar != null, "CommunicationEvent.GetFaultVar() - [m_GetFaultVar != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.GetFaultVar() - [m_MutexCommuncationInterface != null]");
 
             // Instantiate an array of doubles to hold the return values.
@@ -874,7 +774,6 @@ namespace Event.Communication
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
                 errorCode = m_Event.GetFaultVar(eventIndex, eventVariableCount, dataTypes, values);
-                //DAS errorCode = (CommunicationError)m_GetFaultVar(eventIndex, eventVariableCount, dataTypes, values);
             }
             catch (Exception)
             {
@@ -1292,7 +1191,6 @@ namespace Event.Communication
         public void CheckFaultlogger(ref short eventCount, ref uint newIndex)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_CheckFaultlogger != null, "CommunicationEvent.CheckFaultlogger() - [m_CheckFaultlogger != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.CheckFaultlogger() - [m_MutexCommuncationInterface != null]");
 
             CommunicationError errorCode = CommunicationError.UnknownError;
@@ -1300,7 +1198,6 @@ namespace Event.Communication
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
                 errorCode = m_Event.CheckFaultlogger(ref eventCount, ref newIndex);
-                //DAS errorCode = (CommunicationError)m_CheckFaultlogger(out eventCount, out newIndex);
             }
             catch (Exception)
             {
