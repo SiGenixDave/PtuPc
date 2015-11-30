@@ -214,6 +214,13 @@ namespace Common.Communication
             return commError;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hr"></param>
+        /// <param name="min"></param>
+        /// <param name="sec"></param>
+        /// <returns></returns>
         private Boolean VerifyTime(Byte hr, Byte min, Byte sec)
         {
 	        if ((hr < 0) || (hr > 23))
@@ -234,6 +241,13 @@ namespace Common.Communication
 	        return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="month"></param>
+        /// <param name="day"></param>
+        /// <param name="year"></param>
+        /// <returns></returns>
         private Boolean VerifyDate(Byte month, Byte day, Byte year)
         {
             if ((month < 1) || (month > 12))
@@ -253,6 +267,16 @@ namespace Common.Communication
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="faultnum"></param>
+        /// <param name="tasknum"></param>
+        /// <param name="Flttime"></param>
+        /// <param name="Fltdate"></param>
+        /// <param name="datalognum"></param>
+        /// <returns></returns>
         public CommunicationError GetFaultHdr(Int16	index, ref Int16 faultnum, ref Int16 tasknum,
 	                                          ref String Flttime, ref String Fltdate, ref Int16 datalognum)
         {
@@ -321,7 +345,14 @@ namespace Common.Communication
 	        return CommunicationError.Success;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="FaultIndex"></param>
+        /// <param name="NumberOfVariables"></param>
+        /// <param name="VariableType"></param>
+        /// <param name="VariableValue"></param>
+        /// <returns></returns>
         public CommunicationError GetFaultVar(Int16 FaultIndex, Int16 NumberOfVariables, Int16 []VariableType, Double []VariableValue)
         {
 	        /* Check the Validity of the desired index */
@@ -405,56 +436,109 @@ namespace Common.Communication
             return CommunicationError.Success;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public CommunicationError InitializeEventLog()
+        {
+            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.INITIALIZE_EVENTLOG);
 
+            return commError;
+        }
 
-        public CommunicationError SetFaultFlags(UInt16 TaskNumber, UInt16 FaultNumber, Byte EnableFlag, Byte DatalogFlag)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public CommunicationError ClearEvent()
+        {
+            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.CLEAR_EVENTLOG);
+
+            return commError;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="TaskNumber"></param>
+        /// <param name="FaultNumber"></param>
+        /// <param name="EnableFlag"></param>
+        /// <param name="DatalogFlag"></param>
+        /// <returns></returns>
+        public CommunicationError SetFaultFlags(Int16 TaskNumber, Int16 FaultNumber, Int16 EnableFlag, Int16 DatalogFlag)
         {
 	        ProtocolPTU.SetFaultFlagReq request  = new ProtocolPTU.SetFaultFlagReq(TaskNumber, FaultNumber, EnableFlag, DatalogFlag);
 
-            Byte []txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
+            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
-            m_CommDevice.SendMessageToTarget(txMessage);
-
-            return CommunicationError.Success;
+            return commError;
         }
 
-        public CommunicationError GetStreamInformation(UInt16 StreamNumber, ref ProtocolPTU.GetStreamInfoRes response, Int16 []VariableIndex, Int16 []VariableType)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="StreamNumber"></param>
+        /// <param name="NumberOfVariables"></param>
+        /// <param name="NumberOfSamples"></param>
+        /// <param name="SampleRate"></param>
+        /// <param name="VariableIndex"></param>
+        /// <param name="VariableType"></param>
+        /// <returns></returns>
+        public CommunicationError GetStreamInformation (Int16 StreamNumber, out Int16 NumberOfVariables, out Int16 NumberOfSamples,
+	                                                    out Int16 SampleRate, Int16 []VariableIndex, Int16 []VariableType)
         {
-	        UInt16 Counter;
-	        ProtocolPTU.GetStreamInfoReq request = new ProtocolPTU.GetStreamInfoReq(StreamNumber);
+            NumberOfVariables = -1;
+            NumberOfSamples = -1;
+            SampleRate = -1;
+            
+            ProtocolPTU.GetStreamInfoReq request = new ProtocolPTU.GetStreamInfoReq(StreamNumber);
+            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
 
-            Byte []txMessage = request.GetByteArray(m_CommDevice.IsTargetBigEndian());
-            m_CommDevice.SendMessageToTarget(txMessage);
+            if (commError != CommunicationError.Success)
+            {
+                return commError;
+            }
 
-            m_CommDevice.ReceiveTargetDataPacket(m_RxMessage);
-
-            response.Information.NumberOfVariables = BitConverter.ToUInt16(m_RxMessage, 8);
-            response.Information.NumberOfSamples = BitConverter.ToUInt16(m_RxMessage, 10);
-            response.Information.SampleRate = BitConverter.ToUInt16(m_RxMessage, 12);
+            NumberOfVariables = BitConverter.ToInt16(m_RxMessage, 8);
+            NumberOfSamples = BitConverter.ToInt16(m_RxMessage, 10);
+            SampleRate = BitConverter.ToInt16(m_RxMessage, 12);
 
             if (m_CommDevice.IsTargetBigEndian())
             {
-                response.Information.NumberOfVariables = Utils.ReverseByteOrder(response.Information.NumberOfVariables);
-                response.Information.NumberOfSamples = Utils.ReverseByteOrder(response.Information.NumberOfVariables);
-                response.Information.SampleRate = Utils.ReverseByteOrder(response.Information.NumberOfVariables);
+                NumberOfVariables = Utils.ReverseByteOrder(NumberOfVariables);
+                NumberOfSamples = Utils.ReverseByteOrder(NumberOfVariables);
+                SampleRate = Utils.ReverseByteOrder(NumberOfVariables);
+            }
+            
+            const Int16 MAX_DL_VARIABLES = 256;
+            if (NumberOfVariables > MAX_DL_VARIABLES)
+            {
+			    NumberOfVariables = MAX_DL_VARIABLES;
             }
 
-#if TODO            
-            if (*NumberOfVariables > MAXDLVARIABLES)
-			        *NumberOfVariables = MAXDLVARIABLES;
-
-            for (Counter = 0; Counter < *NumberOfVariables; Counter++)
+            for (UInt16 Counter = 0; Counter < NumberOfVariables; Counter++)
 		    {
-			    VariableIndex[Counter] =
-				    MAPINT(Response.Information.StreamVariableInfo[Counter].StreamVariable);
-			    VariableType[Counter] =
-				    MAPINT(Response.Information.StreamVariableInfo[Counter].StreamVariableType);
-		    }
-#endif
-            return CommunicationError.Success;
+			    VariableIndex[Counter] = BitConverter.ToInt16(m_RxMessage, (Counter * 4) + 14); 
+			    VariableType[Counter] = BitConverter.ToInt16(m_RxMessage, (Counter * 4) + 16); 
+                if (m_CommDevice.IsTargetBigEndian())
+                {
+			        VariableIndex[Counter] = Utils.ReverseByteOrder(VariableIndex[Counter]); 
+			        VariableType[Counter] = Utils.ReverseByteOrder(VariableType[Counter]); 
+                }
+            }
+
+	        return commError;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NumberOfFaults"></param>
+        /// <param name="OldestIndex"></param>
+        /// <param name="NewestIndex"></param>
+        /// <returns></returns>
         public CommunicationError LoadFaultLog(out Int16 NumberOfFaults, out UInt32 OldestIndex, out UInt32 NewestIndex)
         {
 
@@ -577,6 +661,12 @@ namespace Common.Communication
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="PassedNumOfFaults"></param>
+        /// <param name="orig_new"></param>
+        /// <returns></returns>
         public CommunicationError CheckFaultlogger(ref Int16 PassedNumOfFaults, ref UInt32 orig_new)
         {
             UInt32 		OldestIndex = UInt32.MaxValue;
@@ -685,6 +775,36 @@ namespace Common.Communication
 
 	        return commError;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="CurrentEventLog"></param>
+        /// <param name="NumberEventLogs"></param>
+        /// <returns></returns>
+        public CommunicationError GetEventLog(out Int16 CurrentEventLog, out Int16 NumberEventLogs)
+        {
+            CurrentEventLog = -1;
+            NumberEventLogs = -1;
+            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_EVENT_LOG);
+
+            if (commError != CommunicationError.Success)
+            {
+                return commError;
+            }
+
+            CurrentEventLog = BitConverter.ToInt16(m_RxMessage, 8);
+            NumberEventLogs = BitConverter.ToInt16(m_RxMessage, 10);
+
+            if (m_CommDevice.IsTargetBigEndian())
+            {
+                CurrentEventLog = Utils.ReverseByteOrder(CurrentEventLog);
+                NumberEventLogs = Utils.ReverseByteOrder(NumberEventLogs);
+            }
+
+            return commError;
+        }
+
 
     }
 }

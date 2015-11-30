@@ -224,48 +224,6 @@ namespace Event.Communication
         protected delegate short GetFltHistInfoDelegate(short[] valid, short[] cumulativeHistoryCount, short[] recentHistoryCount,
                                                         short maxTasks, short maxEventsPerTask);
 
-        /// <summary>
-        /// Delegate declaration for the FreeEventLogMemory() method of VcuCommunication32.dll/VcuCommunication64.dll. This method clears the event
-        /// log memory.
-        /// </summary>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short FreeEventLogMemoryDelegate();
-
-        /// <summary>
-        /// Delegate declaration for the SetFaultFlags() method of VcuCommunication32.dll/VcuCommunication64.dll. This method sets 
-        /// the flag that controls: (a) whether the specified event type is enabled and (b) whether the event type triggers the recoding 
-        /// of a data stream. 
-        /// </summary>
-        /// <param name="taskIdentfier">The task identifier associated with the event type.</param>
-        /// <param name="eventIdentifier">The event identifier associated with the event type.</param>
-        /// <param name="enabledFlag">A flag to control whether the event type corresponding to the specified task and event identifiers is to be
-        /// enabled. True, if the event type is to be enabled; otherwise, false.</param>
-        /// <param name="streamTriggeredFlag">A flag to control whether the event type corresponding to the specified task and event identifiers is
-        /// to trigger the recording of a data stream. True, if the event type is to trigger the recording of a data stream; otherwise, false.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short SetFaultFlagsDelegate(short taskIdentfier, short eventIdentifier, short enabledFlag, short streamTriggeredFlag);
-
-        /// <summary>
-        /// Delegate declaration for the ClearEvent() method of VcuCommunication32.dll/VcuCommunication64.dll. This method clears the active event
-        /// log.
-        /// </summary>
-        /// <remarks>
-        /// This call removes all events contained in the active event log and erases any data logs associated with the event log.
-        /// </remarks>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short ClearEventDelegate();
-
-        /// <summary>
-        /// Delegate declaration for the InitializeEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll. This method initializes the
-        /// event sub-system.
-        /// </summary>
-        /// <remarks>
-        /// Clears all event information stored on battery backed RAM for both the maintenance and engineering logs. This call also clears the
-        /// cumulative history, recent history columns and all data logs. This function is typically used to establish a zero event/fault reference
-        /// base when a replacement VCU is installed in a car.
-        /// </remarks>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short InitializeEventLogDelegate();
 
         /// <summary>
         /// Delegate declaration for the GetStream() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets the data stream.
@@ -280,19 +238,6 @@ namespace Event.Communication
         protected delegate short GetStreamDelegate(short streamNumber, int[] dataBuffer, out short timeOrigin, short watchVariableCount,
                                                    short sampleCount, short[] dataTypes);
 
-        /// <summary>
-        /// Delegate declaration for the GetStreamInformation() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets the 
-        /// parameters associated with the specified stream.
-        /// </summary>
-        /// <param name="streamNumber">The stream number.</param>
-        /// <param name="watchVariableCount">The number of watch variables included in the data stream.</param>
-        /// <param name="sampleCount">The number of data samples associated with the data stream.</param>
-        /// <param name="sampleMultiple">The multiple of the base recording interval (60ms) at which the data is sampled.</param>
-        /// <param name="watchIdentifiers">The watch identifiers of the watch variables contained within the data stream.</param>
-        /// <param name="dataTypes">The data type corresponding to each watch variable contained within the data stream.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short GetStreamInformationDelegate(short streamNumber, out short watchVariableCount, out short sampleCount,
-                                                              out short sampleMultiple, short[] watchIdentifiers, short[] dataTypes);
 
         /// <summary>
         /// Delegate declaration for the GetDefaultStreamInformation() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets the
@@ -316,16 +261,6 @@ namespace Event.Communication
         /// <param name="watchIdentifiers">The watch identifiers of the watch variables that are to be included in the data stream.</param>
         /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
         protected delegate short SetDefaultStreamInformationDelegate(short watchVariableCount, short sampleMultiple, short[] watchIdentifiers);
-
-        /// <summary>
-        /// Delegate declaration for the GetEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets the 
-        /// index of the event log that is currently loaded into memory.
-        /// </summary>
-        /// <param name="eventLogIndex">The index of the event log that is currently loaded into memory.</param>
-        /// <param name="eventLogCount">The number of event logs supported by the VCU.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short GetEventLogDelegate(out short eventLogIndex, out short eventLogCount);
-
 
         /// <summary>
         /// Delegate declaration for the ExitEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll. This method exits the event 
@@ -360,34 +295,9 @@ namespace Event.Communication
         protected GetFltHistInfoDelegate m_GetFltHistInfo;
 
         /// <summary>
-        /// Delegate for the FreeEventLogMemory() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected FreeEventLogMemoryDelegate m_FreeEventLogMemory;
-
-        /// <summary>
-        /// Delegate for the SetFaultFlags() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected SetFaultFlagsDelegate m_SetFaultFlags;
-
-        /// <summary>
-        /// Delegate for the ClearEvent() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected ClearEventDelegate m_ClearEvent;
-
-        /// <summary>
-        /// Delegate for the InitializeEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected InitializeEventLogDelegate m_InitializeEventLog;
-
-        /// <summary>
         /// Delegate for the GetStream() method of VcuCommunication32.dll/VcuCommunication64.dll.
         /// </summary>
         protected GetStreamDelegate m_GetStream;
-
-        /// <summary>
-        /// Delegate for the GetStreamInformation() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetStreamInformationDelegate m_GetStreamInformation;
 
         /// <summary>
         /// Delegate for the  GetDefaultStreamInformation() method of VcuCommunication32.dll/VcuCommunication64.dll.
@@ -399,10 +309,6 @@ namespace Event.Communication
         /// </summary>
         protected SetDefaultStreamInformationDelegate m_SetDefaultStreamInformation;
         
-        /// <summary>
-        /// Delegate for the GetEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetEventLogDelegate m_GetEventLog;
 
         /// <summary>
         /// Delegate for the ExitEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll.
@@ -431,30 +337,18 @@ namespace Event.Communication
             {
                 m_GetFltFlagInfo = VcuCommunication64Event.GetFltFlagInfo;
                 m_GetFltHistInfo = VcuCommunication64Event.GetFltHistInfo;
-                m_FreeEventLogMemory = VcuCommunication64Event.FreeEventLogMemory;
-                m_SetFaultFlags = VcuCommunication64Event.SetFaultFlags;
-                m_ClearEvent = VcuCommunication64Event.ClearEvent;
-                m_InitializeEventLog = VcuCommunication64Event.InitializeEventLog;
                 m_GetStream = VcuCommunication64Event.GetStream;
-                m_GetStreamInformation = VcuCommunication64Event.GetStreamInformation;
                 m_GetDefaultStreamInformation = VcuCommunication64Event.GetDefaultStreamInformation;
                 m_SetDefaultStreamInformation = VcuCommunication64Event.SetDefaultStreamInformation;
-                m_GetEventLog = VcuCommunication64Event.GetEventLog;
                 m_ExitEventLog = VcuCommunication64Event.ExitEventLog;
             }
             else
             {
                 m_GetFltFlagInfo = VcuCommunication32Event.GetFltFlagInfo;
                 m_GetFltHistInfo = VcuCommunication32Event.GetFltHistInfo;
-                m_FreeEventLogMemory = VcuCommunication32Event.FreeEventLogMemory;
-                m_SetFaultFlags = VcuCommunication32Event.SetFaultFlags;
-                m_ClearEvent = VcuCommunication32Event.ClearEvent;
-                m_InitializeEventLog = VcuCommunication32Event.InitializeEventLog;
                 m_GetStream = VcuCommunication32Event.GetStream;
-                m_GetStreamInformation = VcuCommunication32Event.GetStreamInformation;
                 m_GetDefaultStreamInformation = VcuCommunication32Event.GetDefaultStreamInformation;
                 m_SetDefaultStreamInformation = VcuCommunication32Event.SetDefaultStreamInformation;
-                m_GetEventLog = VcuCommunication32Event.GetEventLog;
                 m_ExitEventLog = VcuCommunication32Event.ExitEventLog;
             }
             #endregion - [Initialize VcuCommunication.event.cpp Function Delegates] -
@@ -676,36 +570,7 @@ namespace Event.Communication
         /// not CommunicationError.Success.</exception>
         public void FreeEventLogMemory()
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_FreeEventLogMemory != null, "CommunicationEvent.FreeEventLogMemory() - [m_FreeEventLogMemory != null]");
-            Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.FreeEventLogMemory() - [m_MutexCommuncationInterface != null]");
-
-            CommunicationError errorCode = CommunicationError.UnknownError;
-            try
-            {
-                m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_FreeEventLogMemory();
-            }
-            catch (Exception)
-            {
-                errorCode = CommunicationError.SystemException;
-                throw new CommunicationException("CommunicationEvent.FreeEventLogMemory()", errorCode);
-            }
-            finally
-            {
-                m_MutexCommuncationInterface.ReleaseMutex();
-            }
-
-            if (DebugMode.Enabled == true)
-            {
-                DebugMode.FreeEventLogMemory_t freeEventLogMemory = new DebugMode.FreeEventLogMemory_t(errorCode);
-                DebugMode.Write(freeEventLogMemory.ToXML());
-            }
-
-            if (errorCode != CommunicationError.Success)
-            {
-                throw new CommunicationException("CommunicationEvent.FreeEventLogMemory()", errorCode);
-            }
+            //NOTE: Nothing needs to be done now in the managed world since all memory is free when managed objects deleted or not being used
         }
 
         /// <summary>
@@ -718,14 +583,13 @@ namespace Event.Communication
         public void GetEventLogIndex(out short eventLogIndex, out short eventLogCount)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_GetEventLog != null, "CommunicationEvent.GetEventLogIndex() - [m_GetEventLog != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.GetEventLogIndex() - [m_MutexCommuncationInterface != null]");
 
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_GetEventLog(out eventLogIndex, out eventLogCount);
+                errorCode = (CommunicationError)m_Event.GetEventLog(out eventLogIndex, out eventLogCount);
             }
             catch (Exception)
             {
@@ -807,14 +671,13 @@ namespace Event.Communication
         public void InitializeEventLog()
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_InitializeEventLog != null, "CommunicationEvent.InitializeEventLog() - [m_InitializeEventLog != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.InitializeEventLog() - [m_MutexCommuncationInterface != null]");
 
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_InitializeEventLog();
+                errorCode = (CommunicationError)m_Event.InitializeEventLog();
             }
             catch (Exception)
             {
@@ -846,14 +709,13 @@ namespace Event.Communication
         public void ClearEvent()
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_ClearEvent != null, "CommunicationEvent.ClearEvent() - [m_ClearEvent != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.ClearEvent() - [m_MutexCommuncationInterface != null]");
 
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_ClearEvent();
+                errorCode = (CommunicationError)m_Event.ClearEvent();
             }
             catch (Exception)
             {
@@ -994,7 +856,6 @@ namespace Event.Communication
                                          out short[] watchIdentifiers, out short[] dataTypes)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_GetStreamInformation != null, "CommunicationEvent.GetStreamInformation() - [m_GetStreamInformation != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.GetStreamInformation() - [m_MutexCommuncationInterface != null]");
 
             short[] tempWatchIdentifiers = new short[Parameter.WatchSizeFaultLog];
@@ -1004,8 +865,8 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_GetStreamInformation(streamNumber, out watchVariableCount, out sampleCount,
-                                                                       out sampleMultiple, tempWatchIdentifiers, tempDataTypes);
+                errorCode = (CommunicationError)m_Event.GetStreamInformation(streamNumber, out watchVariableCount, out sampleCount,
+                                                                             out sampleMultiple, tempWatchIdentifiers, tempDataTypes);
             }
             catch (Exception)
             {
@@ -1284,14 +1145,13 @@ namespace Event.Communication
         public void SetFaultFlags(short taskIdentfier, short eventIdentifier, short enabledFlag, short streamTriggeredFlag)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_SetFaultFlags != null, "CommunicationEvent.SetFaultFlags() - [m_SetFaultFlags != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.SetFaultFlags() - [m_MutexCommuncationInterface != null]");
 
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_SetFaultFlags(taskIdentfier, eventIdentifier, enabledFlag, streamTriggeredFlag);
+                errorCode = (CommunicationError)m_Event.SetFaultFlags(taskIdentfier, eventIdentifier, enabledFlag, streamTriggeredFlag);
             }
             catch (Exception)
             {

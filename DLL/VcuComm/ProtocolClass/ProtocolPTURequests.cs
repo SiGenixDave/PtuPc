@@ -751,7 +751,7 @@ namespace VcuComm
 
         public class GetStreamInfoReq : ICommRequest
         {
-            private UInt16 StreamNumber;
+            private Int16 StreamNumber;
             private const PacketType PACKET_TYPE = PacketType.GET_STREAM_INFORMATION;
             private const ResponseType RESPONSE_TYPE = ResponseType.DATAREQUEST;
 
@@ -763,7 +763,7 @@ namespace VcuComm
             {
             }
 
-            public GetStreamInfoReq(UInt16 StreamNumber)
+            public GetStreamInfoReq(Int16 StreamNumber)
             {
                 this.StreamNumber = StreamNumber;
             }
@@ -819,8 +819,8 @@ namespace VcuComm
 
         public class SetFaultFlagReq : ICommRequest
         {
-            private UInt16 TaskID;
-            private UInt16 FaultID;
+            private Int16 TaskID;
+            private Int16 FaultID;
             private Byte EnableFlag;
             private Byte DatalogFlag;
 
@@ -835,12 +835,12 @@ namespace VcuComm
             {
             }
 
-            public SetFaultFlagReq(UInt16 TaskID, UInt16 FaultID, Byte EnableFlag, Byte DatalogFlag)
+            public SetFaultFlagReq(Int16 TaskID, Int16 FaultID, Int16 EnableFlag, Int16 DatalogFlag)
             {
                 this.TaskID = TaskID;
                 this.FaultID = FaultID;
-                this.EnableFlag = EnableFlag;
-                this.DatalogFlag = DatalogFlag;
+                this.EnableFlag = (Byte)EnableFlag;
+                this.DatalogFlag = (Byte)DatalogFlag;
             }
 
             public Byte[] GetByteArray(Boolean targetIsBigEndian)
