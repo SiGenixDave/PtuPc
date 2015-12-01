@@ -180,29 +180,6 @@ namespace Event.Communication
     public class CommunicationEvent : CommunicationParent, ICommunicationEvent
     {
         #region --- Delegate Declarations ---
-
-        /// <summary>
-        /// Delegate declaration for the GetFltFlagInfo() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets 
-        /// the status of the flags that control: (a) whether the event type is enabled and (b) whether the event type triggers the recoding of a
-        /// data stream. 
-        /// </summary>
-        /// <param name="validFlags">An array of flags that define which of the available event types are valid for the current log. The total length
-        /// of the array is the maximum number of events per task multiplied by the maximum number of tasks and the array element corresponding to a
-        /// particular event type is defined as: {task identifier} * {maximum number of events per task} + {event identifier}. True, indicates that
-        /// the event type is valid; otherwise, false.</param>
-        /// <param name="enabledFlags">An array of flags that indicate whether the event type is enabled. True, indicates that the event type is
-        /// enabled; otherwise, false.</param>
-        /// <param name="streamTriggeredFlags">An array of flags that indicate whether the event type triggers the recording of a data stream.
-        /// True, indicates that the event type triggers the recording of a data stream; otherwise false.</param>
-        /// <param name="eventCount">The maximum number of event types i.e. the maximum number of event types per task multiplied by the maximum
-        /// number of tasks.</param>
-        /// <remarks>The size of the <paramref name="enabledFlags"/> and <paramref name="streamTriggeredFlags"/> arrays is equal to the number of
-        /// defined event types associated with the current log. The array index is mapped to a table that is derived by sorting the records of the
-        /// EVENTS table of the data dictionary corresponding to the LOGID field associated with the current log by the TASKID, EVENTID fields,
-        /// in ascending order. </remarks>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short GetFltFlagInfoDelegate(short[] validFlags, short[] enabledFlags, short[] streamTriggeredFlags, short eventCount);
-
         /// <summary>
         /// Delegate declaration for the GetFltHistInfo() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets 
         /// the event history associated with the current log.
@@ -285,11 +262,6 @@ namespace Event.Communication
         #region --- Member Variables ---
         #region --- Function Delegates  ---
         /// <summary>
-        /// Delegate for the GetFltFlagInfo() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetFltFlagInfoDelegate m_GetFltFlagInfo;
-
-        /// <summary>
         /// Delegate for the GetFltHistInfo() method of VcuCommunication32.dll/VcuCommunication64.dll.
         /// </summary>
         protected GetFltHistInfoDelegate m_GetFltHistInfo;
@@ -310,10 +282,6 @@ namespace Event.Communication
         protected SetDefaultStreamInformationDelegate m_SetDefaultStreamInformation;
         
 
-        /// <summary>
-        /// Delegate for the ExitEventLog() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected ExitEventLogDelegate m_ExitEventLog;
         #endregion --- Function Delegates  ---
         #endregion --- Member Variables ---
 
@@ -335,21 +303,17 @@ namespace Event.Communication
             // ----------------------------------------------------------------------
             if (m_Is64BitOperatingSystem == true)
             {
-                m_GetFltFlagInfo = VcuCommunication64Event.GetFltFlagInfo;
                 m_GetFltHistInfo = VcuCommunication64Event.GetFltHistInfo;
                 m_GetStream = VcuCommunication64Event.GetStream;
                 m_GetDefaultStreamInformation = VcuCommunication64Event.GetDefaultStreamInformation;
                 m_SetDefaultStreamInformation = VcuCommunication64Event.SetDefaultStreamInformation;
-                m_ExitEventLog = VcuCommunication64Event.ExitEventLog;
             }
             else
             {
-                m_GetFltFlagInfo = VcuCommunication32Event.GetFltFlagInfo;
                 m_GetFltHistInfo = VcuCommunication32Event.GetFltHistInfo;
                 m_GetStream = VcuCommunication32Event.GetStream;
                 m_GetDefaultStreamInformation = VcuCommunication32Event.GetDefaultStreamInformation;
                 m_SetDefaultStreamInformation = VcuCommunication32Event.SetDefaultStreamInformation;
-                m_ExitEventLog = VcuCommunication32Event.ExitEventLog;
             }
             #endregion - [Initialize VcuCommunication.event.cpp Function Delegates] -
 
@@ -746,36 +710,7 @@ namespace Event.Communication
         /// CommunicationError.Success.</exception>
         public void ExitEventLog()
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_ExitEventLog != null, "CommunicationEvent.ExitEventLog() - [m_ExitEventLog != null]");
-            Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.ExitEventLog() - [m_MutexCommuncationInterface != null]");
-
-            CommunicationError errorCode = CommunicationError.UnknownError;
-            try
-            {
-                m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_ExitEventLog();
-            }
-            catch (Exception)
-            {
-                errorCode = CommunicationError.SystemException;
-                throw new CommunicationException("CommunicationEvent.ExitEventLog()", errorCode);
-            }
-            finally
-            {
-                m_MutexCommuncationInterface.ReleaseMutex();
-            }
-
-            if (DebugMode.Enabled == true)
-            {
-                DebugMode.ExitEventLog_t exitEventLog = new DebugMode.ExitEventLog_t(errorCode);
-                DebugMode.Write(exitEventLog.ToXML());
-            }
-
-            if (errorCode != CommunicationError.Success)
-            {
-                throw new CommunicationException("CommunicationEvent.ExitEventLog()", errorCode);
-            }
+            //NOTE: Nothing needs to be done now in the managed world since all memory is free when managed objects deleted or not being used
         }
 
         /// <summary>
@@ -1105,14 +1040,13 @@ namespace Event.Communication
         public void GetFltFlagInfo(short[] validFlags, ref short[] enabledFlags, ref short[] streamTriggeredFlags, short eventCount)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_GetFltFlagInfo != null, "CommunicationEvent.GetFltFlagInfo() - [m_GetFltFlagInfo != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.GetFltFlagInfo() - [m_MutexCommuncationInterface != null]");
 
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_GetFltFlagInfo(validFlags, enabledFlags, streamTriggeredFlags, eventCount);
+                errorCode = (CommunicationError)m_Event.GetFltFlagInfo(validFlags, enabledFlags, streamTriggeredFlags, eventCount);
             }
             catch (Exception)
             {

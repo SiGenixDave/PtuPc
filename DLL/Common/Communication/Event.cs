@@ -468,14 +468,51 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError SetFaultFlags(Int16 TaskNumber, Int16 FaultNumber, Int16 EnableFlag, Int16 DatalogFlag)
         {
-	        ProtocolPTU.SetFaultFlagReq request  = new ProtocolPTU.SetFaultFlagReq(TaskNumber, FaultNumber, EnableFlag, DatalogFlag);
+	        ProtocolPTU.SetFaultFlagReq request = new ProtocolPTU.SetFaultFlagReq(TaskNumber, FaultNumber, EnableFlag, DatalogFlag);
 
             CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }
 
+#if TODO
+        public CommunicationError SetDefaultStreamInformation(Int16	NumberOfVariables, Int16 SampleRate,Int16 []VariableIndex)
+        {
+	        Int16	Counter;
 
+            ProtocolPTU.SetStreamInfoReq request = new ProtocolPTU.SetStreamInfoReq();
+
+            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+
+	        SetStreamInfoReq_t	Request;
+
+            if (NumberOfVariables > MAX_DL_VARIABLES)
+            {
+                NumberOfVariables = MAXDLVARIABLES;
+            }
+
+	        Request.PacketType	 = SET_STREAM_INFORMATION;
+	        Request.PacketLength = sizeof(Header_t) + 6 + (NumberOfVariables * sizeof(StreamVariable_t));
+
+	        Request.Information.SampleRate 			= MAPINT(SampleRate);
+	        Request.Information.NumberOfVariables 	= MAPINT(NumberOfVariables);
+	        Request.Information.NumberOfSamples		= 0;	/* not valid or used */
+
+	        for (Counter = 0; Counter < NumberOfVariables; Counter++)
+	        {
+		        /* Send the new variable's index */
+		        Request.Information.StreamVariableInfo[Counter].StreamVariable =
+			        MAPINT(VariableIndex[Counter]);
+
+		        /* This info does not need to be sent */
+		        Request.Information.StreamVariableInfo[Counter].StreamVariableType = 0;
+	        }
+
+	        return Transaction((Header_t *)&Request, NULL);
+        }
+#endif
+
+        
         /// <summary>
         /// 
         /// </summary>
@@ -735,7 +772,8 @@ namespace Common.Communication
 
 		        /* Loop thru the fault buffer, pulling out the size and data */
 		        /* for each fault */
-		        for (Int32 Index = 0; Index < m_FaultDataFromTarget.BufferSize;)
+                Int32 Index = 0;
+		        while (Index < m_FaultDataFromTarget.BufferSize)
 		        {
                     Int16 FaultSize;
                     // Get the size of the next fault 
@@ -804,6 +842,72 @@ namespace Common.Communication
 
             return commError;
         }
+
+        public CommunicationError GetFltFlagInfo(Int16[] Valid, Int16[] EnableFlag, Int16[] TriggerFlag, Int16 EntryCount)
+        {
+            Byte[] message1 = new Byte[2048];
+
+            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_FAULT_FLAG, message1);
+            if (commError != CommunicationError.Success)
+            {
+                return commError;
+            }
+
+            Int16 NumberOfWords;
+            NumberOfWords = BitConverter.ToInt16(m_RxMessage, 8);
+            if (m_CommDevice.IsTargetBigEndian())
+            {
+                NumberOfWords = Utils.ReverseByteOrder(NumberOfWords);
+            }
+            NumberOfWords /= 2;
+
+
+            Byte[] message2 = new Byte[2048];
+            commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_STREAM_FLAG, message2);
+            if (commError != CommunicationError.Success)
+            {
+                return commError;
+            }
+
+
+
+            // TODO the code below begs for refactoring (maybe nested loop or something
+	        // Loop thru all the TaskId/FaultId Combinations and set/reset a bit for each one
+            UInt16 mask = 0x0001;
+            Int16 Counter = 0;
+            for (Int16 NumberOfEntries = 0; NumberOfEntries < EntryCount; NumberOfEntries++)
+            {
+                Int16 Index = (Int16)(NumberOfEntries / 16);
+
+                UInt16 enableFlag = BitConverter.ToUInt16(message1, 10 + (Index * 2));
+                UInt16 datalogFlag = BitConverter.ToUInt16(message2, 10 + (Index * 2));
+
+                if (m_CommDevice.IsTargetBigEndian())
+                {
+                    enableFlag = Utils.ReverseByteOrder(enableFlag);
+                    datalogFlag = Utils.ReverseByteOrder(datalogFlag);
+                }
+
+                if ((Index < NumberOfWords) && (Valid[NumberOfEntries] != 0))
+                {
+                    EnableFlag[Counter] =  (Int16)(((enableFlag & mask) != 0) ? 1 : 0);
+                    TriggerFlag[Counter] = (Int16)(((datalogFlag & mask) != 0) ? 1 : 0);
+                    Counter++;
+                }
+                
+                if (mask == 0x8000)
+                {
+                    mask = 0x0001;
+                }
+                else
+                {
+                    mask = (UInt16)(mask << 1);
+                }
+            }
+
+            return commError;
+        }
+
 
 
     }
