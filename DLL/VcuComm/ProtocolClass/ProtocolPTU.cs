@@ -96,45 +96,10 @@ namespace VcuComm
             public UInt16 NumberOfVariables;
             public UInt16 NumberOfSamples;
             public UInt16 SampleRate;
-            public StreamVariable[] StreamVariableInfo; //256
+            public StreamVariable[] StreamVariableInfo;
         }
 
-        public struct UpdateWatchElementsRes
-        {
-            public DataPacketProlog Header;
-            public UInt16 NumberOfUpdates;
-            public WatchElement[] Watch;  // WatchSize
-        }
-
-        public struct ReadVariableRes
-        {
-            public DataPacketProlog Header;
-            public UInt32 CurrentValue;
-            public UInt16 DataType;
-        }
-
-        public struct GetDictionarySizeRes
-        {
-            public DataPacketProlog Header;
-            public UInt16 DictionarySize;
-        }
-
-        public struct GetVariableInfoRes
-        {
-            public DataPacketProlog Header;
-            public UInt16 DataType;
-            public Int32 MaxScale;
-            public Int32 MinScale;
-            public UInt32 AttributeFlags;
-        };
-
-        public struct SetConfigNumRes
-        {
-            public DataPacketProlog Header;
-            public Int32 ConfigNum;
-        }
-
-        public struct GetEmbeddedInfoRes
+         public struct GetEmbeddedInfoRes
         {
             public String SoftwareVersion;   //41
             public String CarID;  //11
@@ -146,19 +111,6 @@ namespace VcuComm
         public struct GetChartModeRes
         {
             public Byte CurrentChartMode;
-        }
-
-        public struct GetChartIndexRes
-        {
-            public DataPacketProlog Header;
-            public UInt16 VariableIndex;
-        }
-
-        public struct GetWatchValuesRes
-        {
-            public DataPacketProlog Header;
-            public UInt32[] WatchValues; //WatchSize;
-            public Byte[] DataType; //WatchSize;
         }
 
         public struct GetTimeDateRes
@@ -211,69 +163,10 @@ namespace VcuComm
         }
 #endif
 
-
-
-        public struct GetFaultIndicesRes
-        {
-            public DataPacketProlog Header;
-            public UInt32 Newest;
-            public UInt32 Oldest;
-        }
-
         public struct GetFaultDataRes
         {
             public UInt16 BufferSize;
             public Byte[] Buffer; //MAXFAULTBUFFERSIZE;
-        }
-
-        public struct GetFaultFlagRes
-        {
-            public DataPacketProlog Header;
-            public Int16 BufferSize;
-            public UInt16[] EnableFlag; //(MAXTASKS * MAXEVENTS / 16) + 1;
-        }
-
-        public struct GetStreamFlagRes
-        {
-            public DataPacketProlog Header;
-            public Int16 BufferSize;
-            public UInt16[] DatalogFlag; //(MAXTASKS * MAXEVENTS / 16) + 1;
-        }
-
-        public struct GetFaultHistoryRes
-        {
-            public DataPacketProlog Header;
-            public UInt16 StaticHistory;
-            public UInt16 DynamicHistory;
-        }
-
-        public struct GetDatalogBufferRes
-        {
-            public DataPacketProlog Header;
-            public UInt16 TimeOrigin;
-            public UInt16 BufferSize;
-            public Byte[] DatalogBuffer; //MAXDLBUFFERSIZE;
-        }
-
-        public struct GetStreamInfoRes
-        {
-            public StreamInformation Information;
-        }
-
-        public struct GetEventLogRes
-        {
-            public DataPacketProlog Header;
-            public UInt16 CurrentEventLog;
-            public UInt16 NumberEventLogs;
-        }
-
-        public struct ChangeEventLogRes
-        {
-            public DataPacketProlog Header;
-            public UInt16 ChangeStatus;
-            public UInt16 DataRecordingRate;
-            public UInt16 MaxTasks;
-            public UInt16 MaxEvents;
         }
 
         // BTU REQUEST/RESPONSE PACKET

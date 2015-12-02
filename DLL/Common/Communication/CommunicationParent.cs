@@ -766,11 +766,23 @@ namespace Common.Communication
         /// </summary>
         protected bool m_Is64BitOperatingSystem = false;
 
-        #endregion --- Member Variables ---
-
-        ICommDevice device;
+        /// <summary>
+        /// TODO
+        /// </summary>
+        private ICommDevice device;
+        
+        /// <summary>
+        /// TODO
+        /// </summary>
         protected CommGen m_Comm;
+        
+        /// <summary>
+        /// TODO
+        /// </summary>
         protected EventGen m_Event;
+
+        
+        #endregion --- Member Variables ---
 
         #region --- Constructors ---
         /// <summary>

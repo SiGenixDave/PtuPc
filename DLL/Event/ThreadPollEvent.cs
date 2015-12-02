@@ -300,7 +300,7 @@ namespace Event
                         if (newEventIndex != m_FormViewEventLog.EventIndex)
                         {
                             // Yes, new events have been triggered. Check for case of a wraparound of the uint index value.
-                            if (newEventIndex > m_FormViewEventLog.EventIndex)
+                            if ((int)newEventIndex > (int)m_FormViewEventLog.EventIndex)
                             {
                                 // No wraparound of the uint index value, process normally.
                                 // Download the new events and add them to the DataGridView control.

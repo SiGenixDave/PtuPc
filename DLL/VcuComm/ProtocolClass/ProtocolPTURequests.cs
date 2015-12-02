@@ -744,9 +744,69 @@ namespace VcuComm
 
         }
 
-        public class SetStreamInfoReq//TODO : ICommRequest
+        public class SetStreamInfoReq: ICommRequest
         {
-            private StreamInformation Information;
+            private StreamInformation streamInformation;
+            private const PacketType PACKET_TYPE = PacketType.SET_STREAM_INFORMATION;
+            private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
+
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the constructor below
+            /// </summary>
+            private SetStreamInfoReq()
+            {
+            }
+
+            public SetStreamInfoReq(Int16 NumberOfVariables, Int16 SampleRate, Int16[] VariableIndex)
+            {
+                streamInformation.NumberOfVariables = (UInt16)NumberOfVariables;
+                streamInformation.SampleRate = (UInt16)SampleRate;
+                streamInformation.NumberOfSamples = 0;
+
+                streamInformation.StreamVariableInfo = new StreamVariable[NumberOfVariables];
+
+                for (Int16 i = 0; i < NumberOfVariables; i++)
+                {
+                    streamInformation.StreamVariableInfo[i].Variable = (UInt16)VariableIndex[i];
+                    streamInformation.StreamVariableInfo[i].VariableType = 0;
+                }
+
+            }
+
+            public Byte[] GetByteArray(Boolean targetIsBigEndian)
+            {
+                DataPacketProlog dpp = new DataPacketProlog();
+
+                UInt16 numVars = streamInformation.NumberOfVariables;
+ 
+                if (targetIsBigEndian)
+                {
+                    streamInformation.NumberOfVariables = Utils.ReverseByteOrder(streamInformation.NumberOfVariables);
+                    streamInformation.NumberOfSamples = Utils.ReverseByteOrder(streamInformation.NumberOfSamples);
+                    streamInformation.SampleRate = Utils.ReverseByteOrder(streamInformation.SampleRate);
+
+                    for (UInt16 i = 0; i < numVars; i++)
+                    {
+                        streamInformation.StreamVariableInfo[i].Variable = Utils.ReverseByteOrder(streamInformation.StreamVariableInfo[i].Variable);
+                        streamInformation.StreamVariableInfo[i].VariableType = Utils.ReverseByteOrder(streamInformation.StreamVariableInfo[i].VariableType);
+                    }
+                }
+
+                MemoryStream ms = new MemoryStream(1024);
+                BinaryWriter bw = new BinaryWriter(ms);
+                bw.Write(streamInformation.NumberOfVariables);
+                bw.Write(streamInformation.NumberOfSamples);
+                bw.Write(streamInformation.SampleRate);
+                for (UInt16 i = 0; i < numVars; i++)
+                {
+                    bw.Write(streamInformation.StreamVariableInfo[i].Variable); 
+                    bw.Write(streamInformation.StreamVariableInfo[i].VariableType); 
+                }
+                return dpp.GetByteArray(ms.ToArray(), PACKET_TYPE, RESPONSE_TYPE, targetIsBigEndian);
+            }
+
+
         }
 
         public class GetStreamInfoReq : ICommRequest
