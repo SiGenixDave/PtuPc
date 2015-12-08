@@ -105,7 +105,7 @@ namespace VcuComm
             // IPTCOM address)
             url = commaDelimitedOptions;
 
-            Debug.Write("TCP Open: " + commaDelimitedOptions);
+            Debug.WriteLine("TCP Open: " + commaDelimitedOptions);
 
             // Any PTU object can only support 1 TCP client; ensures Open() is called only once per created object
             if (m_Client != null)
@@ -120,7 +120,9 @@ namespace VcuComm
             // Attempt to resolve the URL to an IP address
             try
             {
-                ipHost = Dns.GetHostEntry(url);
+                //TODO the following doesn't work on WinXP VM but the enable line does
+                // ipHost = Dns.GetHostEntry(url);
+                ipHost = Dns.GetHostByAddress(url);
             }
             catch (Exception e)
             {
