@@ -34,6 +34,7 @@ namespace VcuCommUnitTest
         public void TestMethod1()
         {
 #if !TCP
+
             TCP device = new TCP();
             device.Open("127.0.0.1");
             //device.Open("10.0.1.21");

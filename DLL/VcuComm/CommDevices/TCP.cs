@@ -27,17 +27,22 @@ namespace VcuComm
         #region --- Member Variables ---
 
         /// <summary>
+        /// TCP client object that is created and used to send requests to the embedded TCP PTU
+        /// server as well as read and process responses from the server.
+        /// </summary>
+        private TcpClient m_Client = null;
+
+        /// <summary>
         /// Becomes true if the client connects to the PTU target. The client connection is done
         /// via a non-blocking (asynchronous) call in order to prevent the PTU from locking up
         /// because the connection can't be established.
         /// </summary>
         private Boolean m_Connected;
-
         /// <summary>
-        /// TCP client object that is created and used to send requests to the embedded TCP PTU
-        /// server as well as read and process responses from the server.
+        /// Maintains the exception message thrown when a serial port error occurs. Allows the calling function
+        /// to ascertain more detail about the error.
         /// </summary>
-        private TcpClient m_Client = null;
+        private String m_ExceptionMessage = "No Exceptions Raised";
 
         /// <summary>
         /// Stores the most recent server start of message response. In theory, once updated by the
@@ -65,13 +70,6 @@ namespace VcuComm
                 return tcpErrCopy;
             }
         }
-
-        /// <summary>
-        /// Maintains the exception message thrown when a serial port error occurs. Allows the calling function
-        /// to ascertain more detail about the error.
-        /// </summary>
-        private String m_ExceptionMessage = "No Exceptions Raised";
-
         /// <summary>
         /// Property for m_ExceptionMessage
         /// </summary>
@@ -90,6 +88,47 @@ namespace VcuComm
         #endregion --- Member Variables ---
 
         #region --- Methods ---
+
+        #region --- Public Methods ---
+        /// <summary>
+        /// Closes the TCP connection gracefully by issuing a shutdown which effectively disables sends
+        /// and receives on the socket and then closes the socket (issues a [FIN,ACK]).
+        /// </summary>
+        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
+        public Int32 Close()
+        {
+            try
+            {
+                m_Client.Client.Shutdown(SocketShutdown.Send);
+                m_Client.Close();
+            }
+            catch (Exception e)
+            {
+                m_TCPError = ProtocolPTU.Errors.Close;
+                m_ExceptionMessage = e.Message;
+                return -1;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// The target is responsible for reporting whether it is a big or little endian machine. The start of
+        /// message received from the target indicates the machine type of target
+        /// </summary>
+        /// <remarks>It is imperative that the calling function perform all error checking prior to invoking this
+        /// method. That includes verification that the transmitted SOM was echoed before making assumptions that there
+        /// is an embedded PTU connected.
+        /// </remarks>
+        /// <returns>true if target is Big Endian; false otherwise</returns>
+        public Boolean IsTargetBigEndian()
+        {
+            if (m_TargetStartOfMessage == ProtocolPTU.TARGET_BIG_ENDIAN_SOM)
+            {
+                return true;
+            }
+            return false;
+        }
 
         /// <summary>
         /// This function attempts to open a new connection with an embedded PTU.
@@ -120,12 +159,11 @@ namespace VcuComm
             // Attempt to resolve the URL to an IP address
             try
             {
-                //TODO the following doesn't work on WinXP VM but the enable line does
-                // ipHost = Dns.GetHostEntry(url);
-                ipHost = Dns.GetHostByAddress(url);
+                ipHost = Dns.GetHostEntry(url);
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 m_TCPError = ProtocolPTU.Errors.InvalidURL;
                 m_ExceptionMessage = e.Message;
                 return -1;
@@ -195,54 +233,44 @@ namespace VcuComm
             // Connection to PTU server was successful
             return 0;
         }
-
         /// <summary>
-        /// Closes the TCP connection gracefully by issuing a shutdown which effectively disables sends
-        /// and receives on the socket and then closes the socket (issues a [FIN,ACK]).
+        /// Reads the data from the TCP port and verifies the target acknowledged the message. Target acknowledges
+        /// the message sent from the application when no data is sent back from the target (i.e. a command was sent)
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 Close()
+        public Int32 ReceiveTargetAcknowledge()
         {
-            try
+            // Allocate memory for the acknowledge
+            byte[] rxMessage = new Byte[1];
+
+            Int32 bytesRead = 0;
+            while (bytesRead == 0)
             {
-                m_Client.Client.Shutdown(SocketShutdown.Send);
-                m_Client.Close();
-            }
-            catch (Exception e)
-            {
-                m_TCPError = ProtocolPTU.Errors.Close;
-                m_ExceptionMessage = e.Message;
-                return -1;
+                // Read the serial port
+                bytesRead = ReceiveMessage(rxMessage, 0);
+                if (bytesRead < 0)
+                {
+                    return bytesRead;
+                }
+
+                if (bytesRead == 1)
+                {
+                    // Verify ACK received
+                    if (rxMessage[0] != ProtocolPTU.PTU_ACK)
+                    {
+                        m_TCPError = ProtocolPTU.Errors.AckNotReceieved;
+                        return -1;
+                    }
+                }
+                else if (bytesRead > 1)
+                {
+                    // too many bytes read
+                    m_TCPError = ProtocolPTU.Errors.ExcessiveBytesReceived;
+                    return -1;
+                }
             }
 
             return 0;
-        }
-
-        public Int32 SendReceiveSOM()
-        {
-            Int32 errorCode;
-            errorCode = SendStartOfMessage();
-
-            if (errorCode < 0)
-            {
-                return errorCode;
-            }
-
-            errorCode = ReceiveStartOfMessage();
-            return errorCode;
-        }
-
-        /// <summary>
-        /// Send a message to the target. The SOM is sent and then waits for an echo from the target.
-        /// The message is then sent and an echo that is identical to the message sent is verified.
-        /// </summary>
-        /// <param name="txMessage">the message to be sent to the target</param>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 SendMessageToTarget(Byte[] txMessage)
-        {
-            Int32 errorCode = TransmitMessage(txMessage);
-
-            return errorCode;
         }
 
         /// <summary>
@@ -298,75 +326,74 @@ namespace VcuComm
         }
 
         /// <summary>
-        /// The target is responsible for reporting whether it is a big or little endian machine. The start of
-        /// message received from the target indicates the machine type of target
+        /// Send a message to the target. The SOM is sent and then waits for an echo from the target.
+        /// The message is then sent and an echo that is identical to the message sent is verified.
         /// </summary>
-        /// <remarks>It is imperative that the calling function perform all error checking prior to invoking this
-        /// method. That includes verification that the transmitted SOM was echoed before making assumptions that there
-        /// is an embedded PTU connected.
-        /// </remarks>
-        /// <returns>true if target is Big Endian; false otherwise</returns>
-        public Boolean IsTargetBigEndian()
-        {
-            if (m_TargetStartOfMessage == ProtocolPTU.TARGET_BIG_ENDIAN_SOM)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Reads the data from the TCP port and verifies the target acknowledged the message. Target acknowledges
-        /// the message sent from the application when no data is sent back from the target (i.e. a command was sent)
-        /// </summary>
+        /// <param name="txMessage">the message to be sent to the target</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 ReceiveTargetAcknowledge()
+        public Int32 SendMessageToTarget(Byte[] txMessage)
         {
-            // Allocate memory for the acknowledge
-            byte[] rxMessage = new Byte[1];
-
-            Int32 bytesRead = 0;
-            while (bytesRead == 0)
-            {
-                // Read the serial port
-                bytesRead = ReceiveMessage(rxMessage, 0);
-                if (bytesRead < 0)
-                {
-                    return bytesRead;
-                }
-
-                if (bytesRead == 1)
-                {
-                    // Verify ACK received
-                    if (rxMessage[0] != ProtocolPTU.PTU_ACK)
-                    {
-                        m_TCPError = ProtocolPTU.Errors.AckNotReceieved;
-                        return -1;
-                    }
-                }
-                else if (bytesRead > 1)
-                {
-                    // too many bytes read
-                    m_TCPError = ProtocolPTU.Errors.ExcessiveBytesReceived;
-                    return -1;
-                }
-            }
-
-            return 0;
-        }
-
-
-        /// <summary>
-        /// Sends the Start Of Message (SOM) to the embedded PTU.
-        /// </summary>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        private Int32 SendStartOfMessage()
-        {
-            byte[] startOfMessage = { ProtocolPTU.THE_SOM };
-
-            Int32 errorCode = TransmitMessage(startOfMessage);
+            Int32 errorCode = TransmitMessage(txMessage);
 
             return errorCode;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Int32 SendReceiveSOM()
+        {
+            Int32 errorCode;
+            errorCode = SendStartOfMessage();
+
+            if (errorCode < 0)
+            {
+                return errorCode;
+            }
+
+            errorCode = ReceiveStartOfMessage();
+            return errorCode;
+        }
+
+        #endregion --- Public Methods ---
+
+        #region --- Private Methods ---
+
+        /// <summary>
+        /// This method is invoked after a successful TCP connection (3 way handshake) with the embedded PTU
+        /// is established. It sets a flag to inform the connection was established.
+        /// </summary>
+        /// <param name="result">delegate parameter required; UNUSED</param>
+        private void ConnectCallback(IAsyncResult result)
+        {
+            m_Connected = true;
+        }
+
+        /// <summary>
+        /// This method is responsible for reading all available chars that are in the serial port
+        /// sent by the embedded PTU. All characters are copied to the <paramref name="rxMessage"/>
+        /// starting at the <paramref name="bufferOffset"/>. This feature allows multiple calls to
+        /// this method until the entire message is received.
+        /// </summary>
+        /// <param name="rxMessage">buffer where the received message is stored</param>
+        /// <param name="bufferOffset">offset into the receive buffer</param>
+        /// <returns>less than 0 if any failure occurs; number of bytes read if successful</returns>
+        private Int32 ReceiveMessage(Byte[] rxMessage, Int32 bufferOffset)
+        {
+            Int32 bytesRead = 0;
+
+            try
+            {
+                bytesRead = m_Client.Client.Receive(rxMessage, bufferOffset, rxMessage.Length - bufferOffset, SocketFlags.None);
+            }
+            catch (Exception e)
+            {
+                m_TCPError = ProtocolPTU.Errors.ReceiveMessage;
+                m_ExceptionMessage = e.Message;
+                return -1;
+            }
+            return bytesRead;
         }
 
         /// <summary>
@@ -414,16 +441,19 @@ namespace VcuComm
             return 0;
         }
 
-
         /// <summary>
-        /// This method is invoked after a successful TCP connection (3 way handshake) with the embedded PTU
-        /// is established. It sets a flag to inform the connection was established.
+        /// Sends the Start Of Message (SOM) to the embedded PTU.
         /// </summary>
-        /// <param name="result">delegate parameter required; UNUSED</param>
-        private void ConnectCallback(IAsyncResult result)
+        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
+        private Int32 SendStartOfMessage()
         {
-            m_Connected = true;
+            byte[] startOfMessage = { ProtocolPTU.THE_SOM };
+
+            Int32 errorCode = TransmitMessage(startOfMessage);
+
+            return errorCode;
         }
+
 
         /// <summary>
         /// Sends a message to the embedded TCP server target from the TCP client
@@ -448,31 +478,7 @@ namespace VcuComm
             return bytesSent;
         }
 
-        /// <summary>
-        /// This method is responsible for reading all available chars that are in the serial port
-        /// sent by the embedded PTU. All characters are copied to the <paramref name="rxMessage"/>
-        /// starting at the <paramref name="bufferOffset"/>. This feature allows multiple calls to
-        /// this method until the entire message is received.
-        /// </summary>
-        /// <param name="rxMessage">buffer where the received message is stored</param>
-        /// <param name="bufferOffset">offset into the receive buffer</param>
-        /// <returns>less than 0 if any failure occurs; number of bytes read if successful</returns>
-        private Int32 ReceiveMessage(Byte[] rxMessage, Int32 bufferOffset)
-        {
-            Int32 bytesRead = 0;
-
-            try
-            {
-                bytesRead = m_Client.Client.Receive(rxMessage, bufferOffset, rxMessage.Length - bufferOffset, SocketFlags.None);
-            }
-            catch (Exception e)
-            {
-                m_TCPError = ProtocolPTU.Errors.ReceiveMessage;
-                m_ExceptionMessage = e.Message;
-                return -1;
-            }
-            return bytesRead;
-        }
+        #endregion --- Private Methods ---
 
         #endregion --- Methods ---
     }

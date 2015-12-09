@@ -7,6 +7,8 @@ namespace VcuComm
     /// </summary>
     public static class Utils
     {
+        #region --- Methods ---
+
         /// <summary>
         ///
         /// </summary>
@@ -22,7 +24,7 @@ namespace VcuComm
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static Char ReverseByteOrder(Char value)
+        public static SByte ReverseByteOrder(SByte value)
         {
             return value;
         }
@@ -86,5 +88,7 @@ namespace VcuComm
 
             return reversedValue;
         }
+
+        #endregion --- Methods ---
     }
 }

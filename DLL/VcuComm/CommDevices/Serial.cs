@@ -14,6 +14,23 @@ namespace VcuComm
         #region --- Member Variables ---
 
         /// <summary>
+        /// Maintains the exception message thrown when a serial port error occurs. Allows the calling function
+        /// to ascertain more detail about the error.
+        /// </summary>
+        private String m_ExceptionMessage = NO_SERIAL_ISSUES;
+
+        /// <summary>
+        /// Used to adjust the read timeout of the serial port. -1 means the receive call will wait forever until
+        /// a character is received
+        /// </summary>
+        private Int32 m_ReadTimeout = -1;
+
+        /// <summary>
+        /// Stores the most recent serial port error. Cleared whenever a calling function reads the state.
+        /// </summary>
+        private ProtocolPTU.Errors m_SerialError = ProtocolPTU.Errors.None;
+
+        /// <summary>
         /// object that contains the serial port object
         /// </summary>
         private SerialPort m_SerialPort;
@@ -22,29 +39,6 @@ namespace VcuComm
         /// contains the start of message byte received from the target
         /// </summary>
         private byte m_TargetStartOfMessage;
-
-        /// <summary>
-        /// Used to adjust the read timeout of the serial port. -1 means the receive call will wait forever until
-        /// a character is received
-        /// </summary>
-        private Int32 m_ReadTimeout = -1;
-
-        public Int32 ReadTimeout
-        {
-            get
-            {
-                return m_ReadTimeout;
-            }
-            set
-            {
-                m_ReadTimeout = value;
-            }
-        }
-
-        /// <summary>
-        /// Stores the most recent serial port error. Cleared whenever a calling function reads the state.
-        /// </summary>
-        private ProtocolPTU.Errors m_SerialError = ProtocolPTU.Errors.None;
 
         public ProtocolPTU.Errors Error
         {
@@ -58,12 +52,6 @@ namespace VcuComm
             }
         }
 
-        /// <summary>
-        /// Maintains the exception message thrown when a serial port error occurs. Allows the calling function
-        /// to ascertain more detail about the error.
-        /// </summary>
-        private String m_ExceptionMessage = NO_SERIAL_ISSUES;
-
         public String ExceptionMessage
         {
             get
@@ -76,17 +64,60 @@ namespace VcuComm
             }
         }
 
+        public Int32 ReadTimeout
+        {
+            get
+            {
+                return m_ReadTimeout;
+            }
+            set
+            {
+                m_ReadTimeout = value;
+            }
+        }
+
         #endregion --- Member Variables ---
 
         #region --- Methods ---
 
+        #region --- Public Methods ---
+
         /// <summary>
-        /// Gets and returns all available serial ports that currently exist on the PC.
+        /// Closes the serial port
         /// </summary>
-        /// <returns>All serial ports currently available on the PC</returns>
-        static public String[] GetAvailableSerialPorts()
+        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
+        public Int32 Close()
         {
-            return SerialPort.GetPortNames();
+            try
+            {
+                m_SerialPort.Close();
+            }
+            catch (Exception e)
+            {
+                m_SerialError = ProtocolPTU.Errors.Close;
+                m_ExceptionMessage = e.Message;
+                return -1;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// The target is responsible for reporting whether it is a big or little endian machine. The start of
+        /// message received from the target indicates the machine type of target
+        /// </summary>
+        /// <remarks>It is imperative that the calling function perform all error checking prior to invoking this
+        /// method. That includes verification that the transmitted SOM was echoed before making assumptions that there
+        /// is an embedded PTU connected.
+        /// </remarks>
+        /// <returns>true if target is Big Endian; false otherwise</returns>
+        public bool IsTargetBigEndian()
+        {
+            if (m_TargetStartOfMessage == ProtocolPTU.TARGET_BIG_ENDIAN_SOM)
+            {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -201,89 +232,42 @@ namespace VcuComm
         }
 
         /// <summary>
-        /// Closes the serial port
+        /// Reads the serial port and verifies the target acknowledged the message. Target acknowledges
+        /// the message sent from the application when no data is sent back from the target (i.e. a command was sent)
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 Close()
+        public Int32 ReceiveTargetAcknowledge()
         {
-            try
-            {
-                m_SerialPort.Close();
-            }
-            catch (Exception e)
-            {
-                m_SerialError = ProtocolPTU.Errors.Close;
-                m_ExceptionMessage = e.Message;
-                return -1;
-            }
+            // Allocate memory for the acknowledge
+            byte[] rxMessage = new Byte[1];
 
-            return 0;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public Int32 SendReceiveSOM()
-        {
-            Int32 errorCode;
-            errorCode = SendStartOfMessage();
-
-            if (errorCode < 0)
-            {
-                return errorCode;
-            }
-
-            errorCode = ReceiveStartOfMessage();
-            return errorCode;
-        }
-
-        /// <summary>
-        /// Send a message to the embedded PTU target. The SOM is sent and then waits for an echo from the target.
-        /// The message is then sent and an echo that is identical to the message sent is verified.
-        /// </summary>
-        /// <param name="txMessage">the message to be sent to the target</param>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 SendMessageToTarget(byte[] txMessage)
-        {
-            // Transmit the message to the target
-            Int32 errorCode = TransmitMessage(txMessage);
-            if (errorCode < 0)
-            {
-                return errorCode;
-            }
-
-            // Create a buffer for the receive message which should be identical to the
-            // message just sent
-            Byte[] rxMessage = new Byte[txMessage.Length];
-
-            // wait for the target logic to echo back the exact message just sent by the application
-            // (NOTE: this is different than TCP which doesn't expect an echo)
             Int32 bytesRead = 0;
-            Int32 totalBytesRead = 0;
-            while (totalBytesRead != rxMessage.Length)
+            while (bytesRead == 0)
             {
-                bytesRead = ReceiveMessage(rxMessage, totalBytesRead);
+                // Read the serial port
+                bytesRead = ReceiveMessage(rxMessage, 0);
                 if (bytesRead < 0)
                 {
+                    // bytesRead in this case is an error code
                     return bytesRead;
                 }
-                totalBytesRead += bytesRead;
-                if (totalBytesRead > rxMessage.Length)
+
+                if (bytesRead == 1)
+                {
+                    // Verify ACK received
+                    if (rxMessage[0] != ProtocolPTU.PTU_ACK)
+                    {
+                        m_SerialError = ProtocolPTU.Errors.AckNotReceieved;
+                        return -1;
+                    }
+                }
+                else if (bytesRead > 1)
                 {
                     // too many bytes read
                     m_SerialError = ProtocolPTU.Errors.ExcessiveBytesReceived;
                     FlushRxBuffer();
                     return -1;
                 }
-            }
-
-            // This compares the contents of the 2 arrays
-            if (txMessage.SequenceEqual(rxMessage) == false)
-            {
-                // log error
-                m_SerialError = ProtocolPTU.Errors.MessageEcho;
-                return -1;
             }
 
             return 0;
@@ -342,56 +326,38 @@ namespace VcuComm
             return 0;
         }
 
-
         /// <summary>
-        /// The target is responsible for reporting whether it is a big or little endian machine. The start of
-        /// message received from the target indicates the machine type of target
+        /// Send a message to the embedded PTU target. The SOM is sent and then waits for an echo from the target.
+        /// The message is then sent and an echo that is identical to the message sent is verified.
         /// </summary>
-        /// <remarks>It is imperative that the calling function perform all error checking prior to invoking this
-        /// method. That includes verification that the transmitted SOM was echoed before making assumptions that there
-        /// is an embedded PTU connected.
-        /// </remarks>
-        /// <returns>true if target is Big Endian; false otherwise</returns>
-        public bool IsTargetBigEndian()
-        {
-            if (m_TargetStartOfMessage == ProtocolPTU.TARGET_BIG_ENDIAN_SOM)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Reads the serial port and verifies the target acknowledged the message. Target acknowledges
-        /// the message sent from the application when no data is sent back from the target (i.e. a command was sent)
-        /// </summary>
+        /// <param name="txMessage">the message to be sent to the target</param>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        public Int32 ReceiveTargetAcknowledge()
+        public Int32 SendMessageToTarget(byte[] txMessage)
         {
-            // Allocate memory for the acknowledge
-            byte[] rxMessage = new Byte[1];
-
-            Int32 bytesRead = 0;
-            while (bytesRead == 0)
+            // Transmit the message to the target
+            Int32 errorCode = TransmitMessage(txMessage);
+            if (errorCode < 0)
             {
-                // Read the serial port
-                bytesRead = ReceiveMessage(rxMessage, 0);
+                return errorCode;
+            }
+
+            // Create a buffer for the receive message which should be identical to the
+            // message just sent
+            Byte[] rxMessage = new Byte[txMessage.Length];
+
+            // wait for the target logic to echo back the exact message just sent by the application
+            // (NOTE: this is different than TCP which doesn't expect an echo)
+            Int32 bytesRead = 0;
+            Int32 totalBytesRead = 0;
+            while (totalBytesRead != rxMessage.Length)
+            {
+                bytesRead = ReceiveMessage(rxMessage, totalBytesRead);
                 if (bytesRead < 0)
                 {
-                    // bytesRead in this case is an error code
                     return bytesRead;
                 }
-
-                if (bytesRead == 1)
-                {
-                    // Verify ACK received
-                    if (rxMessage[0] != ProtocolPTU.PTU_ACK)
-                    {
-                        m_SerialError = ProtocolPTU.Errors.AckNotReceieved;
-                        return -1;
-                    }
-                }
-                else if (bytesRead > 1)
+                totalBytesRead += bytesRead;
+                if (totalBytesRead > rxMessage.Length)
                 {
                     // too many bytes read
                     m_SerialError = ProtocolPTU.Errors.ExcessiveBytesReceived;
@@ -400,22 +366,101 @@ namespace VcuComm
                 }
             }
 
+            // This compares the contents of the 2 arrays
+            if (txMessage.SequenceEqual(rxMessage) == false)
+            {
+                // log error
+                m_SerialError = ProtocolPTU.Errors.MessageEcho;
+                return -1;
+            }
+
             return 0;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public Int32 SendReceiveSOM()
+        {
+            Int32 errorCode;
+            errorCode = SendStartOfMessage();
 
+            if (errorCode < 0)
+            {
+                return errorCode;
+            }
+
+            errorCode = ReceiveStartOfMessage();
+            return errorCode;
+        }
+
+        #endregion --- Public Methods ---
+
+        #region --- Private Methods ---
 
         /// <summary>
-        /// Sends the Start of Message byte to the target
+        /// Flushes the serial port receive buffer
         /// </summary>
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        private Int32 SendStartOfMessage()
+        private Int32 FlushRxBuffer()
         {
-            byte[] startOfMessage = { ProtocolPTU.THE_SOM };
+            try
+            {
+                m_SerialPort.DiscardInBuffer();
+            }
+            catch (Exception e)
+            {
+                m_SerialError = ProtocolPTU.Errors.SerialBufferFlush;
+                m_ExceptionMessage = e.Message;
+                return -1;
+            }
 
-            Int32 errorCode = TransmitMessage(startOfMessage);
+            return 0;
+        }
 
-            return errorCode;
+        /// <summary>
+        /// Flushes the serial port transmit buffer
+        /// </summary>
+        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
+        private Int32 FlushTxBuffer()
+        {
+            try
+            {
+                m_SerialPort.DiscardOutBuffer();
+            }
+            catch (Exception e)
+            {
+                m_SerialError = ProtocolPTU.Errors.SerialBufferFlush;
+                m_ExceptionMessage = e.Message;
+                return -1;
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// This method is responsible for reading all available chars that are in the serial port
+        /// sent by the embedded PTU. All characters are copied to the <paramref name="rxMessage"/>
+        /// starting at the <paramref name="bufferOffset"/>. This feature allows multiple calls to
+        /// this method until the entire message is received.
+        /// </summary>
+        /// <param name="rxMessage">buffer where the received message is stored</param>
+        /// <param name="bufferOffset">offset into the receive buffer</param>
+        /// <returns>less than 0 if any failure occurs; number of bytes read if successful</returns>
+        private Int32 ReceiveMessage(Byte[] rxMessage, Int32 bufferOffset)
+        {
+            Int32 bytesRead = 0;
+            try
+            {
+                bytesRead = m_SerialPort.Read(rxMessage, bufferOffset, rxMessage.Length - bufferOffset);
+            }
+            catch (Exception e)
+            {
+                m_SerialError = ProtocolPTU.Errors.ReceiveMessage;
+                m_ExceptionMessage = e.Message;
+                return -1;
+            }
+            return bytesRead;
         }
 
         /// <summary>
@@ -460,7 +505,18 @@ namespace VcuComm
             return 0;
         }
 
+        /// <summary>
+        /// Sends the Start of Message byte to the target
+        /// </summary>
+        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
+        private Int32 SendStartOfMessage()
+        {
+            byte[] startOfMessage = { ProtocolPTU.THE_SOM };
 
+            Int32 errorCode = TransmitMessage(startOfMessage);
+
+            return errorCode;
+        }
 
         /// <summary>
         /// Sends a message to the target via the serial port
@@ -483,69 +539,7 @@ namespace VcuComm
             return txMessage.Length;
         }
 
-        /// <summary>
-        /// This method is responsible for reading all available chars that are in the serial port
-        /// sent by the embedded PTU. All characters are copied to the <paramref name="rxMessage"/>
-        /// starting at the <paramref name="bufferOffset"/>. This feature allows multiple calls to
-        /// this method until the entire message is received.
-        /// </summary>
-        /// <param name="rxMessage">buffer where the received message is stored</param>
-        /// <param name="bufferOffset">offset into the receive buffer</param>
-        /// <returns>less than 0 if any failure occurs; number of bytes read if successful</returns>
-        private Int32 ReceiveMessage(Byte[] rxMessage, Int32 bufferOffset)
-        {
-            Int32 bytesRead = 0;
-            try
-            {
-                bytesRead = m_SerialPort.Read(rxMessage, bufferOffset, rxMessage.Length - bufferOffset);
-            }
-            catch (Exception e)
-            {
-                m_SerialError = ProtocolPTU.Errors.ReceiveMessage;
-                m_ExceptionMessage = e.Message;
-                return -1;
-            }
-            return bytesRead;
-        }
-
-        /// <summary>
-        /// Flushes the serial port receive buffer
-        /// </summary>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        private Int32 FlushRxBuffer()
-        {
-            try
-            {
-                m_SerialPort.DiscardInBuffer();
-            }
-            catch (Exception e)
-            {
-                m_SerialError = ProtocolPTU.Errors.SerialBufferFlush;
-                m_ExceptionMessage = e.Message;
-                return -1;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Flushes the serial port transmit buffer
-        /// </summary>
-        /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
-        private Int32 FlushTxBuffer()
-        {
-            try
-            {
-                m_SerialPort.DiscardOutBuffer();
-            }
-            catch (Exception e)
-            {
-                m_SerialError = ProtocolPTU.Errors.SerialBufferFlush;
-                m_ExceptionMessage = e.Message;
-                return -1;
-            }
-            return 0;
-        }
+        #endregion --- Private Methods ---
 
         #endregion --- Methods ---
     }

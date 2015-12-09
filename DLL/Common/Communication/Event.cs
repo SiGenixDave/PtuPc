@@ -8,6 +8,8 @@ namespace Common.Communication
     /// </summary>
     public class EventGen
     {
+        #region --- Member Variables ---
+
         /// <summary>
         ///
         /// </summary>
@@ -68,6 +70,10 @@ namespace Common.Communication
         /// </summary>
         private VcuCommunication m_VcuCommunication;
 
+        #endregion --- Member Variables ---
+
+        #region --- Constructors ---
+
         /// <summary>
         ///
         /// </summary>
@@ -84,6 +90,11 @@ namespace Common.Communication
         private EventGen()
         { }
 
+        #endregion --- Constructors ---
+
+        #region --- Methods ---
+
+        #region --- Public Methods ---
         /// <summary>
         ///
         /// </summary>
@@ -265,22 +276,22 @@ namespace Common.Communication
         /// <param name="VariableType"></param>
         /// <returns></returns>
         public CommunicationError GetDefaultStreamInformation(out Int16 NumberOfVariables, out Int16 NumberOfSamples, out Int16 SampleRate,
-	                                                           Int16 []VariableIndex,Int16 []VariableType)
+                                                               Int16[] VariableIndex, Int16[] VariableType)
         {
             NumberOfVariables = -1;
-		    NumberOfSamples	= -1;
-		    SampleRate = -1;
+            NumberOfSamples = -1;
+            SampleRate = -1;
 
             CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_DEFAULT_STREAM, m_RxMessage);
 
-	        if (commError != CommunicationError.Success)
-	        {
+            if (commError != CommunicationError.Success)
+            {
                 return commError;
             }
 
             NumberOfVariables = BitConverter.ToInt16(m_RxMessage, 8);
-		    NumberOfSamples	= BitConverter.ToInt16(m_RxMessage, 10);
-		    SampleRate = BitConverter.ToInt16(m_RxMessage, 12);
+            NumberOfSamples = BitConverter.ToInt16(m_RxMessage, 10);
+            SampleRate = BitConverter.ToInt16(m_RxMessage, 12);
 
             if (m_CommDevice.IsTargetBigEndian())
             {
@@ -306,7 +317,7 @@ namespace Common.Communication
                 }
             }
 
-	        return CommunicationError.Success;
+            return CommunicationError.Success;
         }
 
         /// <summary>
@@ -516,12 +527,12 @@ namespace Common.Communication
                         break;
 
                     case ProtocolPTU.VariableType.INT_8_TYPE:
-                        Char cVal = BitConverter.ToChar(m_faultStorage[FaultIndex], variableOffset);
+                        SByte signedByte = (SByte)m_faultStorage[FaultIndex][variableOffset];
                         if (m_CommDevice.IsTargetBigEndian())
                         {
-                            cVal = Utils.ReverseByteOrder(cVal);
+                            signedByte = Utils.ReverseByteOrder(signedByte);
                         }
-                        VariableValue[var] = (Double)cVal;
+                        VariableValue[var] = (Double)signedByte;
                         variableOffset += sizeof(Char);
                         break;
 
@@ -689,7 +700,7 @@ namespace Common.Communication
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="StreamNumber"></param>
         /// <param name="DatalogBuffer"></param>
@@ -698,8 +709,8 @@ namespace Common.Communication
         /// <param name="NumberOfSamples"></param>
         /// <param name="VariableType"></param>
         /// <returns></returns>
-        public CommunicationError GetStream(Int16 StreamNumber, Int32 []DatalogBuffer, out Int16 TimeOrigin,
-	                                        Int16 NumberOfVariables, Int16 NumberOfSamples, Int16 []VariableType)
+        public CommunicationError GetStream(Int16 StreamNumber, Int32[] DatalogBuffer, out Int16 TimeOrigin,
+                                            Int16 NumberOfVariables, Int16 NumberOfSamples, Int16[] VariableType)
         {
             TimeOrigin = -1;
 
@@ -722,89 +733,89 @@ namespace Common.Communication
             }
 
             // Initialize Counters
-	        UInt16 ByteCount = 12;
-	        UInt16 DestCount = 0;
+            UInt16 ByteCount = 12;
+            UInt16 DestCount = 0;
 
-	        // Loop through Source Buffer
-	        while (ByteCount < SourceSize)
-	        {
-		        // Loop through the variables
-		        for (UInt16 Index = 0; Index < (UInt16)NumberOfVariables; Index++)
-		        {
-			        // Make sure we don't go over destination buffer limits
-			        if (DestCount >= NumberOfSamples * NumberOfVariables)
+            // Loop through Source Buffer
+            while (ByteCount < SourceSize)
+            {
+                // Loop through the variables
+                for (UInt16 Index = 0; Index < (UInt16)NumberOfVariables; Index++)
+                {
+                    // Make sure we don't go over destination buffer limits
+                    if (DestCount >= NumberOfSamples * NumberOfVariables)
                     {
-				        //TODO return E_STREAM_CORRUPT;
+                        //TODO return E_STREAM_CORRUPT;
                     }
 
-			        // Grab number of bytes depending on variable type
-			        switch ((ProtocolPTU.VariableType)VariableType[Index])
-			        {
-			            case ProtocolPTU.VariableType.INT_8_TYPE :
+                    // Grab number of bytes depending on variable type
+                    switch ((ProtocolPTU.VariableType)VariableType[Index])
+                    {
+                        case ProtocolPTU.VariableType.INT_8_TYPE:
                             SByte i8 = (SByte)m_RxMessage[ByteCount];
-				            DatalogBuffer[DestCount++] = (Int32)i8;
-				            ByteCount++;
-				            break;
+                            DatalogBuffer[DestCount++] = (Int32)i8;
+                            ByteCount++;
+                            break;
 
-			            case ProtocolPTU.VariableType.UINT_8_TYPE :
+                        case ProtocolPTU.VariableType.UINT_8_TYPE:
                             Byte u8 = (Byte)m_RxMessage[ByteCount];
-				            DatalogBuffer[DestCount++] = (Int32)u8;
-				            ByteCount++;
-				            break;
+                            DatalogBuffer[DestCount++] = (Int32)u8;
+                            ByteCount++;
+                            break;
 
-			            case ProtocolPTU.VariableType.INT_16_TYPE :
+                        case ProtocolPTU.VariableType.INT_16_TYPE:
                             Int16 i16 = BitConverter.ToInt16(m_RxMessage, ByteCount);
                             if (m_CommDevice.IsTargetBigEndian())
                             {
                                 Utils.ReverseByteOrder(i16);
                             }
-				            DatalogBuffer[DestCount++] = (Int32)i16;
-				            ByteCount += 2;
-				            break;
+                            DatalogBuffer[DestCount++] = (Int32)i16;
+                            ByteCount += 2;
+                            break;
 
-			            case ProtocolPTU.VariableType.UINT_16_TYPE :
+                        case ProtocolPTU.VariableType.UINT_16_TYPE:
                             UInt16 u16 = BitConverter.ToUInt16(m_RxMessage, ByteCount);
                             if (m_CommDevice.IsTargetBigEndian())
                             {
                                 Utils.ReverseByteOrder(u16);
                             }
-				            DatalogBuffer[DestCount++] = (Int32)u16;
-				            ByteCount += 2;
-				            break;
+                            DatalogBuffer[DestCount++] = (Int32)u16;
+                            ByteCount += 2;
+                            break;
 
-			            case ProtocolPTU.VariableType.INT_32_TYPE :
+                        case ProtocolPTU.VariableType.INT_32_TYPE:
                             Int32 i32 = BitConverter.ToInt32(m_RxMessage, ByteCount);
                             if (m_CommDevice.IsTargetBigEndian())
                             {
                                 Utils.ReverseByteOrder(i32);
                             }
-				            DatalogBuffer[DestCount++] = i32;
-				            ByteCount += 4;
-				            break;
+                            DatalogBuffer[DestCount++] = i32;
+                            ByteCount += 4;
+                            break;
 
-			            case ProtocolPTU.VariableType.UINT_32_TYPE :
+                        case ProtocolPTU.VariableType.UINT_32_TYPE:
                             UInt32 u32 = BitConverter.ToUInt32(m_RxMessage, ByteCount);
                             if (m_CommDevice.IsTargetBigEndian())
                             {
                                 Utils.ReverseByteOrder(u32);
                             }
-				            DatalogBuffer[DestCount++] =(Int32)u32;
-				            ByteCount += 4;
-				            break;
+                            DatalogBuffer[DestCount++] = (Int32)u32;
+                            ByteCount += 4;
+                            break;
 
-			            default :
-				            //TODO return E_STREAM_CORRUPT;
-				            break;
-			         }
-		        }
-		        /* Account for left over bytes */
-		        if ((ByteCount % 4) != 0)
+                        default:
+                            //TODO return E_STREAM_CORRUPT;
+                            break;
+                    }
+                }
+                /* Account for left over bytes */
+                if ((ByteCount % 4) != 0)
                 {
                     ByteCount += (UInt16)(4 - (ByteCount % 4));
                 }
-	        }
+            }
 
-	        return CommunicationError.Success;
+            return CommunicationError.Success;
         }
 
         /// <summary>
@@ -997,13 +1008,13 @@ namespace Common.Communication
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="NumberOfVariables"></param>
         /// <param name="SampleRate"></param>
         /// <param name="VariableIndex"></param>
         /// <returns></returns>
-        public CommunicationError SetDefaultStreamInformation(Int16 NumberOfVariables, Int16 SampleRate, Int16 []VariableIndex)
+        public CommunicationError SetDefaultStreamInformation(Int16 NumberOfVariables, Int16 SampleRate, Int16[] VariableIndex)
         {
             if (NumberOfVariables > MAX_DL_VARIABLES)
             {
@@ -1049,7 +1060,9 @@ namespace Common.Communication
 
             return commError;
         }
+        #endregion --- Public Methods ---
 
+        #region --- Private Methods ---
         /// <summary>
         ///
         /// </summary>
@@ -1102,6 +1115,8 @@ namespace Common.Communication
 
             return true;
         }
+        #endregion --- Private Methods ---
 
+        #endregion --- Methods ---
     }
 }
