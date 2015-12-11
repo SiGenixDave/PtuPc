@@ -5,14 +5,33 @@ namespace VcuComm
 {
     public partial class ProtocolPTU
     {
-        public static readonly byte TARGET_BIG_ENDIAN_SOM = (byte)'S';
-        public static readonly byte THE_SOM = (byte)':';
+        /// <summary>
+        /// The size of every PTU header to and from the embedded target PTU. The header consists
+        /// of 4 16 bit words of which the checksum is not used on either the PTU or the embedded
+        /// target.
+        /// </summary>
+        private const UInt16 HEADER_SIZE_BYTES = 8;
+        
+        /// <summary>
+        /// This is the response that is returned from the embedded target PTU when it acknowledges
+        /// a command and no data from the embedded target is to be returned. 
+        /// </summary>
         public static readonly byte PTU_ACK = (byte)0x04;
-        public const UInt16 MAX_WATCH_ELEMENTS = 40;
-        public const UInt16 HEADER_SIZE_BYTES = 8;
+        
+        /// <summary>
+        /// This is the byte that is returned from the embedded target PTU when the machine that 
+        /// the embedded target resides on is Big Endian.
+        /// </summary>
+        public static readonly byte TARGET_BIG_ENDIAN_SOM = (byte)'S';
 
         /// <summary>
-        /// These errors are logged whenever any error is detected when a TCP transaction occurs
+        /// This is the byte that is returned from the embedded target PTU when the machine that 
+        /// the embedded target resides on is Little Endian.
+        /// </summary>
+        public static readonly byte THE_SOM = (byte)':';
+        
+        /// <summary>
+        /// These errors are logged whenever any error is detected when a transaction occurs
         /// </summary>
         public enum Errors
         {
@@ -36,11 +55,85 @@ namespace VcuComm
             Close,
         }
 
+        // Some projects, e.g. R188 use a 4 digit year code for the time/date functions.
+        // These structures are included to support these projects.
+        public struct Get4TimeDateRes
+        {
+            public Byte Day;
+            public DataPacketProlog Header;
+            public Byte Hour;
+            public Byte Minute;
+            public Byte Month;
+            public Byte Second;
+            public Byte Temp;	// Introduced to ensure the structure still lies on a word boundary.
+            public UInt16 Year;
+        }
+
+
+        public struct GetEmbeddedInfoRes
+        {
+            public String CarID;
+            public UInt32 ConfigurationMask;
+            public String IdentifierString;
+            public String SoftwareVersion;   //41
+            //11
+            public String SubSystemName; //41
+            //5;
+        }
+
+        public struct GetFaultDataRes
+        {
+            public Byte[] Buffer;
+            public UInt16 BufferSize;
+        }
+
+        public struct GetTimeDateRes
+        {
+            public Byte Day;
+            public DataPacketProlog Header;
+            public Byte Hour;
+            public Byte Minute;
+            public Byte Month;
+            public Byte Second;
+            public Byte Year;
+        }
+
+        public struct SelfTestCommandReq
+        {
+            public Byte CommandID;
+            public UInt16 Data;
+            public DataPacketProlog Header;
+            public UInt16[] TestSet;
+            public Byte TruckInformation;
+        }
+
+        public struct StreamInformation
+        {
+            public UInt16 NumberOfSamples;
+            public UInt16 NumberOfVariables;
+            public UInt16 SampleRate;
+            public StreamVariable[] StreamVariableInfo;
+        }
+
+        public struct StreamVariable
+        {
+            public UInt16 Variable;
+            public UInt16 VariableType;
+        }
+
+        // Message Structures
+        public struct WatchElement
+        {
+            public UInt16 DataType;
+            public UInt16 Index;
+            public UInt32 NewValue;
+        }
+
         public class DataPacketProlog
         {
+            private UInt16 checksum;
             private UInt16 packetLength;
             private UInt16 packetType;
-            private UInt16 checksum;
             private UInt16 responseType;
 
             public Byte[] GetByteArray(Byte[] payload, PacketType packetType, ResponseType responseType, Boolean targetIsBigEndian)
@@ -76,77 +169,6 @@ namespace VcuComm
                 return ms.ToArray();
             }
         }
-
-        // Message Structures
-        public struct WatchElement
-        {
-            public UInt16 Index;
-            public UInt32 NewValue;
-            public UInt16 DataType;
-        }
-
-        public struct StreamVariable
-        {
-            public UInt16 Variable;
-            public UInt16 VariableType;
-        }
-
-        public struct StreamInformation
-        {
-            public UInt16 NumberOfVariables;
-            public UInt16 NumberOfSamples;
-            public UInt16 SampleRate;
-            public StreamVariable[] StreamVariableInfo;
-        }
-
-         public struct GetEmbeddedInfoRes
-        {
-            public String SoftwareVersion;   //41
-            public String CarID;  //11
-            public String SubSystemName; //41
-            public String IdentifierString; //5;
-            public UInt32 ConfigurationMask;
-        }
-
-        public struct GetChartModeRes
-        {
-            public Byte CurrentChartMode;
-        }
-
-        public struct GetTimeDateRes
-        {
-            public DataPacketProlog Header;
-            public Byte Hour;
-            public Byte Minute;
-            public Byte Second;
-            public Byte Year;
-            public Byte Month;
-            public Byte Day;
-        }
-
-        // Some projects, e.g. R188 use a 4 digit year code for the time/date functions.
-        // These structures are included to support these projects.
-        public struct Get4TimeDateRes
-        {
-            public DataPacketProlog Header;
-            public Byte Hour;
-            public Byte Minute;
-            public Byte Second;
-            public Byte Temp;	// Introduced to ensure the structure still lies on a word boundary.
-            public UInt16 Year;
-            public Byte Month;
-            public Byte Day;
-        }
-
-        public struct SelfTestCommandReq
-        {
-            public DataPacketProlog Header;
-            public Byte CommandID;
-            public Byte TruckInformation;
-            public UInt16 Data;
-            public UInt16[] TestSet; //100;
-        }
-
 #if DAS
         public struct GetSelfTestPacketRes
         {
@@ -162,21 +184,6 @@ namespace VcuComm
 	        st_msg_var_str      VariableMsg[MAXSTVARIABLES];
         }
 #endif
-
-        public struct GetFaultDataRes
-        {
-            public UInt16 BufferSize;
-            public Byte[] Buffer; //MAXFAULTBUFFERSIZE;
-        }
-
-        // BTU REQUEST/RESPONSE PACKET
-        public struct BTU_test
-        {
-            public DataPacketProlog Header;
-            public UInt16 mode;
-            public UInt16[] Buffer; //17;
-        }
-
 #if NOT_USED_AS_FAR_I_CAN_TELL
         public struct DataDictionary
         {
@@ -196,14 +203,7 @@ namespace VcuComm
             private Int16 DataType;
         }
 #endif
-        public struct EnumValue
-        {
-            public char[] Description;  // 40
-            public double Value;
-        }
-
         /// /////////////////////////////////////////////////////////////////////////////////
         /// /////////////////////////////////////////////////////////////////////////////////
-
     }
 }

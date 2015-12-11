@@ -82,22 +82,7 @@ namespace Common.Communication
             return CommunicationError.Success;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="getChartMode"></param>
-        /// <returns></returns>
-        public CommunicationError GetChartMode(ref ProtocolPTU.GetChartModeRes getChartMode)
-        {
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_CHART_MODE, m_RxMessage);
-
-            if (commError == CommunicationError.Success)
-            {
-                getChartMode.CurrentChartMode = m_RxMessage[8];
-            }
-
-            return commError;
-        }
+ 
 
         /// <summary>
         ///
@@ -164,9 +149,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetTimeDate(Boolean Use4DigitYearCode, ref Int16 Year, ref Byte Month, ref Byte Day, ref Byte Hour, ref Byte Minute, ref Byte Second)
         {
-            ProtocolPTU.GetDateTime request = new ProtocolPTU.GetDateTime();
-
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
+            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_TIME_DATE, m_RxMessage);
 
             if (commError != CommunicationError.Success)
             {

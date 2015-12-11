@@ -8,7 +8,7 @@ namespace Common.Communication
     /// </summary>
     public class EventGen
     {
-        #region --- Member Variables ---
+        #region --- Constants ---
 
         /// <summary>
         ///
@@ -39,6 +39,10 @@ namespace Common.Communication
         ///
         /// </summary>
         private const Int16 MAX_TASKS = 120;
+
+        #endregion --- Constants ---
+
+        #region --- Member Variables ---
 
         /// <summary>
         ///
@@ -95,6 +99,7 @@ namespace Common.Communication
         #region --- Methods ---
 
         #region --- Public Methods ---
+
         /// <summary>
         ///
         /// </summary>
@@ -1060,9 +1065,11 @@ namespace Common.Communication
 
             return commError;
         }
+
         #endregion --- Public Methods ---
 
         #region --- Private Methods ---
+
         /// <summary>
         ///
         /// </summary>
@@ -1115,6 +1122,7 @@ namespace Common.Communication
 
             return true;
         }
+
         #endregion --- Private Methods ---
 
         #endregion --- Methods ---

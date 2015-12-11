@@ -3,20 +3,27 @@
 
     public partial class ProtocolPTU
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public enum ResponseType
         {
             COMMANDREQUEST = 1,
             DATAREQUEST = 2,
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public enum PacketType
         {
             SET_WATCH_ELEMENT = 2,
             SET_WATCH_ELEMENTS = 3,
             UPDATE_WATCH_ELEMENTS = 4,
             SET_CHART_SCALE = 5,
-
+            //
             // Intentionally empty [6]
+            //
             SEND_VARIABLE_VALUE = 7,
 
             GET_DICTIONARY_SIZE = 8,
@@ -39,12 +46,12 @@
             GET_FAULT_DATA = 25,
             GET_FAULT_FLAG = 26,
             SET_FAULT_FLAG = 27,
-
+            //
             // Intentionally empty [28-30]
+            //
             GET_DATALOG_STATUS = 31,
 
             GET_DATALOG_BUFFER = 32,
-
             //
             // Intentionally empty [33]
             //
@@ -55,8 +62,9 @@
             SET_STREAM_INFORMATION = 37,
             GET_STREAM_INFORMATION = 38,
             GET_DEFAULT_STREAM = 39,
-
+            //
             // Intentionally empty [40-49]
+            //
             START_CLOCK = 50,
 
             STOP_CLOCK = 51,
@@ -64,14 +72,18 @@
             GET_EVENT_LOG = 53,
             GET_STREAM_FLAG = 54,
             BTU = 55,
-
+            //
             // Intentionally empty [56-99]
+            //
             INITIALIZECOMMPORT = 100,
 
             CLOSECOMMPORT = 101,
             TERMINATECONNECTION = 102,
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public enum VariableType
         {
             UINT_8_TYPE = 0,

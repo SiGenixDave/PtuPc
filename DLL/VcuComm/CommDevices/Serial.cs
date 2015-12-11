@@ -40,6 +40,10 @@ namespace VcuComm
         /// </summary>
         private byte m_TargetStartOfMessage;
 
+        #endregion --- Member Variables ---
+
+        #region --- Properties ---
+
         public ProtocolPTU.Errors Error
         {
             get
@@ -75,8 +79,9 @@ namespace VcuComm
                 m_ReadTimeout = value;
             }
         }
+        #endregion --- Properties ---
 
-        #endregion --- Member Variables ---
+
 
         #region --- Methods ---
 
