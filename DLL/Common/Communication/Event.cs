@@ -40,6 +40,9 @@ namespace Common.Communication
         /// </summary>
         private const Int16 MAX_TASKS = 120;
 
+
+        private const UInt32 EMPTY_FAULT_BUFFER = UInt32.MaxValue;
+
         #endregion --- Constants ---
 
         #region --- Member Variables ---
@@ -153,8 +156,8 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError CheckFaultlogger(ref Int16 PassedNumOfFaults, ref UInt32 orig_new)
         {
-            UInt32 OldestIndex = UInt32.MaxValue;
-            UInt32 NewestIndex = UInt32.MaxValue;
+            UInt32 OldestIndex = EMPTY_FAULT_BUFFER;
+            UInt32 NewestIndex = EMPTY_FAULT_BUFFER;
             Int16 RemoteFaults = -1;
             CommunicationError commError;
             UInt32 FaultIndex;
@@ -186,7 +189,7 @@ namespace Common.Communication
                 }
 
                 // Check if Fault Log is Empty
-                if ((NewestIndex == UInt32.MaxValue) && (OldestIndex == UInt32.MaxValue))
+                if ((NewestIndex == EMPTY_FAULT_BUFFER) && (OldestIndex == EMPTY_FAULT_BUFFER))
                 {
                     RemoteFaults = 0;
                     break;
@@ -359,7 +362,6 @@ namespace Common.Communication
         /// </summary>
         /// <param name="FaultIndex"></param>
         /// <param name="NumberOfFaults"></param>
-        /// <param name="getFaultData"></param>
         /// <returns></returns>
         public CommunicationError GetFaultData(UInt32 FaultIndex, UInt16 NumberOfFaults)
         {
@@ -479,8 +481,8 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetFaultIndices(out UInt32 Oldest, out UInt32 Newest)
         {
-            Oldest = UInt32.MaxValue;
-            Newest = UInt32.MaxValue;
+            Oldest = EMPTY_FAULT_BUFFER;
+            Newest = EMPTY_FAULT_BUFFER;
 
             CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_FAULT_INDICES, m_RxMessage);
 
@@ -900,8 +902,8 @@ namespace Common.Communication
         public CommunicationError LoadFaultLog(out Int16 NumberOfFaults, out UInt32 OldestIndex, out UInt32 NewestIndex)
         {
             NumberOfFaults = Int16.MaxValue;
-            OldestIndex = UInt32.MaxValue;
-            NewestIndex = UInt32.MaxValue;
+            OldestIndex = EMPTY_FAULT_BUFFER;
+            NewestIndex = EMPTY_FAULT_BUFFER;
 
             CommunicationError commError;
 
@@ -926,8 +928,8 @@ namespace Common.Communication
                 }
 
                 // Check if  Fault Log is Empty
-                // TODO Make const out of Empty Fault Log (UInt32.MaxValue)
-                if ((OldestIndex == UInt32.MaxValue) && (NewestIndex == UInt32.MaxValue))
+                // TODO Make const out of Empty Fault Log (EMPTY_FAULT_BUFFER)
+                if ((OldestIndex == EMPTY_FAULT_BUFFER) && (NewestIndex == EMPTY_FAULT_BUFFER))
                 {
                     NumberOfFaults = 0;
                     break;

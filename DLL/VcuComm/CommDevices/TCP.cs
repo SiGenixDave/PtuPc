@@ -38,6 +38,7 @@ namespace VcuComm
         /// because the connection can't be established.
         /// </summary>
         private Boolean m_Connected;
+
         /// <summary>
         /// Maintains the exception message thrown when a serial port error occurs. Allows the calling function
         /// to ascertain more detail about the error.
@@ -70,6 +71,7 @@ namespace VcuComm
                 return tcpErrCopy;
             }
         }
+
         /// <summary>
         /// Property for m_ExceptionMessage
         /// </summary>
@@ -90,6 +92,7 @@ namespace VcuComm
         #region --- Methods ---
 
         #region --- Public Methods ---
+
         /// <summary>
         /// Closes the TCP connection gracefully by issuing a shutdown which effectively disables sends
         /// and receives on the socket and then closes the socket (issues a [FIN,ACK]).
@@ -233,6 +236,7 @@ namespace VcuComm
             // Connection to PTU server was successful
             return 0;
         }
+
         /// <summary>
         /// Reads the data from the TCP port and verifies the target acknowledged the message. Target acknowledges
         /// the message sent from the application when no data is sent back from the target (i.e. a command was sent)
@@ -339,7 +343,7 @@ namespace VcuComm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public Int32 SendReceiveSOM()
@@ -453,7 +457,6 @@ namespace VcuComm
 
             return errorCode;
         }
-
 
         /// <summary>
         /// Sends a message to the embedded TCP server target from the TCP client

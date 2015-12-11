@@ -9,6 +9,9 @@ namespace VcuComm
     /// </summary>
     public class Serial : ICommDevice
     {
+        /// <summary>
+        ///
+        /// </summary>
         private static readonly String NO_SERIAL_ISSUES = "No Exceptions Raised";
 
         #region --- Member Variables ---
@@ -79,9 +82,8 @@ namespace VcuComm
                 m_ReadTimeout = value;
             }
         }
+
         #endregion --- Properties ---
-
-
 
         #region --- Methods ---
 
