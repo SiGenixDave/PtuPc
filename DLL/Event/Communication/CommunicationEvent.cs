@@ -179,26 +179,6 @@ namespace Event.Communication
     /// </summary>
     public class CommunicationEvent : CommunicationParent, ICommunicationEvent
     {
-        #region --- Delegate Declarations ---
-
-
-        /// <summary>
-        /// Delegate declaration for the GetStream() method of VcuCommunication32.dll/VcuCommunication64.dll. This method gets the data stream.
-        /// </summary>
-        /// <param name="streamNumber">The stream number.</param>
-        /// <param name="dataBuffer">The point values for each watch variable.</param>
-        /// <param name="timeOrigin">The start time of the plot.</param>
-        /// <param name="watchVariableCount">The number of watch variables included in the data stream.</param>
-        /// <param name="sampleCount">The number of data samples associated with the data stream.</param>
-        /// <param name="dataTypes">The data type corresponding to each watch variable contained within the data stream.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short GetStreamDelegate(short streamNumber, int[] dataBuffer, out short timeOrigin, short watchVariableCount,
-                                                   short sampleCount, short[] dataTypes);
-
-
-
-        #endregion --- Delegate Declarations ---
-
         #region --- Constants ---
         /// <summary>
         /// The <c>CultureInfo</c> string used to represent - english (US). Value: "en-US";
@@ -211,18 +191,6 @@ namespace Event.Communication
         private const short VCUDataStreamColumnCountMax = 1;
         #endregion --- Constants ---
 
-        #region --- Member Variables ---
-        #region --- Function Delegates  ---
-        /// <summary>
-        /// Delegate for the GetStream() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetStreamDelegate m_GetStream;
-
-       
-
-        #endregion --- Function Delegates  ---
-        #endregion --- Member Variables ---
-
         #region --- Constructors ---
         /// <summary>
         /// Initialize a new instance of the class and set the function delegates, properties and member variables to those values associated with the
@@ -233,22 +201,6 @@ namespace Event.Communication
         public CommunicationEvent(ICommunicationParent communicationInterface)
             : base(communicationInterface)
         {
-            #region - [Initialize VcuCommunication.event.cpp Function Delegates] -
-            // ----------------------------------------------------------------------
-            // Initialize the function delegates to either the VcuCommunication32.dll  
-            // or VcuCommunication64.dll functions depending upon whether the 
-            // Windows operating system is 64 bit or 32 bit.
-            // ----------------------------------------------------------------------
-            if (m_Is64BitOperatingSystem == true)
-            {
-                m_GetStream = VcuCommunication64Event.GetStream;
-            }
-            else
-            {
-                m_GetStream = VcuCommunication32Event.GetStream;
-            }
-            #endregion - [Initialize VcuCommunication.event.cpp Function Delegates] -
-
         }
         #endregion --- Constructors ---
 
@@ -777,7 +729,6 @@ namespace Event.Communication
         public DataStream_t GetStream(EventRecord eventRecord)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_GetStream != null, "CommunicationEvent.GetStream() - [m_GetStream != null]");
             Debug.Assert(m_MutexCommuncationInterface != null, "CommunicationEvent.GetStream() - [m_MutexCommuncationInterface != null]");
 
             Debug.Assert(eventRecord.StreamSaved == true, "CommuncationEvent.GetStream() - [eventRecord.StreamSaved == true]");
@@ -798,7 +749,7 @@ namespace Event.Communication
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
 
                 // TODO - CommunicationEvent.GetStream(). Check on the significance of the timeOrigin parameter in the GetStream() method.
-                errorCode = (CommunicationError)m_GetStream(eventRecord.StreamNumber, buffer, out timeOrigin, watchCount, sampleCount, dataTypes);
+                errorCode = m_Event.GetStream(eventRecord.StreamNumber, buffer, out timeOrigin, watchCount, sampleCount, dataTypes);
             }
             catch (Exception)
             {

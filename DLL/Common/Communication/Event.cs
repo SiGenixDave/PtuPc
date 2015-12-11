@@ -159,17 +159,17 @@ namespace Common.Communication
             CommunicationError commError;
             UInt32 FaultIndex;
 
-            /* LOOP ONCE ... EXIT ON ERROR */
+            // LOOP ONCE ... EXIT ON ERROR
             do
             {
-                /* Disable Fault Logging */
+                // Disable Fault Logging
                 commError = SetFaultLog(false);
                 if (commError != CommunicationError.Success)
                 {
                     break;
                 }
 
-                /* Get Fault Log Indexes */
+                // Get Fault Log Indexes
                 commError = GetFaultIndices(out OldestIndex, out NewestIndex);
                 if (commError != CommunicationError.Success)
                 {
@@ -185,14 +185,14 @@ namespace Common.Communication
                     FaultIndex = (UInt32)(orig_new + 1);
                 }
 
-                /* Check if Fault Log is Empty */
+                // Check if Fault Log is Empty
                 if ((NewestIndex == UInt32.MaxValue) && (OldestIndex == UInt32.MaxValue))
                 {
                     RemoteFaults = 0;
                     break;
                 }
 
-                /* Compute number of Faults */
+                // Compute number of Faults
                 RemoteFaults = (Int16)(NewestIndex - FaultIndex + 1);
                 if (RemoteFaults == 0)
                 {
@@ -210,15 +210,14 @@ namespace Common.Communication
                     break;
                 }
 
-                /* Enable Fault Logging */
+                // Enable Fault Logging
                 commError = SetFaultLog(true);
                 if (commError != CommunicationError.Success)
                 {
                     break;
                 }
 
-                /* Loop thru the fault buffer, pulling out the size and data */
-                /* for each fault */
+                // Loop through the fault buffer, pulling out the size and data for each fault
                 Int32 Index = 0;
                 while (Index < m_FaultDataFromTarget.BufferSize)
                 {
@@ -238,17 +237,17 @@ namespace Common.Communication
                     }
                     else
                     {
-                        /* Fault Buffer is corrupt beyond hope at this point */
+                        // Fault Buffer is corrupt beyond hope at this point
                         commError = CommunicationError.UnknownError;
                         break;
                     }
 
-                    /* Increment the Index to point to the size of the next fault */
+                    // Increment the Index to point to the size of the next fault
                     Index += (FaultSize + 2);
                 }
             } while (false);
 
-            /* Enable Fault Logging here in case we left the while loop early */
+            // Enable Fault Logging here in case we left the while loop early
             commError = SetFaultLog(true);
 
             if ((commError == CommunicationError.Success) && (RemoteFaults > 0))
@@ -266,7 +265,8 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError ClearEvent()
         {
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.CLEAR_EVENTLOG);
+            CommunicationError commError = 
+                m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.CLEAR_EVENTLOG);
 
             return commError;
         }
@@ -407,7 +407,7 @@ namespace Common.Communication
         public CommunicationError GetFaultHdr(Int16 index, ref Int16 faultnum, ref Int16 tasknum,
                                               ref String Flttime, ref String Fltdate, ref Int16 datalognum)
         {
-            /* Check the Validity of the desired index */
+            // Check the Validity of the desired index
             if (index >= m_CurrentNumberOfFaults)
             {
                 Flttime = "N/A";
@@ -447,7 +447,7 @@ namespace Common.Communication
                 Flttime = "N/A";
             }
 
-            /* Check Date */
+            // Check Date
             if (VerifyDate(month, day, year))
             {
                 Fltdate = month.ToString("D2") + "/" + day.ToString("D2") + "/" + year.ToString("D2");
@@ -509,7 +509,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetFaultVar(Int16 FaultIndex, Int16 NumberOfVariables, Int16[] VariableType, Double[] VariableValue)
         {
-            /* Check the Validity of the desired index */
+            // Check the Validity of the desired index
             if (FaultIndex >= m_CurrentNumberOfFaults)
             {
                 return CommunicationError.UnknownError;
@@ -623,7 +623,7 @@ namespace Common.Communication
             }
 
             // TODO the code below begs for refactoring (maybe nested loop or something
-            // Loop thru all the TaskId/FaultId Combinations and set/reset a bit for each one
+            // Loop through all the TaskId/FaultId Combinations and set/reset a bit for each one
             UInt16 mask = 0x0001;
             Int16 Counter = 0;
             for (Int16 NumberOfEntries = 0; NumberOfEntries < EntryCount; NumberOfEntries++)
@@ -673,7 +673,7 @@ namespace Common.Communication
         {
             Int16 NumberOfEntries = 0;
 
-            // Loop thru all the legal TaskId/FaultId Combinations and pull the histories for each combination
+            // Loop through all the legal TaskId/FaultId Combinations and pull the histories for each combination
             for (Int16 TaskId = 0; TaskId < MaxTasks; TaskId++)
             {
                 for (Int16 EventId = 0; EventId < MaxEventsPerTask; EventId++)
@@ -813,7 +813,8 @@ namespace Common.Communication
                             break;
                     }
                 }
-                /* Account for left over bytes */
+                //TODO Not sure why this is here and just bump the counter up by 4 for all data sizes
+                // Account for left over bytes
                 if ((ByteCount % 4) != 0)
                 {
                     ByteCount += (UInt16)(4 - (ByteCount % 4));
@@ -904,27 +905,28 @@ namespace Common.Communication
 
             CommunicationError commError;
 
-            /* LOOP ONCE ... EXIT ON ERROR */
+            // LOOP ONCE ... EXIT ON ERROR
             do
             {
                 m_CurrentNumberOfFaults = 0;
                 UInt32 FaultCounter = 0;
 
-                /* Disable Fault Logging */
+                // Disable Fault Logging
                 commError = SetFaultLog(false);
                 if (commError != CommunicationError.Success)
                 {
                     break;
                 }
 
-                /* Get Fault Log Indexes */
+                // Get Fault Log Indexes
                 commError = GetFaultIndices(out OldestIndex, out NewestIndex);
                 if (commError != CommunicationError.Success)
                 {
                     break;
                 }
 
-                /* Check if  Fault Log is Empty */
+                // Check if  Fault Log is Empty
+                // TODO Make const out of Empty Fault Log (UInt32.MaxValue)
                 if ((OldestIndex == UInt32.MaxValue) && (NewestIndex == UInt32.MaxValue))
                 {
                     NumberOfFaults = 0;
@@ -962,8 +964,7 @@ namespace Common.Communication
                         break;
                     }
 
-                    /* Loop through the fault buffer, pulling out the size and data */
-                    /* for each fault */
+                    // Loop through the fault buffer, pulling out the size and data for each fault
                     for (Int32 Index = 0; Index < m_FaultDataFromTarget.BufferSize; )
                     {
                         FaultCounter++;
@@ -989,24 +990,24 @@ namespace Common.Communication
                         }
                         else
                         {
-                            /* Fault Buffer is corrupt beyond hope at this point */
+                            // Fault Buffer is corrupt beyond hope at this point
                             commError = CommunicationError.UnknownError;
                             break;
                         }
 
-                        /* Increment the Index to point to the size of the next fault */
+                        // Increment the Index to point to the size of the next fault
                         Index += (FaultSize + 2);
                     }
                 } while ((FaultCounter < RemoteFaults) && (commError != CommunicationError.UnknownError));
 
-                /* Force the Return Code so we can extract all valid faults */
+                // Force the Return Code so we can extract all valid faults
                 commError = CommunicationError.Success;
 
-                /* Save the number of good faults we retrieved */
+                // Save the number of good faults we retrieved
                 NumberOfFaults = m_CurrentNumberOfFaults;
             } while (false);
 
-            /* Enable Fault Logging here in case we left the while loop early */
+            // Enable Fault Logging here in case we left the while loop early
             SetFaultLog(true);
 
             return commError;
