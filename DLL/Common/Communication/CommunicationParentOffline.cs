@@ -115,8 +115,8 @@ namespace Common.Communication
         protected static string m_CarID = CarIdentifier;
         #endregion --- Member Variables ---
 
-        protected CommGen m_Comm;
-        protected EventGen m_Event;
+        protected WatchClockMarshal m_Comm;
+        protected EventStreamMarshal m_Event;
 
         #region --- Constructors ---
         /// <summary>
@@ -262,7 +262,7 @@ namespace Common.Communication
         /// <summary>
         /// Gets or sets the communication general associated with the selected target.
         /// </summary>
-        public CommGen Comm
+        public WatchClockMarshal Comm
         {
             get { return m_Comm; }
             set { m_Comm = value; }
@@ -271,7 +271,7 @@ namespace Common.Communication
         /// <summary>
         /// Gets or sets the event general associated with the selected target.
         /// </summary>
-        public EventGen Event
+        public EventStreamMarshal Event
         {
             get { return m_Event; }
             set { m_Event = value; }

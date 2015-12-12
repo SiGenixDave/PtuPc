@@ -774,12 +774,12 @@ namespace Common.Communication
         /// <summary>
         /// TODO
         /// </summary>
-        protected CommGen m_Comm;
+        protected WatchClockMarshal m_Comm;
         
         /// <summary>
         /// TODO
         /// </summary>
-        protected EventGen m_Event;
+        protected EventStreamMarshal m_Event;
 
         
         #endregion --- Member Variables ---
@@ -883,8 +883,8 @@ namespace Common.Communication
             if (error >= 0)
             {
                 errorCode = CommunicationError.Success;
-                m_Comm = new CommGen(device);
-                m_Event = new EventGen(device);
+                m_Comm = new WatchClockMarshal(device);
+                m_Event = new EventStreamMarshal(device);
             }
 
             if (errorCode != CommunicationError.Success)
@@ -1228,7 +1228,7 @@ namespace Common.Communication
         /// <summary>
         /// Gets or sets the communication general associated with the selected target.
         /// </summary>
-        public CommGen Comm
+        public WatchClockMarshal Comm
         {
             get { return m_Comm; }
             set { m_Comm = value; }
@@ -1238,7 +1238,7 @@ namespace Common.Communication
         /// <summary>
         /// Gets or sets the event general associated with the selected target.
         /// </summary>
-        public EventGen Event
+        public EventStreamMarshal Event
         {
             get { return m_Event; }
             set { m_Event = value; }

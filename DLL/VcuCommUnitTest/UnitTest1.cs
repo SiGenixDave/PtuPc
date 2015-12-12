@@ -43,8 +43,8 @@ namespace VcuCommUnitTest
             device.Open("COM2,19200,none,8,1");
 #endif            
             
-            CommGen comm = new CommGen(device);
-            EventGen ev = new EventGen(device);
+            WatchClockMarshal comm = new WatchClockMarshal(device);
+            EventStreamMarshal ev = new EventStreamMarshal(device);
 
             CommunicationError errorCode;
             Int16 Year = 0;

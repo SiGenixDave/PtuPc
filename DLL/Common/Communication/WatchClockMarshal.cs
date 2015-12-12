@@ -7,7 +7,7 @@ namespace Common.Communication
     /// <summary>
     ///
     /// </summary>
-    public class CommGen
+    public class WatchClockMarshal
     {
         #region --- Member Variables ---
 
@@ -36,7 +36,7 @@ namespace Common.Communication
         /// Constructor that initializes a new instance of the CommGen class
         /// </summary>
         /// <param name="device">The communication vehicle used to access the PTU target (VCU)</param>
-        public CommGen(ICommDevice device)
+        public WatchClockMarshal(ICommDevice device)
         {
             m_CommDevice = device;
             m_VcuCommunication = new VcuCommunication();
@@ -46,7 +46,7 @@ namespace Common.Communication
         /// Private 0 argument constructor that forces the instantiation of this class
         /// to use the constructor below.
         /// </summary>
-        private CommGen()
+        private WatchClockMarshal()
         {
             // Intentionally empty
         }
@@ -159,14 +159,29 @@ namespace Common.Communication
             Hour = m_RxMessage[8];
             Minute = m_RxMessage[9];
             Second = m_RxMessage[10];
-            Year = m_RxMessage[11];
-            Month = m_RxMessage[12];
-            Day = m_RxMessage[13];
+            // There's a different structure orientation based o whether or not a four digit year is being used
+            if (Use4DigitYearCode)
+            {
+                Year = BitConverter.ToInt16(m_RxMessage, 12);
+                Month = m_RxMessage[14];
+                Day = m_RxMessage[15];
+            }
+            else
+            {
+                Year = m_RxMessage[11];
+                Month = m_RxMessage[12];
+                Day = m_RxMessage[13];
+            }
 
             // check for endianess
             if (m_CommDevice.IsTargetBigEndian())
             {
-                //TODO
+                Hour = Utils.ReverseByteOrder(Hour);
+                Minute = Utils.ReverseByteOrder(Minute);
+                Second = Utils.ReverseByteOrder(Second);
+                Year = Utils.ReverseByteOrder(Year);
+                Month = Utils.ReverseByteOrder(Month);
+                Day = Utils.ReverseByteOrder(Day);
             }
 
             return CommunicationError.Success;
@@ -270,16 +285,12 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError SetTimeDate(Boolean Use4DigitYearCode, Int16 Year, Int16 Month, Int16 Day, Int16 Hour, Int16 Minute, Int16 Second)
         {
-            // TODO
-            // ProtocolPTU.SetTimeDateReq();
-            if (Use4DigitYearCode == true)
-            {
-            }
-            else
-            {
-            }
-
-            return CommunicationError.Success;
+            ProtocolPTU.SetTimeDateReq request =
+                new ProtocolPTU.SetTimeDateReq(Use4DigitYearCode, (Byte)Hour, (Byte)Minute, (Byte)Second,
+                                                                    (UInt16)Year, (Byte)Month, (Byte)Day);
+            
+            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            return commError;
         }
 
         /// <summary>

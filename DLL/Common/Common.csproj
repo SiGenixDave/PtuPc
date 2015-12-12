@@ -85,12 +85,12 @@
   <ItemGroup>
     <Compile Include="CheckBoxUInt32.cs" />
     <Compile Include="Communication\AutoScale.cs" />
-    <Compile Include="Communication\Comm.cs" />
+    <Compile Include="Communication\WatchClockMarshal.cs" />
     <Compile Include="Communication\CommunicationException.cs" />
     <Compile Include="Communication\CommunicationParent.cs" />
     <Compile Include="Communication\CommunicationParentOffline.cs" />
     <Compile Include="Communication\DataStream.cs" />
-    <Compile Include="Communication\Event.cs" />
+    <Compile Include="Communication\EventStreamMarshal.cs" />
     <Compile Include="Communication\Interfaces\ICommunicationEvent.cs" />
     <Compile Include="Communication\Interfaces\ICommunicationApplication.cs" />
     <Compile Include="Communication\Interfaces\ICommunicationParent.cs" />

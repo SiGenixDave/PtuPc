@@ -532,108 +532,6 @@ namespace VcuComm
         /// <summary>
         /// TODO
         /// </summary>
-        public class Set4TimeDateReq : ICommRequest
-        {
-            /// <summary>
-            /// TODO
-            /// </summary>
-            private const PacketType PACKET_TYPE = PacketType.SET_TIME_DATE;
-
-            /// <summary>
-            /// Informs the embedded PTU target that this request is a command only and expects
-            /// no data response in return; only an acknowledge that the message was received
-            /// </summary>
-            private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
-
-            /// <summary>
-            /// TODO
-            /// </summary>
-            private Byte Day;
-            /// <summary>
-            /// TODO
-            /// </summary>
-            private Byte Hour;
-            /// <summary>
-            /// TODO
-            /// </summary>
-            private Byte Minute;
-            /// <summary>
-            /// TODO
-            /// </summary>
-            private Byte Month;
-            /// <summary>
-            /// TODO
-            /// </summary>
-            private Byte Second;
-            /// <summary>
-            /// TODO
-            /// </summary>
-            private UInt16 Year;
-
-            /// <summary>
-            /// Public constructor that is the only one permitted to create this object
-            /// </summary>
-            /// <param name="Hour"></param>
-            /// <param name="Minute"></param>
-            /// <param name="Second"></param>
-            /// <param name="Year"></param>
-            /// <param name="Month"></param>
-            /// <param name="Day"></param>
-            public Set4TimeDateReq(Byte Hour, Byte Minute, Byte Second, UInt16 Year, Byte Month, Byte Day)
-            {
-                this.Hour = Hour;
-                this.Minute = Minute;
-                this.Second = Second;
-                this.Year = Year;
-                this.Month = Month;
-                this.Day = Day;
-            }
-
-            /// <summary>
-            /// Private 0 argument constructor that forces the instantiation of this class
-            /// to use the public constructor
-            /// </summary>
-            private Set4TimeDateReq()
-            {
-            }
-
-            /// <summary>
-            /// Method that formats the message going to the embedded PTU target. The format of the message
-            /// is specific to the type of request made.
-            /// </summary>
-            /// <param name="targetIsBigEndian">true if the embedded PTU target is a Big Endian machine; false otherwise</param>
-            /// <returns>ordered byte array that is to be sent to the embedded PTU target</returns>
-            public Byte[] GetByteArray(Boolean targetIsBigEndian)
-            {
-                DataPacketProlog dpp = new DataPacketProlog();
-
-                if (targetIsBigEndian)
-                {
-                    this.Hour = Utils.ReverseByteOrder(this.Hour);
-                    this.Minute = Utils.ReverseByteOrder(this.Minute);
-                    this.Second = Utils.ReverseByteOrder(this.Second);
-                    this.Year = Utils.ReverseByteOrder(this.Year);
-                    this.Month = Utils.ReverseByteOrder(this.Month);
-                    this.Day = Utils.ReverseByteOrder(this.Day);
-                }
-
-                MemoryStream ms = new MemoryStream(MAX_TX_STREAM_SIZE);
-                BinaryWriter bw = new BinaryWriter(ms);
-                bw.Write(this.Hour);
-                bw.Write(this.Minute);
-                bw.Write(this.Second);
-                // Used to fill a boundary
-                bw.Write(0x00);
-                bw.Write(this.Year);
-                bw.Write(this.Month);
-                bw.Write(this.Day);
-                return dpp.GetByteArray(ms.ToArray(), PACKET_TYPE, RESPONSE_TYPE, targetIsBigEndian);
-            }
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
         public class SetCarIDReq : ICommRequest
         {
             /// <summary>
@@ -712,7 +610,7 @@ namespace VcuComm
             /// TODO
             /// </summary>
             private Byte ChartIndex;
-            
+
             /// <summary>
             /// TODO
             /// </summary>
@@ -1132,7 +1030,7 @@ namespace VcuComm
         public class SetTimeDateReq : ICommRequest
         {
             /// <summary>
-            /// Sets the packet type used to identify the message contents
+            /// TODO
             /// </summary>
             private const PacketType PACKET_TYPE = PacketType.SET_TIME_DATE;
 
@@ -1146,6 +1044,11 @@ namespace VcuComm
             /// TODO
             /// </summary>
             private Byte Day;
+
+            /// <summary>
+            /// TODO
+            /// </summary>
+            private Boolean fourDigitYear;
             /// <summary>
             /// TODO
             /// </summary>
@@ -1165,7 +1068,7 @@ namespace VcuComm
             /// <summary>
             /// TODO
             /// </summary>
-            private Byte Year;
+            private UInt16 Year;
 
             /// <summary>
             /// Public constructor that is the only one permitted to create this object
@@ -1176,8 +1079,9 @@ namespace VcuComm
             /// <param name="Year"></param>
             /// <param name="Month"></param>
             /// <param name="Day"></param>
-            public SetTimeDateReq(Byte Hour, Byte Minute, Byte Second, Byte Year, Byte Month, Byte Day)
+            public SetTimeDateReq(Boolean fourDigitYear, Byte Hour, Byte Minute, Byte Second, UInt16 Year, Byte Month, Byte Day)
             {
+                this.fourDigitYear = fourDigitYear;
                 this.Hour = Hour;
                 this.Minute = Minute;
                 this.Second = Second;
@@ -1219,13 +1123,22 @@ namespace VcuComm
                 bw.Write(this.Hour);
                 bw.Write(this.Minute);
                 bw.Write(this.Second);
-                bw.Write(this.Year);
+                if (this.fourDigitYear)
+                {
+                    // Used to fill a boundary
+                    bw.Write(0x00);
+                    bw.Write(this.Year);
+                }
+                else
+                {
+                    Byte bYear = (Byte)this.Year;
+                    bw.Write(bYear);
+                }
                 bw.Write(this.Month);
                 bw.Write(this.Day);
                 return dpp.GetByteArray(ms.ToArray(), PACKET_TYPE, RESPONSE_TYPE, targetIsBigEndian);
             }
         }
-
         /// <summary>
         /// TODO
         /// </summary>

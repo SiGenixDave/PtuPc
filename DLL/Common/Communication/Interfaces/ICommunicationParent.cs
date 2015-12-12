@@ -111,12 +111,12 @@ namespace Common.Communication
         /// <summary>
         /// Gets or sets the communication general associated with the selected VCU.
         /// </summary>
-        CommGen Comm { get; set; }
+        WatchClockMarshal Comm { get; set; }
 
         /// <summary>
         /// Gets or sets the event general associated with the selected VCU.
         /// </summary>
-        EventGen Event { get; set; }
+        EventStreamMarshal Event { get; set; }
         #endregion - [Properties] -
     }
 }

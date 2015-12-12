@@ -6,7 +6,7 @@ namespace Common.Communication
     /// <summary>
     ///
     /// </summary>
-    public class EventGen
+    public class EventStreamMarshal
     {
         #region --- Constants ---
 
@@ -85,7 +85,7 @@ namespace Common.Communication
         ///
         /// </summary>
         /// <param name="device"></param>
-        public EventGen(ICommDevice device)
+        public EventStreamMarshal(ICommDevice device)
         {
             m_CommDevice = device;
             m_VcuCommunication = new VcuCommunication();
@@ -94,7 +94,7 @@ namespace Common.Communication
         /// <summary>
         ///
         /// </summary>
-        private EventGen()
+        private EventStreamMarshal()
         { }
 
         #endregion --- Constructors ---
