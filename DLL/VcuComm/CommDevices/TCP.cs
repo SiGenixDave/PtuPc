@@ -374,6 +374,7 @@ namespace VcuComm
             m_Connected = true;
         }
 
+
         /// <summary>
         /// This method is responsible for reading all available chars that are in the serial port
         /// sent by the embedded PTU. All characters are copied to the <paramref name="rxMessage"/>
@@ -387,6 +388,11 @@ namespace VcuComm
         {
             Int32 bytesRead = 0;
 
+            if (ServerClosedSocket())
+            {
+                return -1;
+            }
+
             try
             {
                 bytesRead = m_Client.Client.Receive(rxMessage, bufferOffset, rxMessage.Length - bufferOffset, SocketFlags.None);
@@ -399,6 +405,9 @@ namespace VcuComm
             }
             return bytesRead;
         }
+
+        // TODO: Still need a function to handle when user pulls cable for RX and TX; similar to connect function
+        // This is the case when the connection is supposedly still active but no ACKs are received
 
         /// <summary>
         /// Receives the Start Of Message (SOM) from the embedded the embedded PTU
@@ -459,14 +468,45 @@ namespace VcuComm
         }
 
         /// <summary>
+        /// TODO
+        /// </summary>
+        /// <returns>TODO</returns>
+        private Boolean ServerClosedSocket()
+        {
+            // This snippet of code was found on the Internet and tested using the PTU target simulation
+            // The purpose of this code is to determine if the server was closed; in theory, it never should
+            // but in case it does, this avoids the c# code "hanging".
+            if (m_Client.Client.Poll(0, SelectMode.SelectRead))
+            {
+                byte[] buff = new byte[1];
+                try
+                {
+                    m_Client.Client.Receive(buff, SocketFlags.Peek);
+                }
+                catch (Exception e)
+                {
+                    m_TCPError = ProtocolPTU.Errors.ServerClosedUnexpectedly;
+                    m_ExceptionMessage = e.Message;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Sends a message to the embedded TCP server target from the TCP client
         /// </summary>
         /// <param name="txMessage">the byte array to be sent to the embedded PTU</param>
         /// <returns>less than 0 if any failure occurs; number of bytes sent if successful</returns>
         private Int32 TransmitMessage(Byte[] txMessage)
         {
-            Int32 bytesSent = 0;
+            if (ServerClosedSocket())
+            {
+                return -1;
+            }
 
+            Int32 bytesSent = 0;
             // Send the entire message to the serial port
             try
             {

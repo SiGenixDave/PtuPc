@@ -52,6 +52,7 @@ namespace VcuComm
             MessageEcho,
             ExcessiveBytesReceived,
             InvalidSOM,
+            ServerClosedUnexpectedly,
             Close,
         }
 
