@@ -75,7 +75,7 @@ namespace Common.Communication
         /// <summary>
         ///
         /// </summary>
-        private VcuCommunication m_VcuCommunication;
+        private PtuTargetCommunication m_PtuTargetCommunication;
 
         #endregion --- Member Variables ---
 
@@ -88,7 +88,7 @@ namespace Common.Communication
         public EventStreamMarshal(ICommDevice device)
         {
             m_CommDevice = device;
-            m_VcuCommunication = new VcuCommunication();
+            m_PtuTargetCommunication = new PtuTargetCommunication();
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Common.Communication
         {
             ProtocolPTU.ChangeEventLogReq request = new ProtocolPTU.ChangeEventLogReq(NewEventLogNumber);
 
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
 
             if (commError == CommunicationError.Success)
             {
@@ -269,7 +269,7 @@ namespace Common.Communication
         public CommunicationError ClearEvent()
         {
             CommunicationError commError = 
-                m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.CLEAR_EVENTLOG);
+                m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.CLEAR_EVENTLOG);
 
             return commError;
         }
@@ -290,7 +290,7 @@ namespace Common.Communication
             NumberOfSamples = -1;
             SampleRate = -1;
 
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_DEFAULT_STREAM, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_DEFAULT_STREAM, m_RxMessage);
 
             if (commError != CommunicationError.Success)
             {
@@ -338,7 +338,7 @@ namespace Common.Communication
         {
             CurrentEventLog = -1;
             NumberEventLogs = -1;
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_EVENT_LOG);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_EVENT_LOG);
 
             if (commError != CommunicationError.Success)
             {
@@ -367,7 +367,7 @@ namespace Common.Communication
         {
             ProtocolPTU.GetFaultDataReq request = new ProtocolPTU.GetFaultDataReq(FaultIndex, NumberOfFaults);
 
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
 
             if (commError == CommunicationError.Success)
             {
@@ -484,7 +484,7 @@ namespace Common.Communication
             Oldest = EMPTY_FAULT_BUFFER;
             Newest = EMPTY_FAULT_BUFFER;
 
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_FAULT_INDICES, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_FAULT_INDICES, m_RxMessage);
 
             if (commError == CommunicationError.Success)
             {
@@ -603,7 +603,7 @@ namespace Common.Communication
         {
             Byte[] message1 = new Byte[2048];
 
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_FAULT_FLAG, message1);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_FAULT_FLAG, message1);
             if (commError != CommunicationError.Success)
             {
                 return commError;
@@ -618,7 +618,7 @@ namespace Common.Communication
             NumberOfWords /= 2;
 
             Byte[] message2 = new Byte[2048];
-            commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_STREAM_FLAG, message2);
+            commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_STREAM_FLAG, message2);
             if (commError != CommunicationError.Success)
             {
                 return commError;
@@ -684,7 +684,7 @@ namespace Common.Communication
                     {
                         ProtocolPTU.GetFaultHistoryReq request = new ProtocolPTU.GetFaultHistoryReq((UInt16)TaskId, (UInt16)EventId);
 
-                        CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
+                        CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
 
                         if (commError != CommunicationError.Success)
                         {
@@ -723,7 +723,7 @@ namespace Common.Communication
 
             ProtocolPTU.GetDatalogBufferReq request = new ProtocolPTU.GetDatalogBufferReq((UInt16)StreamNumber);
 
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
 
             if (commError != CommunicationError.Success)
             {
@@ -844,7 +844,7 @@ namespace Common.Communication
             SampleRate = -1;
 
             ProtocolPTU.GetStreamInfoReq request = new ProtocolPTU.GetStreamInfoReq(StreamNumber);
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
 
             if (commError != CommunicationError.Success)
             {
@@ -887,7 +887,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError InitializeEventLog()
         {
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.INITIALIZE_EVENTLOG);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.INITIALIZE_EVENTLOG);
 
             return commError;
         }
@@ -1031,7 +1031,7 @@ namespace Common.Communication
 
             ProtocolPTU.SetStreamInfoReq request = new ProtocolPTU.SetStreamInfoReq(NumberOfVariables, SampleRate, VariableIndex);
 
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }
@@ -1048,7 +1048,7 @@ namespace Common.Communication
         {
             ProtocolPTU.SetFaultFlagReq request = new ProtocolPTU.SetFaultFlagReq(TaskNumber, FaultNumber, EnableFlag, DatalogFlag);
 
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }
@@ -1064,7 +1064,7 @@ namespace Common.Communication
 
             ProtocolPTU.SetFaultLogReq request = new ProtocolPTU.SetFaultLogReq(faultLogEnable);
 
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }

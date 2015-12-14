@@ -26,7 +26,7 @@ namespace Common.Communication
         /// <summary>
         ///
         /// </summary>
-        private VcuCommunication m_VcuCommunication;
+        private PtuTargetCommunication m_PtuTargetCommunication;
 
         #endregion --- Member Variables ---
 
@@ -39,7 +39,7 @@ namespace Common.Communication
         public WatchClockMarshal(ICommDevice device)
         {
             m_CommDevice = device;
-            m_VcuCommunication = new VcuCommunication();
+            m_PtuTargetCommunication = new PtuTargetCommunication();
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Common.Communication
         {
             ProtocolPTU.GetChartIndexReq request = new ProtocolPTU.GetChartIndexReq((Byte)ChartIndex);
 
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
 
             if (commError != CommunicationError.Success)
             {
@@ -91,7 +91,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetChartMode(ref Int16 CurrentChartMode)
         {
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_CHART_MODE, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_CHART_MODE, m_RxMessage);
 
             if (commError != CommunicationError.Success)
             {
@@ -121,7 +121,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetEmbeddedInformation(ref ProtocolPTU.GetEmbeddedInfoRes getEmbInfo)
         {
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_EMBEDDED_INFORMATION, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_EMBEDDED_INFORMATION, m_RxMessage);
 
             if (commError == CommunicationError.Success)
             {
@@ -149,7 +149,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError GetTimeDate(Boolean Use4DigitYearCode, ref Int16 Year, ref Byte Month, ref Byte Day, ref Byte Hour, ref Byte Minute, ref Byte Second)
         {
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_TIME_DATE, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_TIME_DATE, m_RxMessage);
 
             if (commError != CommunicationError.Success)
             {
@@ -200,7 +200,7 @@ namespace Common.Communication
 
             ProtocolPTU.SendVariableReq request = new ProtocolPTU.SendVariableReq(DictionaryIndex, data);
 
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }
@@ -233,7 +233,7 @@ namespace Common.Communication
         {
             ProtocolPTU.SetChartIndexReq request = new ProtocolPTU.SetChartIndexReq(ChartIndex, VariableIndex);
 
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }
@@ -247,7 +247,7 @@ namespace Common.Communication
         {
             ProtocolPTU.SetChartModeReq request = new ProtocolPTU.SetChartModeReq((byte)TargetChartMode);
 
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }
@@ -267,7 +267,7 @@ namespace Common.Communication
             ProtocolPTU.SetChartScaleReq request =
                 new ProtocolPTU.SetChartScaleReq(DictionaryIndex, maxScale, minScale);
 
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }
@@ -289,7 +289,7 @@ namespace Common.Communication
                 new ProtocolPTU.SetTimeDateReq(Use4DigitYearCode, (Byte)Hour, (Byte)Minute, (Byte)Second,
                                                                     (UInt16)Year, (Byte)Month, (Byte)Day);
             
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
             return commError;
         }
 
@@ -303,7 +303,7 @@ namespace Common.Communication
         {
             ProtocolPTU.SetWatchElementReq request = new ProtocolPTU.SetWatchElementReq(ElementIndex, DictionaryIndex);
 
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }
@@ -317,7 +317,7 @@ namespace Common.Communication
         {
             ProtocolPTU.SetWatchElementsReq request = new ProtocolPTU.SetWatchElementsReq(WatchElements);
 
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }
@@ -328,7 +328,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError StartClock()
         {
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.START_CLOCK);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.START_CLOCK);
 
             return commError;
         }
@@ -339,7 +339,7 @@ namespace Common.Communication
         /// <returns></returns>
         public CommunicationError StopClock()
         {
-            CommunicationError commError = m_VcuCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.STOP_CLOCK);
+            CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.STOP_CLOCK);
 
             return commError;
         }
@@ -355,7 +355,7 @@ namespace Common.Communication
         {
             ProtocolPTU.UpdateWatchElementsReq request = new ProtocolPTU.UpdateWatchElementsReq(ForceUpdate);
 
-            CommunicationError commError = m_VcuCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
 
             if (commError == CommunicationError.Success)
             {

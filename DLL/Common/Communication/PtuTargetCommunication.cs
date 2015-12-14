@@ -6,7 +6,7 @@ using VcuComm;
 
 namespace Common.Communication
 {
-    class VcuCommunication
+    class PtuTargetCommunication
     {
 
         /// <summary>
