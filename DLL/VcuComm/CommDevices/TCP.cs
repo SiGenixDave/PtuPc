@@ -53,6 +53,11 @@ namespace VcuComm
         private byte m_TargetStartOfMessage;
 
         /// <summary>
+        /// TODO
+        /// </summary>
+        private ManualResetEvent m_ConnectDone = new ManualResetEvent(false);
+
+        /// <summary>
         /// Stores the most recent TCP error. Cleared whenever a calling function reads the state.
         /// </summary>
         private ProtocolPTU.Errors m_TCPError = ProtocolPTU.Errors.None;
@@ -147,8 +152,6 @@ namespace VcuComm
             // IPTCOM address)
             url = commaDelimitedOptions;
 
-            Debug.WriteLine("TCP Open: " + commaDelimitedOptions);
-
             // Any PTU object can only support 1 TCP client; ensures Open() is called only once per created object
             if (m_Client != null)
             {
@@ -206,7 +209,15 @@ namespace VcuComm
                 // This is an asynchronous (non--blocking) TCP connection attempt. If a successful connection
                 // occurs, the ConnectCallback() method will be invoked and m_Connected will be made true
                 m_Connected = false;
-                m_Client.BeginConnect(ipv4Addr, PTU_SERVER_SOCKET, new AsyncCallback(ConnectCallback), m_Client);
+                m_Client.BeginConnect(ipv4Addr, PTU_SERVER_SOCKET, new AsyncCallback(ConnectCallback), m_Client.Client);
+                // Allow 1000 msecs for the connection to establish, if the connection is made and m_ConnectDone is signaled 
+                // in the callback, this function wakes up and moves so no extra time is wasted.
+                bool connected = m_ConnectDone.WaitOne(1000);
+                if (!connected)
+                {
+                    m_TCPError = ProtocolPTU.Errors.ConnectionError;
+                    return -1;
+                }
             }
             catch (SocketException e)
             {
@@ -215,23 +226,6 @@ namespace VcuComm
                 return -1;
             }
 
-            try
-            {
-                // Sleep for a while so that ample time for a connection can be made
-                Thread.Sleep(1000);
-                // m_Connected becomes true (asynchronously) if a valid connection was made
-                if (m_Connected == false)
-                {
-                    m_TCPError = ProtocolPTU.Errors.ConnectionError;
-                    return -1;
-                }
-            }
-            catch (Exception e)
-            {
-                m_TCPError = ProtocolPTU.Errors.ConnectionError;
-                m_ExceptionMessage = e.Message;
-                return -1;
-            }
 
             // Connection to PTU server was successful
             return 0;
@@ -371,7 +365,21 @@ namespace VcuComm
         /// <param name="result">delegate parameter required; UNUSED</param>
         private void ConnectCallback(IAsyncResult result)
         {
-            m_Connected = true;
+            try
+            {
+                // Retrieve the socket from the state object.
+                Socket client = (Socket)result.AsyncState;
+
+                // Complete the connection.
+                client.EndConnect(result);
+
+                // Signal that the connection has been made.
+                m_ConnectDone.Set();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
 
