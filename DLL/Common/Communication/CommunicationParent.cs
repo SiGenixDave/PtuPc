@@ -908,6 +908,10 @@ namespace Common.Communication
             catch (Exception)
             {
                 errorCode = CommunicationError.SystemException;
+                // TODO This exception can be fired when trying to close an already terminated TCP connection. This
+                // usually occurs when the PTU target server gracefully [FIN,ACK] or ungracefully [RST] closes the connection.
+                // Need to find a way to avoid calling CloseCommunication when connection is already closed. The error code
+                // when a server closes the connection is handled 
                 throw new CommunicationException(Resources.EMPortCloseFailed, errorCode);
             }
 
