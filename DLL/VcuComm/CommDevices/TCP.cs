@@ -58,6 +58,22 @@ namespace VcuComm
         private ManualResetEvent m_ConnectDone = new ManualResetEvent(false);
 
         /// <summary>
+        /// TODO
+        /// </summary>
+        private AutoResetEvent m_TransmitDone = new AutoResetEvent(false);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        private Int32 m_BytesSent;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        private Boolean m_AsyncExceptionThrown;
+
+
+        /// <summary>
         /// Stores the most recent TCP error. Cleared whenever a calling function reads the state.
         /// </summary>
         private ProtocolPTU.Errors m_TCPError = ProtocolPTU.Errors.None;
@@ -514,11 +530,29 @@ namespace VcuComm
                 return -1;
             }
 
-            Int32 bytesSent = 0;
             // Send the entire message to the serial port
             try
             {
-                bytesSent = m_Client.Client.Send(txMessage);
+                m_BytesSent = -1;
+                m_AsyncExceptionThrown = false;
+                m_Client.Client.BeginSend(txMessage, 0, txMessage.Length, 0,
+                    new AsyncCallback(TransmitCallback), m_Client.Client);
+
+                Boolean txSuccessful = m_TransmitDone.WaitOne(1000);
+
+                if (txSuccessful)
+                {
+                    return m_BytesSent;
+                }
+                else
+                {
+                    if (!m_AsyncExceptionThrown)
+                    {
+                        m_TCPError = ProtocolPTU.Errors.TransmitMessage;
+                        m_ExceptionMessage = "TX Message Timeout";
+                    }
+                    return -1;
+                }
             }
             catch (Exception e)
             {
@@ -526,8 +560,29 @@ namespace VcuComm
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
-            return bytesSent;
         }
+
+
+        private void TransmitCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the socket from the state object.
+                Socket client = (Socket)ar.AsyncState;
+
+                // Complete sending the data to the remote device.
+                m_BytesSent = client.EndSend(ar);
+
+                // Signal that all bytes have been sent.
+                m_TransmitDone.Set();
+            }
+            catch (Exception e)
+            {
+                m_AsyncExceptionThrown = true;
+                m_ExceptionMessage = e.Message;
+            }
+        }
+
 
         #endregion --- Private Methods ---
 
