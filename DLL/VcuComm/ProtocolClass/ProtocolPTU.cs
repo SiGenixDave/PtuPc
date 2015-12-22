@@ -52,7 +52,7 @@ namespace VcuComm
             MessageEcho,
             ExcessiveBytesReceived,
             InvalidSOM,
-            ServerClosedUnexpectedly,
+            ServerClosedSocketUnexpectedly,
             Close,
         }
 

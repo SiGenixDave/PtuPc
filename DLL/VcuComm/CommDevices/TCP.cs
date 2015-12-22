@@ -22,9 +22,31 @@ namespace VcuComm
         /// </summary>
         private readonly UInt16 PTU_SERVER_SOCKET = 5001;
 
+        /// <summary>
+        /// This is the fixed server port number for any embedded TCP PTU.
+        /// </summary>
+        private readonly Int32 SOCKET_ACTIVE_WAIT_TIME_MS = 500;
+
         #endregion --- Constants ---
 
         #region --- Member Variables ---
+
+        /// <summary>
+        /// Becomes true when an asynchronous method throws an exception. Used by the method
+        /// that indirectly invoked the asynchronous method to determine if a timeout or exception 
+        /// was thrown.
+        /// </summary>
+        private Boolean m_AsyncExceptionThrown;
+
+        /// <summary>
+        /// The number of bytes read by the TCP client when the server responds to a client request
+        /// </summary>
+        private Int32 m_BytesRead;
+
+        /// <summary>
+        /// The number of bytes sent by the TCP client to the server 
+        /// </summary>
+        private Int32 m_BytesSent;
 
         /// <summary>
         /// TCP client object that is created and used to send requests to the embedded TCP PTU
@@ -33,11 +55,12 @@ namespace VcuComm
         private TcpClient m_Client = null;
 
         /// <summary>
-        /// Becomes true if the client connects to the PTU target. The client connection is done
-        /// via a non-blocking (asynchronous) call in order to prevent the PTU from locking up
-        /// because the connection can't be established.
+        /// Used to suspend main thread waiting for a connection. Once connection is established, this gatekeeper
+        /// is signaled and execution resumes. ManualResetEvent is used instead of AutoResetEvent since
+        /// a connection is established only once, unlike sending and receiving, which happens many times
+        /// per socket connection.
         /// </summary>
-        private Boolean m_Connected;
+        private ManualResetEvent m_ConnectDone = new ManualResetEvent(false);
 
         /// <summary>
         /// Maintains the exception message thrown when a serial port error occurs. Allows the calling function
@@ -46,38 +69,29 @@ namespace VcuComm
         private String m_ExceptionMessage = "No Exceptions Raised";
 
         /// <summary>
+        /// Used to suspend main thread waiting for data to be received. Once data is received, this gatekeeper
+        /// is signaled and execution resumes.
+        /// </summary>
+        private AutoResetEvent m_ReceiveDone = new AutoResetEvent(false);
+
+        /// <summary>
         /// Stores the most recent server start of message response. In theory, once updated by the
         /// embedded PTU, this value should never change because it is not possible to establish
         /// a TCP connection with another embedded PTU.
         /// </summary>
         private byte m_TargetStartOfMessage;
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        private ManualResetEvent m_ConnectDone = new ManualResetEvent(false);
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        private AutoResetEvent m_TransmitDone = new AutoResetEvent(false);
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        private Int32 m_BytesSent;
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        private Boolean m_AsyncExceptionThrown;
-
-
+        
         /// <summary>
         /// Stores the most recent TCP error. Cleared whenever a calling function reads the state.
         /// </summary>
         private ProtocolPTU.Errors m_TCPError = ProtocolPTU.Errors.None;
 
+        /// <summary>
+        /// Used to suspend main thread waiting for data to be transmitted. Once data is transmitted, this gatekeeper
+        /// is signaled and execution resumes. 
+        /// </summary>
+        private AutoResetEvent m_TransmitDone = new AutoResetEvent(false);
+        
         /// <summary>
         /// Property for m_TCPError
         /// </summary>
@@ -222,16 +236,23 @@ namespace VcuComm
             // target
             try
             {
+                m_AsyncExceptionThrown = false;
                 // This is an asynchronous (non--blocking) TCP connection attempt. If a successful connection
                 // occurs, the ConnectCallback() method will be invoked and m_Connected will be made true
-                m_Connected = false;
                 m_Client.BeginConnect(ipv4Addr, PTU_SERVER_SOCKET, new AsyncCallback(ConnectCallback), m_Client.Client);
-                // Allow 1000 msecs for the connection to establish, if the connection is made and m_ConnectDone is signaled 
+                // Allow time for the connection to establish, if the connection is made and m_ConnectDone is signaled
                 // in the callback, this function wakes up and moves so no extra time is wasted.
-                bool connected = m_ConnectDone.WaitOne(1000);
+                bool connected = m_ConnectDone.WaitOne(SOCKET_ACTIVE_WAIT_TIME_MS);
                 if (!connected)
                 {
-                    m_TCPError = ProtocolPTU.Errors.ConnectionError;
+                    // It wasn't log this a timeout error
+                    m_TCPError = ProtocolPTU.Errors.ConnectionError; 
+                    m_ExceptionMessage = "Connection Timeout";
+                    return -1;
+                }
+                // Determine if an exception was thrown in the callback
+                else if (m_AsyncExceptionThrown)
+                {
                     return -1;
                 }
             }
@@ -241,7 +262,6 @@ namespace VcuComm
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
-
 
             // Connection to PTU server was successful
             return 0;
@@ -260,7 +280,7 @@ namespace VcuComm
             Int32 bytesRead = 0;
             while (bytesRead == 0)
             {
-                // Read the serial port
+                // Read the TCP socket
                 bytesRead = ReceiveMessage(rxMessage, 0);
                 if (bytesRead < 0)
                 {
@@ -353,9 +373,10 @@ namespace VcuComm
         }
 
         /// <summary>
-        ///
+        /// Sends the Start of Message to the embedded PTU target and also waits for the response from the
+        /// target. 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>0 if successful; less than 0 if a failure occurs</returns>
         public Int32 SendReceiveSOM()
         {
             Int32 errorCode;
@@ -388,16 +409,41 @@ namespace VcuComm
 
                 // Complete the connection.
                 client.EndConnect(result);
-
-                // Signal that the connection has been made.
-                m_ConnectDone.Set();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                m_AsyncExceptionThrown = true;
+                m_ExceptionMessage = e.Message;
+            }
+            finally
+            {
+                // Signal that the connection has been made or an exception thrown
+                m_ConnectDone.Set();
             }
         }
 
+        /// <summary>
+        /// This callback is invoked when data is received on the socket. 
+        /// </summary>
+        /// <param name="ar">Required parameter for asynchronous callback; contains info about the socket</param>
+        private void ReceiveCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Read data from the remote device.
+                m_BytesRead = m_Client.Client.EndReceive(ar);
+            }
+            catch (Exception e)
+            {
+                m_AsyncExceptionThrown = true;
+                m_ExceptionMessage = e.Message;
+            }
+            finally
+            {
+                // Signal that bytes have been received or an exception thrown
+                m_ReceiveDone.Set();
+            }
+        }
 
         /// <summary>
         /// This method is responsible for reading all available chars that are in the serial port
@@ -410,16 +456,29 @@ namespace VcuComm
         /// <returns>less than 0 if any failure occurs; number of bytes read if successful</returns>
         private Int32 ReceiveMessage(Byte[] rxMessage, Int32 bufferOffset)
         {
-            Int32 bytesRead = 0;
-
-            if (ServerClosedSocket())
-            {
-                return -1;
-            }
-
             try
             {
-                bytesRead = m_Client.Client.Receive(rxMessage, bufferOffset, rxMessage.Length - bufferOffset, SocketFlags.None);
+                // Reset all variables
+                m_BytesRead = 0;
+                m_AsyncExceptionThrown = false;
+                // Start the asynchronous receive
+                m_Client.Client.BeginReceive(rxMessage, bufferOffset, rxMessage.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
+
+                // AutoResetEvent signaled as soon as data is received
+                Boolean rxSuccessful = m_ReceiveDone.WaitOne(SOCKET_ACTIVE_WAIT_TIME_MS);
+                
+                // Check for a message timeout 
+                if (!rxSuccessful)
+                {
+                    m_TCPError = ProtocolPTU.Errors.ReceiveMessage;
+                    m_ExceptionMessage = "RX Message Timeout";
+                    return -1;
+                }
+                // Check if asynchronous receive function threw an exception
+                else if (m_AsyncExceptionThrown)
+                {
+                    return -1;
+                }
             }
             catch (Exception e)
             {
@@ -427,11 +486,9 @@ namespace VcuComm
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
-            return bytesRead;
-        }
 
-        // TODO: Still need a function to handle when user pulls cable for RX and TX; similar to connect function
-        // This is the case when the connection is supposedly still active but no ACKs are received
+            return m_BytesRead;
+        }
 
         /// <summary>
         /// Receives the Start Of Message (SOM) from the embedded the embedded PTU
@@ -492,30 +549,26 @@ namespace VcuComm
         }
 
         /// <summary>
-        /// TODO
+        /// This callback is invoked when data is transmitted on the socket. 
         /// </summary>
-        /// <returns>TODO</returns>
-        private Boolean ServerClosedSocket()
+        /// <param name="ar">Required parameter for asynchronous callback; contains info about the socket</param>
+        private void TransmitCallback(IAsyncResult ar)
         {
-            // This snippet of code was found on the Internet and tested using the PTU target simulation
-            // The purpose of this code is to determine if the server was closed; in theory, it never should
-            // but in case it does, this avoids the c# code "hanging".
-            if (m_Client.Client.Poll(0, SelectMode.SelectRead))
+            try
             {
-                byte[] buff = new byte[1];
-                try
-                {
-                    m_Client.Client.Receive(buff, SocketFlags.Peek);
-                }
-                catch (Exception e)
-                {
-                    m_TCPError = ProtocolPTU.Errors.ServerClosedUnexpectedly;
-                    m_ExceptionMessage = e.Message;
-                    return true;
-                }
+                // Complete sending the data to the remote device.
+                m_BytesSent = m_Client.Client.EndSend(ar);
             }
-
-            return false;
+            catch (Exception e)
+            {
+                m_AsyncExceptionThrown = true;
+                m_ExceptionMessage = e.Message;
+            }
+            finally
+            {
+                // Signal that bytes have been sent or an exception thrown
+                m_TransmitDone.Set();
+            }
         }
 
         /// <summary>
@@ -525,32 +578,30 @@ namespace VcuComm
         /// <returns>less than 0 if any failure occurs; number of bytes sent if successful</returns>
         private Int32 TransmitMessage(Byte[] txMessage)
         {
-            if (ServerClosedSocket())
-            {
-                return -1;
-            }
-
             // Send the entire message to the serial port
             try
             {
+                // Reset all of the variables prior to starting an Asynchronous send
                 m_BytesSent = -1;
                 m_AsyncExceptionThrown = false;
-                m_Client.Client.BeginSend(txMessage, 0, txMessage.Length, 0,
-                    new AsyncCallback(TransmitCallback), m_Client.Client);
 
-                Boolean txSuccessful = m_TransmitDone.WaitOne(1000);
+                // Start the transmit, the callback will set the AutoResetEvent when complete. NOTE: Asynchronous transmit
+                // and receive calls are required because the PTU will "hang" (i.e. the main form thread will block) if someone
+                // pulls the cable if synchronous calls were used.
+                m_Client.Client.BeginSend(txMessage, 0, txMessage.Length, 0, new AsyncCallback(TransmitCallback), null);
+                Boolean txSuccessful = m_TransmitDone.WaitOne(SOCKET_ACTIVE_WAIT_TIME_MS);
 
-                if (txSuccessful)
+                // Verify a successful transmit
+                if (!txSuccessful)
                 {
-                    return m_BytesSent;
+                    // It wasn't log this a timeout error
+                    m_TCPError = ProtocolPTU.Errors.TransmitMessage;
+                    m_ExceptionMessage = "TX Message Timeout";
+                    return -1;
                 }
-                else
+                // Determine if an exception was thrown in the callback
+                else if (m_AsyncExceptionThrown)
                 {
-                    if (!m_AsyncExceptionThrown)
-                    {
-                        m_TCPError = ProtocolPTU.Errors.TransmitMessage;
-                        m_ExceptionMessage = "TX Message Timeout";
-                    }
                     return -1;
                 }
             }
@@ -560,30 +611,9 @@ namespace VcuComm
                 m_ExceptionMessage = e.Message;
                 return -1;
             }
+
+            return m_BytesSent;
         }
-
-
-        private void TransmitCallback(IAsyncResult ar)
-        {
-            try
-            {
-                // Retrieve the socket from the state object.
-                Socket client = (Socket)ar.AsyncState;
-
-                // Complete sending the data to the remote device.
-                m_BytesSent = client.EndSend(ar);
-
-                // Signal that all bytes have been sent.
-                m_TransmitDone.Set();
-            }
-            catch (Exception e)
-            {
-                m_AsyncExceptionThrown = true;
-                m_ExceptionMessage = e.Message;
-            }
-        }
-
-
         #endregion --- Private Methods ---
 
         #endregion --- Methods ---
