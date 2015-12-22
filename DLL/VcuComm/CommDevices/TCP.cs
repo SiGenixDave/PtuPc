@@ -412,6 +412,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
+                m_TCPError = ProtocolPTU.Errors.ConnectionErrorAsync;
                 m_AsyncExceptionThrown = true;
                 m_ExceptionMessage = e.Message;
             }
@@ -437,6 +438,7 @@ namespace VcuComm
             {
                 m_AsyncExceptionThrown = true;
                 m_ExceptionMessage = e.Message;
+                m_TCPError = ProtocolPTU.Errors.ReceiveMessageAsync;
             }
             finally
             {
@@ -561,6 +563,7 @@ namespace VcuComm
             }
             catch (Exception e)
             {
+                m_TCPError = ProtocolPTU.Errors.TransmitMessageAsync;
                 m_AsyncExceptionThrown = true;
                 m_ExceptionMessage = e.Message;
             }

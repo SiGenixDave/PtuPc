@@ -11,7 +11,8 @@ namespace VcuComm
         #region --- Properties ---
 
         /// <summary>
-        ///
+        /// Allows access to the logged error so as to pinpoint the part of the code where the error occurred and 
+        /// the type of error logged
         /// </summary>
         ProtocolPTU.Errors Error
         {
@@ -19,7 +20,7 @@ namespace VcuComm
         }
 
         /// <summary>
-        ///
+        /// Allows access to any exception message containing detailed information
         /// </summary>
         String ExceptionMessage
         {

@@ -6,30 +6,29 @@ namespace VcuComm
     public partial class ProtocolPTU
     {
         /// <summary>
-        /// The size of every PTU header to and from the embedded target PTU. The header consists
-        /// of 4 16 bit words of which the checksum is not used on either the PTU or the embedded
-        /// target.
-        /// </summary>
-        private const UInt16 HEADER_SIZE_BYTES = 8;
-        
-        /// <summary>
         /// This is the response that is returned from the embedded target PTU when it acknowledges
-        /// a command and no data from the embedded target is to be returned. 
+        /// a command and no data from the embedded target is to be returned.
         /// </summary>
         public static readonly byte PTU_ACK = (byte)0x04;
-        
+
         /// <summary>
-        /// This is the byte that is returned from the embedded target PTU when the machine that 
+        /// This is the byte that is returned from the embedded target PTU when the machine that
         /// the embedded target resides on is Big Endian.
         /// </summary>
         public static readonly byte TARGET_BIG_ENDIAN_SOM = (byte)'S';
 
         /// <summary>
-        /// This is the byte that is returned from the embedded target PTU when the machine that 
+        /// This is the byte that is returned from the embedded target PTU when the machine that
         /// the embedded target resides on is Little Endian.
         /// </summary>
         public static readonly byte THE_SOM = (byte)':';
-        
+
+        /// <summary>
+        /// The size of every PTU header to and from the embedded target PTU. The header consists
+        /// of 4 16 bit words of which the checksum is not used on either the PTU or the embedded
+        /// target.
+        /// </summary>
+        private const UInt16 HEADER_SIZE_BYTES = 8;
         /// <summary>
         /// These errors are logged whenever any error is detected when a transaction occurs
         /// </summary>
@@ -45,8 +44,11 @@ namespace VcuComm
             OpenSerialPort,
             SerialBufferFlush,
             ConnectionError,
+            ConnectionErrorAsync,
             TransmitMessage,
+            TransmitMessageAsync,
             ReceiveMessage,
+            ReceiveMessageAsync,
             AckNotReceieved,
             RxTimeout,
             MessageEcho,
@@ -56,30 +58,13 @@ namespace VcuComm
             Close,
         }
 
-        // Some projects, e.g. R188 use a 4 digit year code for the time/date functions.
-        // These structures are included to support these projects.
-        public struct Get4TimeDateRes
-        {
-            public Byte Day;
-            public DataPacketProlog Header;
-            public Byte Hour;
-            public Byte Minute;
-            public Byte Month;
-            public Byte Second;
-            public Byte Temp;	// Introduced to ensure the structure still lies on a word boundary.
-            public UInt16 Year;
-        }
-
-
         public struct GetEmbeddedInfoRes
         {
             public String CarID;
             public UInt32 ConfigurationMask;
             public String IdentifierString;
-            public String SoftwareVersion;   //41
-            //11
-            public String SubSystemName; //41
-            //5;
+            public String SoftwareVersion;
+            public String SubSystemName;
         }
 
         public struct GetFaultDataRes
@@ -88,16 +73,6 @@ namespace VcuComm
             public UInt16 BufferSize;
         }
 
-        public struct GetTimeDateRes
-        {
-            public Byte Day;
-            public DataPacketProlog Header;
-            public Byte Hour;
-            public Byte Minute;
-            public Byte Month;
-            public Byte Second;
-            public Byte Year;
-        }
 
         public struct SelfTestCommandReq
         {
@@ -120,14 +95,6 @@ namespace VcuComm
         {
             public UInt16 Variable;
             public UInt16 VariableType;
-        }
-
-        // Message Structures
-        public struct WatchElement
-        {
-            public UInt16 DataType;
-            public UInt16 Index;
-            public UInt32 NewValue;
         }
 
         public class DataPacketProlog
@@ -170,6 +137,7 @@ namespace VcuComm
                 return ms.ToArray();
             }
         }
+
 #if DAS
         public struct GetSelfTestPacketRes
         {
