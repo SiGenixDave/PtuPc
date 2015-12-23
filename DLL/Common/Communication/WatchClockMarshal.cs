@@ -1,4 +1,29 @@
-﻿using System;
+﻿#region --- Revision History ---
+/*
+ * 
+ *  This document and its contents are the property of Bombardier Inc. or its subsidiaries and contains confidential, proprietary information.
+ *  The reproduction, distribution, utilization or the communication of this document, or any part thereof, without express authorization is strictly prohibited.  
+ *  Offenders will be held liable for the payment of damages.
+ * 
+ *  (C) 2016    Bombardier Inc. or its subsidiaries. All rights reserved.
+ * 
+ *  Solution:   PTU
+ * 
+ *  Project:    Common
+ * 
+ *  File name:  WatchClockMarshal.cs
+ * 
+ *  Revision History
+ *  ----------------
+ * 
+ *  Date        Version Author       Comments
+ *  03/01/2015  1.0     D.Smail      First Release.
+ *
+ */
+#endregion --- Revision History ---
+
+
+using System;
 using System.Text;
 using VcuComm;
 
@@ -44,7 +69,7 @@ namespace Common.Communication
 
         /// <summary>
         /// Private 0 argument constructor that forces the instantiation of this class
-        /// to use the constructor below.
+        /// to use a non-private constructor.
         /// </summary>
         private WatchClockMarshal()
         {

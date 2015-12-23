@@ -1,98 +1,131 @@
-﻿using System;
+﻿#region --- Revision History ---
+
+/*
+ *
+ *  This document and its contents are the property of Bombardier Inc. or its subsidiaries and contains confidential, proprietary information.
+ *  The reproduction, distribution, utilization or the communication of this document, or any part thereof, without express authorization is strictly prohibited.
+ *  Offenders will be held liable for the payment of damages.
+ *
+ *  (C) 2016    Bombardier Inc. or its subsidiaries. All rights reserved.
+ *
+ *  Solution:   PTU
+ *
+ *  Project:    Common
+ *
+ *  File name:  EventStreamMarshal.cs
+ *
+ *  Revision History
+ *  ----------------
+ *
+ *  Date        Version Author       Comments
+ *  03/01/2015  1.0     D.Smail      First Release.
+ *
+ */
+
+#endregion --- Revision History ---
+
+using System;
 using VcuComm;
 
 namespace Common.Communication
 {
     /// <summary>
-    ///
+    /// This class contains methods used to generate commands and data requests to the embedded target
+    /// and process the responses. All methods are related to handling fault and event log information
+    /// as well as downloading stream data
     /// </summary>
     public class EventStreamMarshal
     {
         #region --- Constants ---
 
         /// <summary>
-        ///
+        /// Indicates an empty fault buffer
+        /// </summary>
+        private const UInt32 EMPTY_FAULT_BUFFER = UInt32.MaxValue;
+
+        /// <summary>
+        /// The maximum amount of variables in any given data stream
         /// </summary>
         private const Int16 MAX_DL_VARIABLES = 256;
 
         /// <summary>
-        ///
+        /// The maximum amount of events per task
         /// </summary>
         private const Int16 MAX_EVENTS_PER_TASK = 100;
 
         /// <summary>
-        ///
+        /// The maximum amount of fault data that can be sent from the embedded target to this application
+        /// on any given message when the events are downloaded. If the amount of fault data exceeds this
+        /// size, this application requests more events to be downloaded
         /// </summary>
         private const UInt16 MAX_FAULT_BUFFER_SIZE = 4096;
 
         /// <summary>
-        ///
+        /// The maximum size of all attached data to any given fault
         /// </summary>
         private const Int16 MAX_FAULT_SIZE_BYTES = 256;
 
         /// <summary>
-        ///
+        /// The maximum number of faults that the embedded target can store and subsequently the 
+        /// maximum amount of faults this application can process 
         /// </summary>
         private const Int16 MAX_NUM_FAULTS = 1000;
 
         /// <summary>
-        ///
+        /// The maximum number of embedded target tasks
         /// </summary>
         private const Int16 MAX_TASKS = 120;
-
-
-        private const UInt32 EMPTY_FAULT_BUFFER = UInt32.MaxValue;
-
         #endregion --- Constants ---
 
         #region --- Member Variables ---
 
         /// <summary>
-        ///
+        /// The type of communication device used to interface with the embedded target (RS-232, TCP, etc.)
         /// </summary>
         private ICommDevice m_CommDevice;
 
         /// <summary>
-        ///
+        /// Maintains the current number of faults downloaded from embedded target
         /// </summary>
         private Int16 m_CurrentNumberOfFaults;
 
         /// <summary>
-        ///
+        /// Used to process fault information received from the embedded target
         /// </summary>
         private ProtocolPTU.GetFaultDataRes m_FaultDataFromTarget;
 
         /// <summary>
-        ///
+        /// Jagged array to store the faults and events returned from the embedded target. Since faults
+        /// and events are usually different sizes, the size of each individual array is dynamically
+        /// allocated based on the fault size
         /// </summary>
         private Byte[][] m_faultStorage = new Byte[MAX_NUM_FAULTS][];
 
         /// <summary>
-        ///
+        /// Object used to handle the standard embedded target communication protocol
         /// </summary>
-        private Byte[] m_RxMessage = new Byte[MAX_FAULT_BUFFER_SIZE];
+        private PtuTargetCommunication m_PtuTargetCommunication = new PtuTargetCommunication();
 
         /// <summary>
-        ///
+        /// Buffer used to store data responses from the embedded target
         /// </summary>
-        private PtuTargetCommunication m_PtuTargetCommunication;
-
+        private Byte[] m_RxMessage = new Byte[MAX_FAULT_BUFFER_SIZE];
         #endregion --- Member Variables ---
 
         #region --- Constructors ---
 
         /// <summary>
-        ///
+        /// Constructor that must be used to create an object of this class.
         /// </summary>
-        /// <param name="device"></param>
+        /// <param name="device">the type of communication device (RS-232, TCP, etc.)</param>
         public EventStreamMarshal(ICommDevice device)
         {
             m_CommDevice = device;
-            m_PtuTargetCommunication = new PtuTargetCommunication();
         }
 
         /// <summary>
-        ///
+        /// The default constructor is made private to force the use of the multi-argument constructor
+        /// when creating an instance of this class.
         /// </summary>
         private EventStreamMarshal()
         { }
@@ -104,28 +137,33 @@ namespace Common.Communication
         #region --- Public Methods ---
 
         /// <summary>
-        ///
+        /// This method requests the embedded target  to change the event log that is to be monitored or 
+        /// events / streams to be downloaded from. 
         /// </summary>
-        /// <param name="NewEventLogNumber"></param>
-        /// <param name="DataRecordingRate"></param>
-        /// <param name="ChangeStatus"></param>
-        /// <param name="MaxTasks"></param>
-        /// <param name="MaxEventsPerTask"></param>
-        /// <returns></returns>
+        /// <param name="NewEventLogNumber">the event log id to change to</param>
+        /// <param name="DataRecordingRate">the data recording rate for the event log</param>
+        /// <param name="ChangeStatus">Unknown</param>
+        /// <param name="MaxTasks">the maximum amount of tasks for the fault log returned by the embedded target</param>
+        /// <param name="MaxEventsPerTask">the maximum amount of events per task for the fault log returned by the embedded target</param>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError ChangeEventLog(Int16 NewEventLogNumber, ref Int16 DataRecordingRate, ref Int16 ChangeStatus,
                                                  ref Int16 MaxTasks, ref Int16 MaxEventsPerTask)
         {
+            // Create the data request
             ProtocolPTU.ChangeEventLogReq request = new ProtocolPTU.ChangeEventLogReq(NewEventLogNumber);
 
+            // Initiate transaction with embedded target
             CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
 
             if (commError == CommunicationError.Success)
             {
+                // Extract all of the information from the received data
                 ChangeStatus = BitConverter.ToInt16(m_RxMessage, 8);
                 DataRecordingRate = BitConverter.ToInt16(m_RxMessage, 10);
                 MaxTasks = BitConverter.ToInt16(m_RxMessage, 12);
                 MaxEventsPerTask = BitConverter.ToInt16(m_RxMessage, 14);
 
+                // Perform endian conversion if necessary
                 if (m_CommDevice.IsTargetBigEndian())
                 {
                     ChangeStatus = Utils.ReverseByteOrder(ChangeStatus);
@@ -133,36 +171,39 @@ namespace Common.Communication
                     MaxTasks = Utils.ReverseByteOrder(MaxTasks);
                     MaxEventsPerTask = Utils.ReverseByteOrder(MaxEventsPerTask);
                 }
-            }
 
-            if (MaxTasks >= MAX_TASKS)
-            {
-                MaxTasks = MAX_TASKS - 1;
-            }
-
-            if (MaxEventsPerTask >= MAX_EVENTS_PER_TASK)
-            {
-                MaxEventsPerTask = MAX_EVENTS_PER_TASK - 1;
+                // Clamp max limits
+                if (MaxTasks >= MAX_TASKS)
+                {
+                    MaxTasks = MAX_TASKS - 1;
+                }
+                if (MaxEventsPerTask >= MAX_EVENTS_PER_TASK)
+                {
+                    MaxEventsPerTask = MAX_EVENTS_PER_TASK - 1;
+                }
+            
             }
 
             return commError;
         }
 
         /// <summary>
-        ///
+        /// This method is invoked when polling the embedded target for any new events that have occurred while displaying 
+        /// event screen. 
         /// </summary>
         /// <param name="PassedNumOfFaults"></param>
         /// <param name="orig_new"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError CheckFaultlogger(ref Int16 PassedNumOfFaults, ref UInt32 orig_new)
         {
+            // Set default values
             UInt32 OldestIndex = EMPTY_FAULT_BUFFER;
             UInt32 NewestIndex = EMPTY_FAULT_BUFFER;
             Int16 RemoteFaults = -1;
             CommunicationError commError;
             UInt32 FaultIndex;
 
-            // LOOP ONCE ... EXIT ON ERROR
+            // LOOP ONCE ... EXIT IMMEDIATELY ON ERROR
             do
             {
                 // Disable Fault Logging
@@ -172,15 +213,16 @@ namespace Common.Communication
                     break;
                 }
 
-                // Get Fault Log Indexes
+                // Get the most Fault Log Indexes from the embedded target
                 commError = GetFaultIndices(out OldestIndex, out NewestIndex);
                 if (commError != CommunicationError.Success)
                 {
                     break;
                 }
 
-                if (orig_new == 0xFFFFFFFF)
+                if (orig_new == EMPTY_FAULT_BUFFER)
                 {
+                    // The event log was empty when this method was invoked
                     FaultIndex = OldestIndex;
                 }
                 else
@@ -195,25 +237,28 @@ namespace Common.Communication
                     break;
                 }
 
-                // Compute number of Faults
+                
+                // Compute number of Faults; there may not be any in which case RemoteFaults = 0
                 RemoteFaults = (Int16)(NewestIndex - FaultIndex + 1);
                 if (RemoteFaults == 0)
                 {
                     break;
                 }
 
+                // Get the newest fault information
                 commError = GetFaultData((UInt32)FaultIndex, (UInt16)RemoteFaults);
+                
+                // Verify the transaction was successful and that at least one fault was returned
                 if (commError != CommunicationError.Success)
                 {
                     break;
                 }
-
                 if (m_FaultDataFromTarget.BufferSize == 0)
                 {
                     break;
                 }
 
-                // Enable Fault Logging
+                // Re-enable Fault Logging
                 commError = SetFaultLog(true);
                 if (commError != CommunicationError.Success)
                 {
@@ -231,7 +276,8 @@ namespace Common.Communication
                     // Allocate jagged array dynamically and store fault data there
                     if (FaultSize < MAX_FAULT_SIZE_BYTES && FaultSize > 0)
                     {
-                        // Add new member with size "FaultSize" to jagged 2 dimensional array
+                        // Add new member with size "FaultSize" to jagged 2 dimensional array (the "FaultSize" is also part of the fault data;
+                        // thus the + 2)
                         m_faultStorage[m_CurrentNumberOfFaults] = new Byte[FaultSize + 2];
                         // Copy all data into newly created array
                         Buffer.BlockCopy(m_FaultDataFromTarget.Buffer, Index, m_faultStorage[m_CurrentNumberOfFaults], 0, FaultSize + 2);
@@ -253,6 +299,7 @@ namespace Common.Communication
             // Enable Fault Logging here in case we left the while loop early
             commError = SetFaultLog(true);
 
+            // Update the reference parameters if all transactions went OK and at least one new fault was reecived 
             if ((commError == CommunicationError.Success) && (RemoteFaults > 0))
             {
                 orig_new = NewestIndex;
@@ -263,12 +310,12 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Method requests the embedded target to clear the currently selected fault log 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError ClearEvent()
         {
-            CommunicationError commError = 
+            CommunicationError commError =
                 m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.CLEAR_EVENTLOG);
 
             return commError;
@@ -282,7 +329,7 @@ namespace Common.Communication
         /// <param name="SampleRate"></param>
         /// <param name="VariableIndex"></param>
         /// <param name="VariableType"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetDefaultStreamInformation(out Int16 NumberOfVariables, out Int16 NumberOfSamples, out Int16 SampleRate,
                                                                Int16[] VariableIndex, Int16[] VariableType)
         {
@@ -333,7 +380,7 @@ namespace Common.Communication
         /// </summary>
         /// <param name="CurrentEventLog"></param>
         /// <param name="NumberEventLogs"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetEventLog(out Int16 CurrentEventLog, out Int16 NumberEventLogs)
         {
             CurrentEventLog = -1;
@@ -357,44 +404,6 @@ namespace Common.Communication
             return commError;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="FaultIndex"></param>
-        /// <param name="NumberOfFaults"></param>
-        /// <returns></returns>
-        public CommunicationError GetFaultData(UInt32 FaultIndex, UInt16 NumberOfFaults)
-        {
-            ProtocolPTU.GetFaultDataReq request = new ProtocolPTU.GetFaultDataReq(FaultIndex, NumberOfFaults);
-
-            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
-
-            if (commError == CommunicationError.Success)
-            {
-                m_FaultDataFromTarget.BufferSize = BitConverter.ToUInt16(m_RxMessage, 8);
-                if (m_CommDevice.IsTargetBigEndian())
-                {
-                    m_FaultDataFromTarget.BufferSize = Utils.ReverseByteOrder(m_FaultDataFromTarget.BufferSize);
-                }
-
-                if (m_FaultDataFromTarget.BufferSize > MAX_FAULT_BUFFER_SIZE)
-                {
-                    //TODO return error
-                }
-
-                if (m_FaultDataFromTarget.BufferSize == 0)
-                {
-                    //TODO return noERROR
-                }
-
-                m_FaultDataFromTarget.Buffer = new Byte[m_FaultDataFromTarget.BufferSize];
-
-                // Copy the entire response into the fault data buffer
-                Buffer.BlockCopy(m_RxMessage, 10, m_FaultDataFromTarget.Buffer, 0, m_FaultDataFromTarget.BufferSize);
-            }
-
-            return commError;
-        }
 
         /// <summary>
         ///
@@ -405,7 +414,7 @@ namespace Common.Communication
         /// <param name="Flttime"></param>
         /// <param name="Fltdate"></param>
         /// <param name="datalognum"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetFaultHdr(Int16 index, ref Int16 faultnum, ref Int16 tasknum,
                                               ref String Flttime, ref String Fltdate, ref Int16 datalognum)
         {
@@ -476,39 +485,11 @@ namespace Common.Communication
         /// <summary>
         ///
         /// </summary>
-        /// <param name="Oldest"></param>
-        /// <param name="Newest"></param>
-        /// <returns></returns>
-        public CommunicationError GetFaultIndices(out UInt32 Oldest, out UInt32 Newest)
-        {
-            Oldest = EMPTY_FAULT_BUFFER;
-            Newest = EMPTY_FAULT_BUFFER;
-
-            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_FAULT_INDICES, m_RxMessage);
-
-            if (commError == CommunicationError.Success)
-            {
-                Newest = BitConverter.ToUInt32(m_RxMessage, 8);
-                Oldest = BitConverter.ToUInt32(m_RxMessage, 12);
-
-                if (m_CommDevice.IsTargetBigEndian())
-                {
-                    Newest = Utils.ReverseByteOrder(Newest);
-                    Oldest = Utils.ReverseByteOrder(Oldest);
-                }
-            }
-
-            return commError;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="FaultIndex"></param>
         /// <param name="NumberOfVariables"></param>
         /// <param name="VariableType"></param>
         /// <param name="VariableValue"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetFaultVar(Int16 FaultIndex, Int16 NumberOfVariables, Int16[] VariableType, Double[] VariableValue)
         {
             // Check the Validity of the desired index
@@ -598,7 +579,7 @@ namespace Common.Communication
         /// <param name="EnableFlag"></param>
         /// <param name="TriggerFlag"></param>
         /// <param name="EntryCount"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetFltFlagInfo(Int16[] Valid, Int16[] EnableFlag, Int16[] TriggerFlag, Int16 EntryCount)
         {
             Byte[] message1 = new Byte[2048];
@@ -669,7 +650,7 @@ namespace Common.Communication
         /// <param name="DynamicHistory"></param>
         /// <param name="MaxTasks"></param>
         /// <param name="MaxEventsPerTask"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetFltHistInfo(Int16[] Valid, Int16[] StaticHistory, Int16[] DynamicHistory,
                                                  Int16 MaxTasks, Int16 MaxEventsPerTask)
         {
@@ -715,7 +696,7 @@ namespace Common.Communication
         /// <param name="NumberOfVariables"></param>
         /// <param name="NumberOfSamples"></param>
         /// <param name="VariableType"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetStream(Int16 StreamNumber, Int32[] DatalogBuffer, out Int16 TimeOrigin,
                                             Int16 NumberOfVariables, Int16 NumberOfSamples, Int16[] VariableType)
         {
@@ -835,7 +816,7 @@ namespace Common.Communication
         /// <param name="SampleRate"></param>
         /// <param name="VariableIndex"></param>
         /// <param name="VariableType"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetStreamInformation(Int16 StreamNumber, out Int16 NumberOfVariables, out Int16 NumberOfSamples,
                                                         out Int16 SampleRate, Int16[] VariableIndex, Int16[] VariableType)
         {
@@ -884,7 +865,7 @@ namespace Common.Communication
         /// <summary>
         ///
         /// </summary>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError InitializeEventLog()
         {
             CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.INITIALIZE_EVENTLOG);
@@ -898,9 +879,10 @@ namespace Common.Communication
         /// <param name="NumberOfFaults"></param>
         /// <param name="OldestIndex"></param>
         /// <param name="NewestIndex"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError LoadFaultLog(out Int16 NumberOfFaults, out UInt32 OldestIndex, out UInt32 NewestIndex)
         {
+            // NOTE: These default values need to be set because of the interface call... may have to revisit
             NumberOfFaults = Int16.MaxValue;
             OldestIndex = EMPTY_FAULT_BUFFER;
             NewestIndex = EMPTY_FAULT_BUFFER;
@@ -928,7 +910,6 @@ namespace Common.Communication
                 }
 
                 // Check if  Fault Log is Empty
-                // TODO Make const out of Empty Fault Log (EMPTY_FAULT_BUFFER)
                 if ((OldestIndex == EMPTY_FAULT_BUFFER) && (NewestIndex == EMPTY_FAULT_BUFFER))
                 {
                     NumberOfFaults = 0;
@@ -1021,7 +1002,7 @@ namespace Common.Communication
         /// <param name="NumberOfVariables"></param>
         /// <param name="SampleRate"></param>
         /// <param name="VariableIndex"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetDefaultStreamInformation(Int16 NumberOfVariables, Int16 SampleRate, Int16[] VariableIndex)
         {
             if (NumberOfVariables > MAX_DL_VARIABLES)
@@ -1043,7 +1024,7 @@ namespace Common.Communication
         /// <param name="FaultNumber"></param>
         /// <param name="EnableFlag"></param>
         /// <param name="DatalogFlag"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetFaultFlags(Int16 TaskNumber, Int16 FaultNumber, Int16 EnableFlag, Int16 DatalogFlag)
         {
             ProtocolPTU.SetFaultFlagReq request = new ProtocolPTU.SetFaultFlagReq(TaskNumber, FaultNumber, EnableFlag, DatalogFlag);
@@ -1053,12 +1034,85 @@ namespace Common.Communication
             return commError;
         }
 
+
+        #endregion --- Public Methods ---
+
+        #region --- Private Methods ---
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="FaultIndex"></param>
+        /// <param name="NumberOfFaults"></param>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
+        private CommunicationError GetFaultData(UInt32 FaultIndex, UInt16 NumberOfFaults)
+        {
+            ProtocolPTU.GetFaultDataReq request = new ProtocolPTU.GetFaultDataReq(FaultIndex, NumberOfFaults);
+
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, request, m_RxMessage);
+
+            if (commError == CommunicationError.Success)
+            {
+                m_FaultDataFromTarget.BufferSize = BitConverter.ToUInt16(m_RxMessage, 8);
+                if (m_CommDevice.IsTargetBigEndian())
+                {
+                    m_FaultDataFromTarget.BufferSize = Utils.ReverseByteOrder(m_FaultDataFromTarget.BufferSize);
+                }
+
+                if (m_FaultDataFromTarget.BufferSize > MAX_FAULT_BUFFER_SIZE)
+                {
+                    //TODO return error
+                }
+
+                if (m_FaultDataFromTarget.BufferSize == 0)
+                {
+                    //TODO return noERROR
+                }
+
+                m_FaultDataFromTarget.Buffer = new Byte[m_FaultDataFromTarget.BufferSize];
+
+                // Copy the entire response into the fault data buffer
+                Buffer.BlockCopy(m_RxMessage, 10, m_FaultDataFromTarget.Buffer, 0, m_FaultDataFromTarget.BufferSize);
+            }
+
+            return commError;
+        }
+
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="Oldest"></param>
+        /// <param name="Newest"></param>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
+        private CommunicationError GetFaultIndices(out UInt32 Oldest, out UInt32 Newest)
+        {
+            Oldest = EMPTY_FAULT_BUFFER;
+            Newest = EMPTY_FAULT_BUFFER;
+
+            CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_FAULT_INDICES, m_RxMessage);
+
+            if (commError == CommunicationError.Success)
+            {
+                Newest = BitConverter.ToUInt32(m_RxMessage, 8);
+                Oldest = BitConverter.ToUInt32(m_RxMessage, 12);
+
+                if (m_CommDevice.IsTargetBigEndian())
+                {
+                    Newest = Utils.ReverseByteOrder(Newest);
+                    Oldest = Utils.ReverseByteOrder(Oldest);
+                }
+            }
+
+            return commError;
+        }
+
         /// <summary>
         ///
         /// </summary>
         /// <param name="enable"></param>
-        /// <returns></returns>
-        public CommunicationError SetFaultLog(Boolean enable)
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
+        private CommunicationError SetFaultLog(Boolean enable)
         {
             Byte faultLogEnable = (Byte)((enable == true) ? 1 : 0);
 
@@ -1068,18 +1122,13 @@ namespace Common.Communication
 
             return commError;
         }
-
-        #endregion --- Public Methods ---
-
-        #region --- Private Methods ---
-
         /// <summary>
-        ///
+        /// Verifies Date parameters are within expected limits.
         /// </summary>
-        /// <param name="month"></param>
-        /// <param name="day"></param>
-        /// <param name="year"></param>
-        /// <returns></returns>
+        /// <param name="month">Month</param>
+        /// <param name="day">Day</param>
+        /// <param name="year">Year</param>
+        /// <returns>false if any of the date parameters passed into his function are not within the expected criteria</returns>
         private Boolean VerifyDate(Byte month, Byte day, Byte year)
         {
             if ((month < 1) || (month > 12))
@@ -1092,20 +1141,23 @@ namespace Common.Communication
                 return false;
             }
 
-            if ((year < 00) || (year > 99))
+            if ((year < 0) || (year > 99))
             {
                 return false;
             }
+
+            // All is well with passed arguments
             return true;
         }
 
         /// <summary>
-        ///
+        /// Verifies time parameters are within expected limits. NOTE: any checks for less than 0 are superfluous
+        /// because Byte is an unsigned entity
         /// </summary>
-        /// <param name="hr"></param>
-        /// <param name="min"></param>
-        /// <param name="sec"></param>
-        /// <returns></returns>
+        /// <param name="hr">Hours</param>
+        /// <param name="min">Minutes</param>
+        /// <param name="sec">Seconds</param>
+        /// <returns>false if any of the time parameters passed into his function are not within the expected criteria</returns>
         private Boolean VerifyTime(Byte hr, Byte min, Byte sec)
         {
             if ((hr < 0) || (hr > 23))
@@ -1123,6 +1175,7 @@ namespace Common.Communication
                 return false;
             }
 
+            // All is well with passed arguments
             return true;
         }
 

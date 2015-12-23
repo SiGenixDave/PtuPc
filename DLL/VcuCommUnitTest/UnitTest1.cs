@@ -80,14 +80,14 @@ namespace VcuCommUnitTest
             Debug.Print(DataRecordingRate.ToString("X4") + " " + ChangeStatus.ToString("X4") + " " + 
                         MaxTasks.ToString("X4") + " " + MaxEventsPerTask.ToString("X4"));
 
-            ev.SetFaultLog(false);
+            // Private method ev.SetFaultLog(false);
 
             UInt32 OldestIndex = 0, NewestIndex = 0;
-            ev.GetFaultIndices(out OldestIndex, out NewestIndex);
+            //private method ev.GetFaultIndices(out OldestIndex, out NewestIndex);
 
             Debug.Print(OldestIndex.ToString("X8") + " " + NewestIndex.ToString("X8"));
 
-            ev.GetFaultData(OldestIndex, (UInt16)(NewestIndex - OldestIndex));
+            // private method ev.GetFaultData(OldestIndex, (UInt16)(NewestIndex - OldestIndex));
 
 
 
