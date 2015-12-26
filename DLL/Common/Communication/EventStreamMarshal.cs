@@ -191,8 +191,9 @@ namespace Common.Communication
         /// This method is invoked when polling the embedded target for any new events that have occurred while displaying 
         /// event screen. 
         /// </summary>
-        /// <param name="PassedNumOfFaults"></param>
-        /// <param name="orig_new"></param>
+        /// <param name="PassedNumOfFaults">Will be updated with the current number of faults if the number of faults on the
+        /// embedded target has changed since the last poll</param>
+        /// <param name="orig_new">the most recent fault index from the embedded target</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError CheckFaultlogger(ref Int16 PassedNumOfFaults, ref UInt32 orig_new)
         {
@@ -322,32 +323,35 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// This method gets the default stream information associated with the event log. This includes the number of variables, the 
+        /// number of samples, the sample rate and the stream variables' indexes and types.
         /// </summary>
-        /// <param name="NumberOfVariables"></param>
-        /// <param name="NumberOfSamples"></param>
-        /// <param name="SampleRate"></param>
-        /// <param name="VariableIndex"></param>
-        /// <param name="VariableType"></param>
+        /// <param name="NumberOfVariables">the number of variables in the stream</param>
+        /// <param name="NumberOfSamples">the number of data samples in the stream</param>
+        /// <param name="SampleRate">the sample rate of the stream</param>
+        /// <param name="VariableIndex">variable index array that is updated in this method</param>
+        /// <param name="VariableType">variable type array that is updated in this method</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetDefaultStreamInformation(out Int16 NumberOfVariables, out Int16 NumberOfSamples, out Int16 SampleRate,
                                                                Int16[] VariableIndex, Int16[] VariableType)
         {
+
+            // TODO: required to set values based on "out" interface which was not required when API was unmanaged; may need to revisit
             NumberOfVariables = -1;
             NumberOfSamples = -1;
             SampleRate = -1;
 
+            // Poll the embedded target for the information and verify the transaction was successful
             CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_DEFAULT_STREAM, m_RxMessage);
-
             if (commError != CommunicationError.Success)
             {
                 return commError;
             }
 
+            // Update the variables and reorder the bytes if necessary
             NumberOfVariables = BitConverter.ToInt16(m_RxMessage, 8);
             NumberOfSamples = BitConverter.ToInt16(m_RxMessage, 10);
             SampleRate = BitConverter.ToInt16(m_RxMessage, 12);
-
             if (m_CommDevice.IsTargetBigEndian())
             {
                 NumberOfVariables = Utils.ReverseByteOrder(NumberOfVariables);
@@ -355,13 +359,16 @@ namespace Common.Communication
                 SampleRate = Utils.ReverseByteOrder(SampleRate);
             }
 
+            // Clamp the maximum number of variables allowed in the stream
             if (NumberOfVariables > MAX_DL_VARIABLES)
             {
                 NumberOfVariables = MAX_DL_VARIABLES;
             }
 
+            // Update the variable index and the variable type for all stream variables
             for (Int16 Counter = 0; Counter < NumberOfVariables; Counter++)
             {
+                // multiply counter by 4 to account for 4 bytes required (2 bytes for index and 2 bytes for type)
                 VariableIndex[Counter] = BitConverter.ToInt16(m_RxMessage, 14 + (Counter * 4));
                 VariableType[Counter] = BitConverter.ToInt16(m_RxMessage, 16 + (Counter * 4));
 
@@ -376,13 +383,14 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// NOTE: This method is currently is unused but is implemented for completeness. 
         /// </summary>
         /// <param name="CurrentEventLog"></param>
         /// <param name="NumberEventLogs"></param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetEventLog(out Int16 CurrentEventLog, out Int16 NumberEventLogs)
         {
+            // TODO: required to set values based on "out" interface which was not required when API was unmanaged; may need to revisit
             CurrentEventLog = -1;
             NumberEventLogs = -1;
             CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_EVENT_LOG);
@@ -406,9 +414,10 @@ namespace Common.Communication
 
 
         /// <summary>
-        ///
+        /// This method is invoked for every event that is downloaded from the embedded target. It extracts all of the information
+        /// from the event header, including the faudId, taskIdm data and time and the data log id (if any) associated with the event
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="index">TODO: Start here DAS</param>
         /// <param name="faultnum"></param>
         /// <param name="tasknum"></param>
         /// <param name="Flttime"></param>

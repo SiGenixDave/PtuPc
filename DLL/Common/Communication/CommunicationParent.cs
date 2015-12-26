@@ -769,7 +769,7 @@ namespace Common.Communication
         /// <summary>
         /// TODO
         /// </summary>
-        private ICommDevice device;
+        private ICommDevice m_Device;
         
         /// <summary>
         /// TODO
@@ -809,6 +809,8 @@ namespace Common.Communication
         public CommunicationParent(CommunicationSetting_t communicationSetting) : this()
         {
             m_CommunicationSetting = communicationSetting;
+            //DAS
+            InitCommunication(communicationSetting);
         }
 
         /// <summary>
@@ -819,8 +821,8 @@ namespace Common.Communication
         public CommunicationParent(ICommunicationParent communicationInterface) : this()
         {
             m_CommunicationSetting = communicationInterface.CommunicationSetting;
-            m_Comm = communicationInterface.Comm;
-            m_Event = communicationInterface.Event; 
+
+            InitCommunication(communicationInterface.CommunicationSetting);
         }
         #endregion --- Constructors ---
 
@@ -845,19 +847,19 @@ namespace Common.Communication
 
                 if (communicationsSetting.Protocol == Protocol.RS232)
                 {
-                    device = new Serial();
+                    m_Device = new Serial();
                     //TODO need to add a function to parse communicationsSetting to yield string below
                     args = "COM" + communicationsSetting.PortIdentifier + ",19200,none,8,1";
                 }
                 else if (communicationsSetting.Protocol == Protocol.TCPIP)
                 {
-                    device = new TCP();
+                    m_Device = new TCP();
                     args = communicationsSetting.PortIdentifier;
                 }
 
-                if (device != null)
+                if (m_Device != null)
                 {
-                    error = device.Open(args);
+                    error = m_Device.Open(args);
                 }
 
             }
@@ -883,8 +885,8 @@ namespace Common.Communication
             if (error >= 0)
             {
                 errorCode = CommunicationError.Success;
-                m_Comm = new WatchClockMarshal(device);
-                m_Event = new EventStreamMarshal(device);
+                m_Comm = new WatchClockMarshal(m_Device);
+                m_Event = new EventStreamMarshal(m_Device);
             }
 
             if (errorCode != CommunicationError.Success)
@@ -903,7 +905,7 @@ namespace Common.Communication
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
-                errorCode = (CommunicationError)device.Close();
+                errorCode = (CommunicationError)m_Device.Close();
             }
             catch (Exception)
             {
@@ -923,7 +925,9 @@ namespace Common.Communication
 
             if (errorCode != CommunicationError.Success)
             {
-				throw new CommunicationException(Resources.EMPortCloseFailed, errorCode);
+                // DAS Eliminate below because its possible to attempt to close an already closed port; need
+                // to check TCP error code for reason why port couldn't be closed
+				//TODO throw new CommunicationException(Resources.EMPortCloseFailed, errorCode);
             }
         }
 

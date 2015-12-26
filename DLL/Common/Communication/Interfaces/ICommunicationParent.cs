@@ -108,15 +108,6 @@ namespace Common.Communication
         /// </summary>
         CommunicationSetting_t CommunicationSetting { get; set; }
 
-        /// <summary>
-        /// Gets or sets the communication general associated with the selected VCU.
-        /// </summary>
-        WatchClockMarshal Comm { get; set; }
-
-        /// <summary>
-        /// Gets or sets the event general associated with the selected VCU.
-        /// </summary>
-        EventStreamMarshal Event { get; set; }
         #endregion - [Properties] -
     }
 }
