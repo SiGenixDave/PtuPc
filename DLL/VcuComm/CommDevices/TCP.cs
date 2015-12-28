@@ -50,7 +50,7 @@ namespace VcuComm
         /// <summary>
         /// This is the fixed server port number for any embedded TCP PTU.
         /// </summary>
-        private readonly Int32 SOCKET_ACTIVE_WAIT_TIME_MS = 500;
+        private readonly Int32 SOCKET_ACTIVE_WAIT_TIME_MS = 2000;
 
         #endregion --- Constants ---
 
@@ -160,9 +160,13 @@ namespace VcuComm
         /// <returns>less than 0 if any failure occurs; greater than or equal to 0 if successful</returns>
         public Int32 Close()
         {
+            // TODO need to kill async threads when app closes because task lingetrs in task manager when closing
+            // via  "x" on form
             try
             {
-                m_Client.Client.Shutdown(SocketShutdown.Send);
+                
+                m_Client.Client.Shutdown(SocketShutdown.Both);
+                m_Client.Client.Dispose(); 
                 m_Client.Close();
             }
             catch (Exception e)
