@@ -204,7 +204,7 @@ namespace Bombardier.PTU.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Comm.GetTimeDate(use4DigitYearCode, ref year, ref month, ref day, ref hour, ref minute, ref second);
+                errorCode = m_WatchClockMarshal.GetTimeDate(use4DigitYearCode, ref year, ref month, ref day, ref hour, ref minute, ref second);
                 //errorCode = (CommunicationError)m_GetTimeDate(use4DigitYearCodeAsShort, out year, out month, out day, out hour, out minute, out second);
             }
             catch (Exception)
@@ -257,7 +257,7 @@ namespace Bombardier.PTU.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Comm.SetTimeDate(use4DigitYearCode, year, (short)dateTime.Month, (short)dateTime.Day, (short)dateTime.Hour,
+                errorCode = m_WatchClockMarshal.SetTimeDate(use4DigitYearCode, year, (short)dateTime.Month, (short)dateTime.Day, (short)dateTime.Hour,
                                                                                    (short)dateTime.Minute, (short)dateTime.Second);
             }
             catch (Exception)
@@ -289,7 +289,7 @@ namespace Bombardier.PTU.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Comm.SetCarID(carIdentifier);
+                errorCode = m_WatchClockMarshal.SetCarID(carIdentifier);
             }
             catch (Exception)
             {

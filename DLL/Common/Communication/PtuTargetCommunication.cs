@@ -29,7 +29,7 @@ using VcuComm;
 namespace Common.Communication
 {
     /// <summary>
-    ///
+    /// Class that implements calls to handle the PTU to embedded target communication. It uses 
     /// </summary>
     internal class PtuTargetCommunication
     {

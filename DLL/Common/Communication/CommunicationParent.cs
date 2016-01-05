@@ -767,19 +767,22 @@ namespace Common.Communication
         protected bool m_Is64BitOperatingSystem = false;
 
         /// <summary>
-        /// TODO
+        /// The communication device that is used to communicate with the embedded target PTU. Currently supported
+        /// devices are RS-232 and TCP. 
         /// </summary>
-        private ICommDevice m_Device;
+        private ICommDevice m_CommDevice;
         
         /// <summary>
-        /// TODO
+        /// Object that is used to call methods that gather or send information pertaining to watch variables
+        /// and the real time clock on the embedded PTU target.
         /// </summary>
-        protected WatchClockMarshal m_Comm;
+        protected WatchClockMarshal m_WatchClockMarshal;
         
         /// <summary>
-        /// TODO
+        /// Object that is used to call methods that gather or send information pertaining to events 
+        /// and the data streams on the embedded PTU target.
         /// </summary>
-        protected EventStreamMarshal m_Event;
+        protected EventStreamMarshal m_EventStreamMarshal;
 
         
         #endregion --- Member Variables ---
@@ -847,19 +850,19 @@ namespace Common.Communication
 
                 if (communicationsSetting.Protocol == Protocol.RS232)
                 {
-                    m_Device = new Serial();
+                    m_CommDevice = new Serial();
                     //TODO need to add a function to parse communicationsSetting to yield string below
                     args = "COM" + communicationsSetting.PortIdentifier + ",19200,none,8,1";
                 }
                 else if (communicationsSetting.Protocol == Protocol.TCPIP)
                 {
-                    m_Device = new TCP();
+                    m_CommDevice = new TCP();
                     args = communicationsSetting.PortIdentifier;
                 }
 
-                if (m_Device != null)
+                if (m_CommDevice != null)
                 {
-                    error = m_Device.Open(args);
+                    error = m_CommDevice.Open(args);
                 }
 
             }
@@ -885,8 +888,8 @@ namespace Common.Communication
             if (error >= 0)
             {
                 errorCode = CommunicationError.Success;
-                m_Comm = new WatchClockMarshal(m_Device);
-                m_Event = new EventStreamMarshal(m_Device);
+                m_WatchClockMarshal = new WatchClockMarshal(m_CommDevice);
+                m_EventStreamMarshal = new EventStreamMarshal(m_CommDevice);
             }
 
             if (errorCode != CommunicationError.Success)
@@ -905,7 +908,7 @@ namespace Common.Communication
             CommunicationError errorCode = CommunicationError.UnknownError;
             try
             {
-                errorCode = (CommunicationError)m_Device.Close();
+                errorCode = (CommunicationError)m_CommDevice.Close();
             }
             catch (Exception)
             {
@@ -948,7 +951,7 @@ namespace Common.Communication
             ProtocolPTU.GetEmbeddedInfoRes embInfo = new ProtocolPTU.GetEmbeddedInfoRes();
             try
             {
-                errorCode = m_Comm.GetEmbeddedInformation(ref embInfo);
+                errorCode = m_WatchClockMarshal.GetEmbeddedInformation(ref embInfo);
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
                 if (errorCode == CommunicationError.Success)
                 {
@@ -1010,7 +1013,7 @@ namespace Common.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_Comm.GetChartMode(ref chartModeAsShort);
+                errorCode = (CommunicationError)m_WatchClockMarshal.GetChartMode(ref chartModeAsShort);
             }
             catch (Exception)
             {
@@ -1053,7 +1056,7 @@ namespace Common.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Comm.SetChartMode(chartModeAsShort);
+                errorCode = m_WatchClockMarshal.SetChartMode(chartModeAsShort);
             }
             catch (Exception)
             {
@@ -1093,7 +1096,7 @@ namespace Common.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Comm.SetChartIndex(channelIndex, watchIdentifier);
+                errorCode = m_WatchClockMarshal.SetChartIndex(channelIndex, watchIdentifier);
             }
             catch (Exception)
             {
@@ -1161,7 +1164,7 @@ namespace Common.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Comm.SetChartScale(watchIdentifier, maxChartScaleRaw, minChartScaleRaw);
+                errorCode = m_WatchClockMarshal.SetChartScale(watchIdentifier, maxChartScaleRaw, minChartScaleRaw);
             }
             catch (Exception)
             {
@@ -1238,8 +1241,8 @@ namespace Common.Communication
         /// </summary>
         public WatchClockMarshal Comm
         {
-            get { return m_Comm; }
-            set { m_Comm = value; }
+            get { return m_WatchClockMarshal; }
+            set { m_WatchClockMarshal = value; }
         }
 
 
@@ -1248,8 +1251,8 @@ namespace Common.Communication
         /// </summary>
         public EventStreamMarshal Event
         {
-            get { return m_Event; }
-            set { m_Event = value; }
+            get { return m_EventStreamMarshal; }
+            set { m_EventStreamMarshal = value; }
         }
         #endregion --- Properties ---
     }

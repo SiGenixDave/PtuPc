@@ -30,7 +30,11 @@ using VcuComm;
 namespace Common.Communication
 {
     /// <summary>
-    ///
+    /// This class is a replacement of the unmanaged DLL used to access embedded target configuration 
+    /// information, watch variables, and the embedded target real time clock. 
+    /// 
+    /// NOTE: There are no try{} catch{} in this class because all exceptions thrown here are handled by the 
+    /// calling object methods.
     /// </summary>
     public class WatchClockMarshal
     {
@@ -49,7 +53,7 @@ namespace Common.Communication
         private Byte[] m_RxMessage = new Byte[1024];
 
         /// <summary>
-        ///
+        /// Object used to handle the standard embedded target communication protocol
         /// </summary>
         private PtuTargetCommunication m_PtuTargetCommunication;
 
@@ -80,11 +84,13 @@ namespace Common.Communication
         #region --- Methods ---
 
         /// <summary>
-        ///
+        /// Method requests and retrieves from the embedded target the chart variable information based on
+        /// the chart index provided. The PTU variable index is retrieved
         /// </summary>
-        /// <param name="ChartIndex"></param>
-        /// <param name="VariableIndex"></param>
-        /// <returns></returns>
+        /// <param name="ChartIndex">The chart variable index (starting at 0) and not to equal or exceed the amount
+        /// of chart recorder variables</param>
+        /// <param name="VariableIndex">The variable index that is currently part of the chart recorder outputs</param>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetChartIndex(Int16 ChartIndex, ref Int16 VariableIndex)
         {
             ProtocolPTU.GetChartIndexReq request = new ProtocolPTU.GetChartIndexReq((Byte)ChartIndex);
@@ -96,6 +102,7 @@ namespace Common.Communication
                 return commError;
             }
 
+            // Get the desired variable index from the receive message
             VariableIndex = BitConverter.ToInt16(m_RxMessage, 8);
 
             // check for endianess
@@ -110,10 +117,11 @@ namespace Common.Communication
  
 
         /// <summary>
-        ///
+        /// This method retrieves the current chart recorder mode from the embedded target. The supported modes are
+        /// ramp, zero-output, full-scale output, and data. 
         /// </summary>
-        /// <param name="CurrentChartMode"></param>
-        /// <returns></returns>
+        /// <param name="CurrentChartMode">The current mode of the chart recorder</param>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetChartMode(ref Int16 CurrentChartMode)
         {
             CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_CHART_MODE, m_RxMessage);
@@ -143,7 +151,7 @@ namespace Common.Communication
         /// </summary>
         /// <param name="getEmbInfo">structure that stores all of the target information, which includes project,
         /// version number, car ID, etc.</param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetEmbeddedInformation(ref ProtocolPTU.GetEmbeddedInfoRes getEmbInfo)
         {
             CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_EMBEDDED_INFORMATION, m_RxMessage);
@@ -162,16 +170,16 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// This method requests the current date and time as maintained on the embedded target.
         /// </summary>
-        /// <param name="Use4DigitYearCode"></param>
-        /// <param name="Year"></param>
-        /// <param name="Month"></param>
-        /// <param name="Day"></param>
-        /// <param name="Hour"></param>
-        /// <param name="Minute"></param>
-        /// <param name="Second"></param>
-        /// <returns></returns>
+        /// <param name="Use4DigitYearCode">true if a 4 digit (2 byte) year code is used; false if only 2 digits (1 byte) is used</param>
+        /// <param name="Year">Year</param>
+        /// <param name="Month">Month</param>
+        /// <param name="Day">Day</param>
+        /// <param name="Hour">Hour</param>
+        /// <param name="Minute">Minute</param>
+        /// <param name="Second">Second</param>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetTimeDate(Boolean Use4DigitYearCode, ref Int16 Year, ref Byte Month, ref Byte Day, ref Byte Hour, ref Byte Minute, ref Byte Second)
         {
             CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_TIME_DATE, m_RxMessage);
@@ -184,6 +192,7 @@ namespace Common.Communication
             Hour = m_RxMessage[8];
             Minute = m_RxMessage[9];
             Second = m_RxMessage[10];
+
             // There's a different structure orientation based o whether or not a four digit year is being used
             if (Use4DigitYearCode)
             {
@@ -218,7 +227,7 @@ namespace Common.Communication
         /// <param name="DictionaryIndex"></param>
         /// <param name="DataType"></param>
         /// <param name="Data"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SendVariable(Int16 DictionaryIndex, Int16 DataType, Double Data)
         {
             UInt32 data = (UInt32)Data;
@@ -234,7 +243,7 @@ namespace Common.Communication
         ///
         /// </summary>
         /// <param name="NewCarID"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetCarID(String NewCarID)
         {
 #if TODO
@@ -253,7 +262,7 @@ namespace Common.Communication
         /// </summary>
         /// <param name="ChartIndex"></param>
         /// <param name="VariableIndex"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetChartIndex(Int16 ChartIndex, Int16 VariableIndex)
         {
             ProtocolPTU.SetChartIndexReq request = new ProtocolPTU.SetChartIndexReq(ChartIndex, VariableIndex);
@@ -264,10 +273,10 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Sets the chart mode of the chart recorder outputs
         /// </summary>
-        /// <param name="TargetChartMode"></param>
-        /// <returns></returns>
+        /// <param name="TargetChartMode">the desired chart mode (data, ramp, full scale or zero)</param>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetChartMode(Int16 TargetChartMode)
         {
             ProtocolPTU.SetChartModeReq request = new ProtocolPTU.SetChartModeReq((byte)TargetChartMode);
@@ -278,19 +287,18 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Set the chart scaling for the specified watch variable.
         /// </summary>
-        /// <param name="DictionaryIndex"></param>
-        /// <param name="MaxScale"></param>
-        /// <param name="MinScale"></param>
-        /// <returns></returns>
+        /// <param name="DictionaryIndex">The watch identifier of the watch variables that is to be scaled.</param>
+        /// <param name="MaxScale">The watch variable engineering value associated with the maximum Y axis value.</param>
+        /// <param name="MinScale">The watch variable engineering value associated with the minimum Y axis value.</param>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetChartScale(Int16 DictionaryIndex, Double MaxScale, Double MinScale)
         {
             Int32 maxScale = (Int32)MaxScale;
             Int32 minScale = (Int32)MinScale;
 
-            ProtocolPTU.SetChartScaleReq request =
-                new ProtocolPTU.SetChartScaleReq(DictionaryIndex, maxScale, minScale);
+            ProtocolPTU.SetChartScaleReq request = new ProtocolPTU.SetChartScaleReq(DictionaryIndex, maxScale, minScale);
 
             CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
@@ -298,16 +306,16 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// This method updates the embedded target real time clock with the desired date and time. 
         /// </summary>
-        /// <param name="Use4DigitYearCode"></param>
-        /// <param name="Year"></param>
-        /// <param name="Month"></param>
-        /// <param name="Day"></param>
-        /// <param name="Hour"></param>
-        /// <param name="Minute"></param>
-        /// <param name="Second"></param>
-        /// <returns></returns>
+        /// <param name="Use4DigitYearCode">true if the embedded target expects a 4 digit year code; false otherwise</param>
+        /// <param name="Year">Year</param>
+        /// <param name="Month">Month</param>
+        /// <param name="Day">Day</param>
+        /// <param name="Hour">Hour</param>
+        /// <param name="Minute">Minute</param>
+        /// <param name="Second">Second</param>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetTimeDate(Boolean Use4DigitYearCode, Int16 Year, Int16 Month, Int16 Day, Int16 Hour, Int16 Minute, Int16 Second)
         {
             ProtocolPTU.SetTimeDateReq request =
@@ -315,6 +323,7 @@ namespace Common.Communication
                                                                     (UInt16)Year, (Byte)Month, (Byte)Day);
             
             CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
+            
             return commError;
         }
 
@@ -323,7 +332,7 @@ namespace Common.Communication
         /// </summary>
         /// <param name="ElementIndex"></param>
         /// <param name="DictionaryIndex"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetWatchElement(UInt16 ElementIndex, UInt16 DictionaryIndex)
         {
             ProtocolPTU.SetWatchElementReq request = new ProtocolPTU.SetWatchElementReq(ElementIndex, DictionaryIndex);
@@ -337,7 +346,7 @@ namespace Common.Communication
         ///
         /// </summary>
         /// <param name="WatchElements"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetWatchElements(Int16[] WatchElements)
         {
             ProtocolPTU.SetWatchElementsReq request = new ProtocolPTU.SetWatchElementsReq(WatchElements);
@@ -350,7 +359,7 @@ namespace Common.Communication
         /// <summary>
         ///
         /// </summary>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError StartClock()
         {
             CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.START_CLOCK);
@@ -361,7 +370,7 @@ namespace Common.Communication
         /// <summary>
         ///
         /// </summary>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError StopClock()
         {
             CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.STOP_CLOCK);
@@ -375,7 +384,7 @@ namespace Common.Communication
         /// <param name="ForceUpdate"></param>
         /// <param name="WatchValues"></param>
         /// <param name="DataType"></param>
-        /// <returns></returns>
+        /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError UpdateWatchElements(Int16 ForceUpdate, Double[] WatchValues, Int16[] DataType)
         {
             ProtocolPTU.UpdateWatchElementsReq request = new ProtocolPTU.UpdateWatchElementsReq(ForceUpdate);

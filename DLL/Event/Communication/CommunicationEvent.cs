@@ -228,7 +228,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.ChangeEventLog(logIndex, ref sampleIntervalMs, ref changeStatus, ref maxTasks, ref maxEventsPerTask);
+                errorCode = m_EventStreamMarshal.ChangeEventLog(logIndex, ref sampleIntervalMs, ref changeStatus, ref maxTasks, ref maxEventsPerTask);
             }
             catch (Exception)
             {
@@ -275,7 +275,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.LoadFaultLog(out eventCount, out oldIndex, out newIndex);
+                errorCode = m_EventStreamMarshal.LoadFaultLog(out eventCount, out oldIndex, out newIndex);
             }
             catch (Exception)
             {
@@ -320,7 +320,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.GetFaultHdr(eventIndex, ref eventIdentifier, ref taskIdentifier, ref time, ref date, ref streamNumber);
+                errorCode = m_EventStreamMarshal.GetFaultHdr(eventIndex, ref eventIdentifier, ref taskIdentifier, ref time, ref date, ref streamNumber);
             }
             catch (Exception)
             {
@@ -437,7 +437,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.GetEventLog(out eventLogIndex, out eventLogCount);
+                errorCode = m_EventStreamMarshal.GetEventLog(out eventLogIndex, out eventLogCount);
             }
             catch (Exception)
             {
@@ -485,7 +485,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.GetFaultVar(eventIndex, eventVariableCount, dataTypes, values);
+                errorCode = m_EventStreamMarshal.GetFaultVar(eventIndex, eventVariableCount, dataTypes, values);
             }
             catch (Exception)
             {
@@ -525,7 +525,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.InitializeEventLog();
+                errorCode = m_EventStreamMarshal.InitializeEventLog();
             }
             catch (Exception)
             {
@@ -563,7 +563,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.ClearEvent();
+                errorCode = m_EventStreamMarshal.ClearEvent();
             }
             catch (Exception)
             {
@@ -621,7 +621,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.GetDefaultStreamInformation(out watchVariableCount, out sampleCount,
+                errorCode = m_EventStreamMarshal.GetDefaultStreamInformation(out watchVariableCount, out sampleCount,
                                                                                     out sampleMultiple, tempWatchIdentifiers, tempDataTypes);
             }
             catch (Exception)
@@ -682,7 +682,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.GetStreamInformation(streamNumber, out watchVariableCount, out sampleCount,
+                errorCode = m_EventStreamMarshal.GetStreamInformation(streamNumber, out watchVariableCount, out sampleCount,
                                                                              out sampleMultiple, tempWatchIdentifiers, tempDataTypes);
             }
             catch (Exception)
@@ -749,7 +749,7 @@ namespace Event.Communication
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
 
                 // TODO - CommunicationEvent.GetStream(). Check on the significance of the timeOrigin parameter in the GetStream() method.
-                errorCode = m_Event.GetStream(eventRecord.StreamNumber, buffer, out timeOrigin, watchCount, sampleCount, dataTypes);
+                errorCode = m_EventStreamMarshal.GetStream(eventRecord.StreamNumber, buffer, out timeOrigin, watchCount, sampleCount, dataTypes);
             }
             catch (Exception)
             {
@@ -830,7 +830,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.SetDefaultStreamInformation((short)oldIdentifierList.Count, sampleMultiple, watchIdentifiers);
+                errorCode = m_EventStreamMarshal.SetDefaultStreamInformation((short)oldIdentifierList.Count, sampleMultiple, watchIdentifiers);
             }
             catch (Exception)
             {
@@ -871,7 +871,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.CheckFaultlogger(ref eventCount, ref newIndex);
+                errorCode = m_EventStreamMarshal.CheckFaultlogger(ref eventCount, ref newIndex);
             }
             catch (Exception)
             {
@@ -924,7 +924,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.GetFltFlagInfo(validFlags, enabledFlags, streamTriggeredFlags, eventCount);
+                errorCode = m_EventStreamMarshal.GetFltFlagInfo(validFlags, enabledFlags, streamTriggeredFlags, eventCount);
             }
             catch (Exception)
             {
@@ -963,7 +963,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.SetFaultFlags(taskIdentfier, eventIdentifier, enabledFlag, streamTriggeredFlag);
+                errorCode = m_EventStreamMarshal.SetFaultFlags(taskIdentfier, eventIdentifier, enabledFlag, streamTriggeredFlag);
             }
             catch (Exception)
             {
@@ -1009,7 +1009,7 @@ namespace Event.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Event.GetFltHistInfo(validFlags, cumulativeHistoryCounts, recentHistoryCounts, maxTasks, maxEventsPerTask);
+                errorCode = m_EventStreamMarshal.GetFltHistInfo(validFlags, cumulativeHistoryCounts, recentHistoryCounts, maxTasks, maxEventsPerTask);
             }
             catch (Exception)
             {

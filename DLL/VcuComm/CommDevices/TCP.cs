@@ -50,7 +50,7 @@ namespace VcuComm
         /// <summary>
         /// This is the fixed server port number for any embedded TCP PTU.
         /// </summary>
-        private readonly Int32 SOCKET_ACTIVE_WAIT_TIME_MS = 2000;
+        private readonly Int32 SOCKET_ACTIVE_WAIT_TIME_MS = 3000;
 
         #endregion --- Constants ---
 

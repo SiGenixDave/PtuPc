@@ -208,7 +208,7 @@ namespace Common.Communication
             do
             {
                 // Disable Fault Logging
-                commError = SetFaultLog(false);
+                commError = EnableFaultLogging(false);
                 if (commError != CommunicationError.Success)
                 {
                     break;
@@ -260,7 +260,7 @@ namespace Common.Communication
                 }
 
                 // Re-enable Fault Logging
-                commError = SetFaultLog(true);
+                commError = EnableFaultLogging(true);
                 if (commError != CommunicationError.Success)
                 {
                     break;
@@ -298,7 +298,7 @@ namespace Common.Communication
             } while (false);
 
             // Enable Fault Logging here in case we left the while loop early
-            commError = SetFaultLog(true);
+            commError = EnableFaultLogging(true);
 
             // Update the reference parameters if all transactions went OK and at least one new fault was reecived 
             if ((commError == CommunicationError.Success) && (RemoteFaults > 0))
@@ -311,7 +311,7 @@ namespace Common.Communication
         }
 
         /// <summary>
-        /// Method requests the embedded target to clear the currently selected fault log 
+        /// Method requests the embedded target to clear the currently all fault logs
         /// </summary>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError ClearEvent()
@@ -417,12 +417,12 @@ namespace Common.Communication
         /// This method is invoked for every event that is downloaded from the embedded target. It extracts all of the information
         /// from the event header, including the faudId, taskIdm data and time and the data log id (if any) associated with the event
         /// </summary>
-        /// <param name="index">TODO: Start here DAS</param>
-        /// <param name="faultnum"></param>
-        /// <param name="tasknum"></param>
-        /// <param name="Flttime"></param>
-        /// <param name="Fltdate"></param>
-        /// <param name="datalognum"></param>
+        /// <param name="index">the index into the jagged array of the fault</param>
+        /// <param name="faultnum">updated with the fault id that is contained in the header</param>
+        /// <param name="tasknum">updated with the task number that is contained in the header</param>
+        /// <param name="Flttime">updated with the time that the fault was logged that is contained in the header</param>
+        /// <param name="Fltdate">updated with the date that the fault was logged that is contained in the header</param>
+        /// <param name="datalognum">updated with the datalog number that is contained in the header</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetFaultHdr(Int16 index, ref Int16 faultnum, ref Int16 tasknum,
                                               ref String Flttime, ref String Fltdate, ref Int16 datalognum)
@@ -492,12 +492,13 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Method parses through the most recent downloaded fault logs and extracts the variable and variable types for the 
+        /// request event (FaultIndex) and populates the VariableType and VariableValue arrays.
         /// </summary>
-        /// <param name="FaultIndex"></param>
-        /// <param name="NumberOfVariables"></param>
-        /// <param name="VariableType"></param>
-        /// <param name="VariableValue"></param>
+        /// <param name="FaultIndex">The index of the fault to be parsed</param>
+        /// <param name="NumberOfVariables">The number of variables in the fault to be parsed</param>
+        /// <param name="VariableType">Array that is populated with the variable type for each variable included in the fault</param>
+        /// <param name="VariableValue">Array that is populated with the variable value for each variable included in the fault</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetFaultVar(Int16 FaultIndex, Int16 NumberOfVariables, Int16[] VariableType, Double[] VariableValue)
         {
@@ -507,6 +508,7 @@ namespace Common.Communication
                 return CommunicationError.UnknownError;
             }
 
+            // This is the starting offset in each fault where the variable types and values are stored
             UInt16 variableOffset = 18;
 
             for (Int16 var = 0; var < NumberOfVariables; var++)
@@ -582,12 +584,19 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Get the status of the flags that control: (a) whether the event type is enabled and (b) whether the event type triggers the recoding of a
+        /// data stream. 
         /// </summary>
-        /// <param name="Valid"></param>
-        /// <param name="EnableFlag"></param>
-        /// <param name="TriggerFlag"></param>
-        /// <param name="EntryCount"></param>
+        /// <param name="Valid">An array of flags that define which of the available event types are valid for the current log. The total length
+        /// of the array is the maximum number of events per task multiplied by the maximum number of tasks and the array element corresponding to a
+        /// particular event type is defined as: {task identifier} * {maximum number of events per task} + {event identifier}. True, indicates that
+        /// the event type is valid; otherwise, false.</param>
+        /// <param name="EnableFlag">An array of flags that indicate whether the event type is enabled. True, indicates that the event type is
+        /// enabled; otherwise, false.</param>
+        /// <param name="TriggerFlag">An array of flags that indicate whether the event type triggers the recording of a data stream.
+        /// True, indicates that the event type triggers the recording of a data stream; otherwise false.</param>
+        /// <param name="EntryCount">The maximum number of event types i.e. the maximum number of event types per task multiplied by the maximum
+        /// number of tasks.</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetFltFlagInfo(Int16[] Valid, Int16[] EnableFlag, Int16[] TriggerFlag, Int16 EntryCount)
         {
@@ -614,7 +623,6 @@ namespace Common.Communication
                 return commError;
             }
 
-            // TODO the code below begs for refactoring (maybe nested loop or something
             // Loop through all the TaskId/FaultId Combinations and set/reset a bit for each one
             UInt16 mask = 0x0001;
             Int16 Counter = 0;
@@ -652,15 +660,19 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Get the event history associated with the current log.
         /// </summary>
-        /// <param name="Valid"></param>
-        /// <param name="StaticHistory"></param>
-        /// <param name="DynamicHistory"></param>
-        /// <param name="MaxTasks"></param>
-        /// <param name="MaxEventsPerTask"></param>
+        /// <param name="Valid">An array of flags that define which of the available event types are valid for the current log. The total length
+        /// of the array is the maximum number of events per task multiplied by the maximum number of tasks and the array element corresponding to a
+        /// particular event type is defined as: {task identifier} * {maximum number of events per task} + {event identifier}. True, indicates that
+        /// the event type is valid; otherwise, false.</param>
+        /// <param name="CumulativeHistoryCounts">An array that contains the cumulative number of events of each event type, not including recent
+        /// history.</param>
+        /// <param name="RecentHistoryCounts">An array that contains the recent number of events of each event type.</param>
+        /// <param name="MaxTasks">The maximum number of tasks that are supported by the current event log.</param>
+        /// <param name="MaxEventsPerTask">The maximum number of events per task that are supported by the current event log.</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
-        public CommunicationError GetFltHistInfo(Int16[] Valid, Int16[] StaticHistory, Int16[] DynamicHistory,
+        public CommunicationError GetFltHistInfo(Int16[] Valid, Int16[] CumulativeHistoryCounts, Int16[] RecentHistoryCounts,
                                                  Int16 MaxTasks, Int16 MaxEventsPerTask)
         {
             Int16 NumberOfEntries = 0;
@@ -681,12 +693,13 @@ namespace Common.Communication
                             return commError;
                         }
 
-                        StaticHistory[NumberOfEntries] = BitConverter.ToInt16(m_RxMessage, 8);
-                        DynamicHistory[NumberOfEntries] = BitConverter.ToInt16(m_RxMessage, 10);
+                        //TODO Need to verify this
+                        CumulativeHistoryCounts[NumberOfEntries] = BitConverter.ToInt16(m_RxMessage, 8);
+                        RecentHistoryCounts[NumberOfEntries] = BitConverter.ToInt16(m_RxMessage, 10);
                         if (m_CommDevice.IsTargetBigEndian())
                         {
-                            StaticHistory[NumberOfEntries] = Utils.ReverseByteOrder(StaticHistory[NumberOfEntries]);
-                            DynamicHistory[NumberOfEntries] = Utils.ReverseByteOrder(DynamicHistory[NumberOfEntries]);
+                            CumulativeHistoryCounts[NumberOfEntries] = Utils.ReverseByteOrder(CumulativeHistoryCounts[NumberOfEntries]);
+                            RecentHistoryCounts[NumberOfEntries] = Utils.ReverseByteOrder(RecentHistoryCounts[NumberOfEntries]);
                         }
                         NumberOfEntries++;
                     }
@@ -905,7 +918,7 @@ namespace Common.Communication
                 UInt32 FaultCounter = 0;
 
                 // Disable Fault Logging
-                commError = SetFaultLog(false);
+                commError = EnableFaultLogging(false);
                 if (commError != CommunicationError.Success)
                 {
                     break;
@@ -1000,7 +1013,7 @@ namespace Common.Communication
             } while (false);
 
             // Enable Fault Logging here in case we left the while loop early
-            SetFaultLog(true);
+            EnableFaultLogging(true);
 
             return commError;
         }
@@ -1089,18 +1102,20 @@ namespace Common.Communication
 
 
         /// <summary>
-        ///
+        /// Method responsible for getting the fault indexes of the oldest and newest faults
         /// </summary>
-        /// <param name="Oldest"></param>
-        /// <param name="Newest"></param>
+        /// <param name="Oldest">the index of the oldest fault logged on the embedded target</param>
+        /// <param name="Newest">the index of the newest fault logged on the embedded target</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         private CommunicationError GetFaultIndices(out UInt32 Oldest, out UInt32 Newest)
         {
+            // Set to empty in case of a communication fault
             Oldest = EMPTY_FAULT_BUFFER;
             Newest = EMPTY_FAULT_BUFFER;
 
             CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_FAULT_INDICES, m_RxMessage);
 
+            // Get the oldest and newest faults and set the arguments
             if (commError == CommunicationError.Success)
             {
                 Newest = BitConverter.ToUInt32(m_RxMessage, 8);
@@ -1117,20 +1132,23 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Method that sets/resets the ability for the current fault log on the embedded target to log faults. Fault/event log
+        /// is typically disabled for a short period of time whenever fault logs are being downloaded or whenever
+        /// polling occurs to determine if any new faults have been logged.
         /// </summary>
-        /// <param name="enable"></param>
+        /// <param name="enable">true to enable fault logging; false to disable fault logging</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
-        private CommunicationError SetFaultLog(Boolean enable)
+        private CommunicationError EnableFaultLogging(Boolean enable)
         {
             Byte faultLogEnable = (Byte)((enable == true) ? 1 : 0);
 
-            ProtocolPTU.SetFaultLogReq request = new ProtocolPTU.SetFaultLogReq(faultLogEnable);
+            ProtocolPTU.EnableFaultLoggingReq request = new ProtocolPTU.EnableFaultLoggingReq(faultLogEnable);
 
             CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
 
             return commError;
         }
+
         /// <summary>
         /// Verifies Date parameters are within expected limits.
         /// </summary>

@@ -879,7 +879,7 @@ namespace VcuComm
         /// <summary>
         /// TODO
         /// </summary>
-        public class SetFaultLogReq : ICommRequest
+        public class EnableFaultLoggingReq : ICommRequest
         {
             /// <summary>
             /// Sets the packet type used to identify the message contents
@@ -901,7 +901,7 @@ namespace VcuComm
             /// Public constructor that is the only one permitted to create this object
             /// </summary>
             /// <param name="TargetState"></param>
-            public SetFaultLogReq(Byte TargetState)
+            public EnableFaultLoggingReq(Byte TargetState)
             {
                 this.TargetState = TargetState;
             }
@@ -910,7 +910,7 @@ namespace VcuComm
             /// Private 0 argument constructor that forces the instantiation of this class
             /// to use the public constructor
             /// </summary>
-            private SetFaultLogReq()
+            private EnableFaultLoggingReq()
             {
             }
 

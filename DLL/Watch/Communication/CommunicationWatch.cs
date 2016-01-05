@@ -178,7 +178,7 @@ namespace Watch.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_Comm.SendVariable(dictionaryIndex, dataType, data);
+                errorCode = (CommunicationError)m_WatchClockMarshal.SendVariable(dictionaryIndex, dataType, data);
             }
             catch (Exception)
             {
@@ -231,7 +231,7 @@ namespace Watch.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = m_Comm.SetWatchElements(watchElements);
+                errorCode = m_WatchClockMarshal.SetWatchElements(watchElements);
             }
             catch (Exception)
             {
@@ -285,7 +285,7 @@ namespace Watch.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_Comm.UpdateWatchElements(forceUpdateAsShort, watchValues, watchDataTypes);
+                errorCode = (CommunicationError)m_WatchClockMarshal.UpdateWatchElements(forceUpdateAsShort, watchValues, watchDataTypes);
             }
             catch (Exception)
             {
@@ -363,7 +363,7 @@ namespace Watch.Communication
                 try
                 {
                     m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                    errorCode = m_Comm.GetChartIndex(chartIndex, ref watchIdentifiers[chartIndex]);
+                    errorCode = m_WatchClockMarshal.GetChartIndex(chartIndex, ref watchIdentifiers[chartIndex]);
                 }
                 catch (Exception)
                 {
@@ -408,7 +408,7 @@ namespace Watch.Communication
                 try
                 {
                     m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                    errorCode = m_Comm.SetChartIndex(channelIndex, watchIdentifiers[channelIndex]);
+                    errorCode = m_WatchClockMarshal.SetChartIndex(channelIndex, watchIdentifiers[channelIndex]);
                 }
                 catch (Exception)
                 {
