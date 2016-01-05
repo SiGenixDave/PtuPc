@@ -885,7 +885,9 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Initialize the event log. Clears all event information stored on battery backed RAM for both the maintenance and engineering logs. This
+        /// also clears both the cumulative history, recent history columns and all data logs. This function is typically used to establish a zero
+        /// event/fault reference base when a replacement VCU is installed in a car.
         /// </summary>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError InitializeEventLog()
@@ -1019,14 +1021,16 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Updates the default stream information by setting what variables are to be monitored and the multiple of the
+        /// embedded target sample rate.
         /// </summary>
-        /// <param name="NumberOfVariables"></param>
-        /// <param name="SampleRate"></param>
-        /// <param name="VariableIndex"></param>
+        /// <param name="NumberOfVariables">the number of variables to update</param>
+        /// <param name="SampleRate">a multiple of the embedded target sample rate </param>
+        /// <param name="VariableIndex">an array of the watch variable indexes to update</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetDefaultStreamInformation(Int16 NumberOfVariables, Int16 SampleRate, Int16[] VariableIndex)
         {
+            // Clamp he number of stream variables
             if (NumberOfVariables > MAX_DL_VARIABLES)
             {
                 NumberOfVariables = MAX_DL_VARIABLES;
@@ -1040,12 +1044,15 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Set the flag that controls: (a) whether the specified event type is enabled and (b) whether the event type triggers the recoding of a data
+        /// stream. 
         /// </summary>
-        /// <param name="TaskNumber"></param>
-        /// <param name="FaultNumber"></param>
-        /// <param name="EnableFlag"></param>
-        /// <param name="DatalogFlag"></param>
+        /// <param name="TaskNumber">The task identifier associated with the event type.</param>
+        /// <param name="FaultNumber">The event identifier associated with the event type.</param>
+        /// <param name="EnableFlag">A flag to control whether the event type corresponding to the specified task and event identifiers is to be
+        /// enabled. True, if the event type is to be enabled; otherwise, false.</param>
+        /// <param name="DatalogFlag">A flag to control whether the event type corresponding to the specified task and event identifiers is to
+        /// trigger the recording of a data stream. True, if the event type is to trigger the recording of a data stream; otherwise, false.</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetFaultFlags(Int16 TaskNumber, Int16 FaultNumber, Int16 EnableFlag, Int16 DatalogFlag)
         {
@@ -1062,10 +1069,11 @@ namespace Common.Communication
         #region --- Private Methods ---
 
         /// <summary>
-        ///
+        /// This method attempts to get all of the logged faults and subsequent attached fault log data from the 
+        /// embedded target. If successful, all of the fault data is copied from the 
         /// </summary>
-        /// <param name="FaultIndex"></param>
-        /// <param name="NumberOfFaults"></param>
+        /// <param name="FaultIndex">The starting fault index to retrieve faults from the embedded target</param>
+        /// <param name="NumberOfFaults">The amount of faults to retrieve.</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         private CommunicationError GetFaultData(UInt32 FaultIndex, UInt16 NumberOfFaults)
         {
@@ -1075,25 +1083,32 @@ namespace Common.Communication
 
             if (commError == CommunicationError.Success)
             {
+                // Get the amount of data in the return buffer from the embedded target. NOTE: Due to buffer 
+                // size limitations, all of the existing faults on the embedded target may be sent in more than 
+                // packet
                 m_FaultDataFromTarget.BufferSize = BitConverter.ToUInt16(m_RxMessage, 8);
                 if (m_CommDevice.IsTargetBigEndian())
                 {
                     m_FaultDataFromTarget.BufferSize = Utils.ReverseByteOrder(m_FaultDataFromTarget.BufferSize);
                 }
 
+                // Too much fault data to process
                 if (m_FaultDataFromTarget.BufferSize > MAX_FAULT_BUFFER_SIZE)
                 {
-                    //TODO return error
+                    return CommunicationError.BadResponse;
                 }
 
+                // No fault data to process, but thats OK
                 if (m_FaultDataFromTarget.BufferSize == 0)
                 {
-                    //TODO return noERROR
+                    return CommunicationError.Success;
                 }
 
                 m_FaultDataFromTarget.Buffer = new Byte[m_FaultDataFromTarget.BufferSize];
 
-                // Copy the entire response into the fault data buffer
+                // Copy the entire response into the fault data buffer for processing by calling method. "10" is the 
+                // offset of the actual data (header is 8 bytes in length and the 2 following bytes are the message size)
+                //               FROM ----------> TO-----
                 Buffer.BlockCopy(m_RxMessage, 10, m_FaultDataFromTarget.Buffer, 0, m_FaultDataFromTarget.BufferSize);
             }
 
