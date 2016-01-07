@@ -609,7 +609,7 @@ namespace Common.Communication
                 return commError;
             }
 
-            Int16 numberOfWords = BitConverter.ToInt16(m_RxMessage, 8);
+            Int16 numberOfWords = BitConverter.ToInt16(message1, 8);
             if (m_CommDevice.IsTargetBigEndian())
             {
                 numberOfWords = Utils.ReverseByteOrder(numberOfWords);
