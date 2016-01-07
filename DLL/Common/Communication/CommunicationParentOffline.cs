@@ -48,6 +48,7 @@
 using System;
 using System.Threading;
 using Common.Configuration;
+using VcuComm;
 
 namespace Common.Communication
 {
@@ -114,9 +115,6 @@ namespace Common.Communication
         /// </summary>
         protected static string m_CarID = CarIdentifier;
         #endregion --- Member Variables ---
-
-        protected WatchClockMarshal m_Comm;
-        protected EventStreamMarshal m_Event;
 
         #region --- Constructors ---
         /// <summary>
@@ -260,22 +258,30 @@ namespace Common.Communication
         }
 
         /// <summary>
-        /// Gets or sets the communication general associated with the selected target.
+        /// Gets the communication device used to communicate with the selected VCU. intentionally
+        /// return null since an actual communication device is not used when offline
         /// </summary>
-        public WatchClockMarshal Comm
+        public ICommDevice CommDevice
         {
-            get { return m_Comm; }
-            set { m_Comm = value; }
+            get { return null; }
         }
 
         /// <summary>
-        /// Gets or sets the event general associated with the selected target.
+        /// TOOD
         /// </summary>
-        public EventStreamMarshal Event
+        public EventStreamMarshal EventStreamMarshall
         {
-            get { return m_Event; }
-            set { m_Event = value; }
+            get { return null; }
         }
+
+        /// <summary>
+        /// TOOD
+        /// </summary>
+        public WatchClockMarshal WatchClockMarshall
+        {
+            get { return null; }
+        }
+
         #endregion --- Properties ---
     }
 }

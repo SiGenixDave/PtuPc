@@ -785,6 +785,8 @@ namespace Common.Communication
         protected EventStreamMarshal m_EventStreamMarshal;
 
         
+
+
         #endregion --- Member Variables ---
 
         #region --- Constructors ---
@@ -812,8 +814,6 @@ namespace Common.Communication
         public CommunicationParent(CommunicationSetting_t communicationSetting) : this()
         {
             m_CommunicationSetting = communicationSetting;
-            //DAS
-            //DAS InitCommunication(communicationSetting);
         }
 
         /// <summary>
@@ -824,8 +824,9 @@ namespace Common.Communication
         public CommunicationParent(ICommunicationParent communicationInterface) : this()
         {
             m_CommunicationSetting = communicationInterface.CommunicationSetting;
-
-            InitCommunication(communicationInterface.CommunicationSetting);
+            m_CommDevice = communicationInterface.CommDevice;
+            m_WatchClockMarshal = communicationInterface.WatchClockMarshall;
+            m_EventStreamMarshal = communicationInterface.EventStreamMarshall;
         }
         #endregion --- Constructors ---
 
@@ -907,7 +908,7 @@ namespace Common.Communication
         public virtual void CloseCommunication(Protocol protocol)
         {
             CommunicationError errorCode = CommunicationError.UnknownError;
-            Debug.WriteLine(protocol);
+            Debug.WriteLine("Close " + protocol);
             try
             {
                 errorCode = (CommunicationError)m_CommDevice.Close();
@@ -1239,23 +1240,29 @@ namespace Common.Communication
         }
 
         /// <summary>
-        /// Gets or sets the communication general associated with the selected target.
+        /// Gets the communication device used to communicate with the selected VCU.
         /// </summary>
-        public WatchClockMarshal Comm
+        public ICommDevice CommDevice
         {
-            get { return m_WatchClockMarshal; }
-            set { m_WatchClockMarshal = value; }
+            get { return m_CommDevice; }
         }
-
 
         /// <summary>
-        /// Gets or sets the event general associated with the selected target.
+        /// TOOD
         /// </summary>
-        public EventStreamMarshal Event
+        public EventStreamMarshal EventStreamMarshall
         {
             get { return m_EventStreamMarshal; }
-            set { m_EventStreamMarshal = value; }
         }
+
+        /// <summary>
+        /// TOOD
+        /// </summary>
+        public WatchClockMarshal WatchClockMarshall
+        {
+            get { return m_WatchClockMarshal; }
+        }
+
         #endregion --- Properties ---
     }
 }

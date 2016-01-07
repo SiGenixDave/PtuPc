@@ -30,6 +30,7 @@
 #endregion --- Revision History ---
 
 using Common.Configuration;
+using VcuComm;
 
 namespace Common.Communication
 {
@@ -107,6 +108,21 @@ namespace Common.Communication
         /// Gets or sets the communication settings associated with the selected VCU.
         /// </summary>
         CommunicationSetting_t CommunicationSetting { get; set; }
+
+        /// <summary>
+        /// Gets the communication device used to communicate with the selected VCU.
+        /// </summary>
+        ICommDevice CommDevice { get; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        WatchClockMarshal WatchClockMarshall { get; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        EventStreamMarshal EventStreamMarshall { get; }
 
         #endregion - [Properties] -
     }
