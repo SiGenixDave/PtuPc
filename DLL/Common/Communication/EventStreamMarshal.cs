@@ -608,13 +608,12 @@ namespace Common.Communication
                 return commError;
             }
 
-            Int16 NumberOfWords;
-            NumberOfWords = BitConverter.ToInt16(m_RxMessage, 8);
+            Int16 numberOfWords = BitConverter.ToInt16(m_RxMessage, 8);
             if (m_CommDevice.IsTargetBigEndian())
             {
-                NumberOfWords = Utils.ReverseByteOrder(NumberOfWords);
+                numberOfWords = Utils.ReverseByteOrder(numberOfWords);
             }
-            NumberOfWords /= 2;
+            numberOfWords /= 2;
 
             Byte[] message2 = new Byte[2048];
             commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_STREAM_FLAG, message2);
@@ -625,13 +624,12 @@ namespace Common.Communication
 
             // Loop through all the TaskId/FaultId Combinations and set/reset a bit for each one
             UInt16 mask = 0x0001;
-            Int16 Counter = 0;
-            for (Int16 NumberOfEntries = 0; NumberOfEntries < EntryCount; NumberOfEntries++)
+            Int16 counter = 0;
+            for (Int16 numberOfEntries = 0; numberOfEntries < EntryCount; numberOfEntries++)
             {
-                Int16 Index = (Int16)(NumberOfEntries / 16);
-
-                UInt16 enableFlag = BitConverter.ToUInt16(message1, 10 + (Index * 2));
-                UInt16 datalogFlag = BitConverter.ToUInt16(message2, 10 + (Index * 2));
+                Int16 index = (Int16)(numberOfEntries / 16);
+                UInt16 enableFlag = BitConverter.ToUInt16(message1, 10 + (index * 2));
+                UInt16 datalogFlag = BitConverter.ToUInt16(message2, 10 + (index * 2));
 
                 if (m_CommDevice.IsTargetBigEndian())
                 {
@@ -639,11 +637,11 @@ namespace Common.Communication
                     datalogFlag = Utils.ReverseByteOrder(datalogFlag);
                 }
 
-                if ((Index < NumberOfWords) && (Valid[NumberOfEntries] != 0))
+                if ((index < numberOfWords) && (Valid[numberOfEntries] != 0))
                 {
-                    EnableFlag[Counter] = (Int16)(((enableFlag & mask) != 0) ? 1 : 0);
-                    TriggerFlag[Counter] = (Int16)(((datalogFlag & mask) != 0) ? 1 : 0);
-                    Counter++;
+                    EnableFlag[counter] = (Int16)(((enableFlag & mask) != 0) ? 1 : 0);
+                    TriggerFlag[counter] = (Int16)(((datalogFlag & mask) != 0) ? 1 : 0);
+                    counter++;
                 }
 
                 if (mask == 0x8000)
@@ -693,7 +691,6 @@ namespace Common.Communication
                             return commError;
                         }
 
-                        //TODO Need to verify this
                         CumulativeHistoryCounts[NumberOfEntries] = BitConverter.ToInt16(m_RxMessage, 8);
                         RecentHistoryCounts[NumberOfEntries] = BitConverter.ToInt16(m_RxMessage, 10);
                         if (m_CommDevice.IsTargetBigEndian())
@@ -710,14 +707,14 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// This method gets the stream data associated with an event.
         /// </summary>
-        /// <param name="StreamNumber"></param>
-        /// <param name="DatalogBuffer"></param>
-        /// <param name="TimeOrigin"></param>
-        /// <param name="NumberOfVariables"></param>
-        /// <param name="NumberOfSamples"></param>
-        /// <param name="VariableType"></param>
+        /// <param name="StreamNumber">the stream number to be retrieved from the embedded target</param>
+        /// <param name="DatalogBuffer">used to store the variable value </param>
+        /// <param name="TimeOrigin">currently unused by the application</param>
+        /// <param name="NumberOfVariables">the number of variables in the stream</param>
+        /// <param name="NumberOfSamples">the number of time samples of each variable in the stream</param>
+        /// <param name="VariableType">Contains the variable types of each of the stream variables</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetStream(Int16 StreamNumber, Int32[] DatalogBuffer, out Int16 TimeOrigin,
                                             Int16 NumberOfVariables, Int16 NumberOfSamples, Int16[] VariableType)
@@ -734,26 +731,26 @@ namespace Common.Communication
             }
 
             TimeOrigin = BitConverter.ToInt16(m_RxMessage, 8);
-            UInt16 SourceSize = BitConverter.ToUInt16(m_RxMessage, 10);
+            UInt16 sourceSize = BitConverter.ToUInt16(m_RxMessage, 10);
 
             if (m_CommDevice.IsTargetBigEndian())
             {
                 TimeOrigin = Utils.ReverseByteOrder(TimeOrigin);
-                SourceSize = Utils.ReverseByteOrder(SourceSize);
+                sourceSize = Utils.ReverseByteOrder(sourceSize);
             }
 
             // Initialize Counters
-            UInt16 ByteCount = 12;
-            UInt16 DestCount = 0;
+            UInt16 byteCount = 12;
+            UInt16 destCount = 0;
 
             // Loop through Source Buffer
-            while (ByteCount < SourceSize)
+            while (byteCount < sourceSize)
             {
                 // Loop through the variables
                 for (UInt16 Index = 0; Index < (UInt16)NumberOfVariables; Index++)
                 {
                     // Make sure we don't go over destination buffer limits
-                    if (DestCount >= NumberOfSamples * NumberOfVariables)
+                    if (destCount >= NumberOfSamples * NumberOfVariables)
                     {
                         //TODO return E_STREAM_CORRUPT;
                     }
@@ -762,55 +759,62 @@ namespace Common.Communication
                     switch ((ProtocolPTU.VariableType)VariableType[Index])
                     {
                         case ProtocolPTU.VariableType.INT_8_TYPE:
-                            SByte i8 = (SByte)m_RxMessage[ByteCount];
-                            DatalogBuffer[DestCount++] = (Int32)i8;
-                            ByteCount++;
+                            SByte i8 = (SByte)m_RxMessage[byteCount];
+                            {
+                                Utils.ReverseByteOrder(i8);
+                            }
+                            DatalogBuffer[destCount++] = (Int32)i8;
+                            byteCount++;
                             break;
 
                         case ProtocolPTU.VariableType.UINT_8_TYPE:
-                            Byte u8 = (Byte)m_RxMessage[ByteCount];
-                            DatalogBuffer[DestCount++] = (Int32)u8;
-                            ByteCount++;
+                            Byte u8 = (Byte)m_RxMessage[byteCount];
+                            if (m_CommDevice.IsTargetBigEndian())
+                            {
+                                Utils.ReverseByteOrder(u8);
+                            }
+                            DatalogBuffer[destCount++] = (Int32)u8;
+                            byteCount++;
                             break;
 
                         case ProtocolPTU.VariableType.INT_16_TYPE:
-                            Int16 i16 = BitConverter.ToInt16(m_RxMessage, ByteCount);
+                            Int16 i16 = BitConverter.ToInt16(m_RxMessage, byteCount);
                             if (m_CommDevice.IsTargetBigEndian())
                             {
                                 Utils.ReverseByteOrder(i16);
                             }
-                            DatalogBuffer[DestCount++] = (Int32)i16;
-                            ByteCount += 2;
+                            DatalogBuffer[destCount++] = (Int32)i16;
+                            byteCount += 2;
                             break;
 
                         case ProtocolPTU.VariableType.UINT_16_TYPE:
-                            UInt16 u16 = BitConverter.ToUInt16(m_RxMessage, ByteCount);
+                            UInt16 u16 = BitConverter.ToUInt16(m_RxMessage, byteCount);
                             if (m_CommDevice.IsTargetBigEndian())
                             {
                                 Utils.ReverseByteOrder(u16);
                             }
-                            DatalogBuffer[DestCount++] = (Int32)u16;
-                            ByteCount += 2;
+                            DatalogBuffer[destCount++] = (Int32)u16;
+                            byteCount += 2;
                             break;
 
                         case ProtocolPTU.VariableType.INT_32_TYPE:
-                            Int32 i32 = BitConverter.ToInt32(m_RxMessage, ByteCount);
+                            Int32 i32 = BitConverter.ToInt32(m_RxMessage, byteCount);
                             if (m_CommDevice.IsTargetBigEndian())
                             {
                                 Utils.ReverseByteOrder(i32);
                             }
-                            DatalogBuffer[DestCount++] = i32;
-                            ByteCount += 4;
+                            DatalogBuffer[destCount++] = i32;
+                            byteCount += 4;
                             break;
 
                         case ProtocolPTU.VariableType.UINT_32_TYPE:
-                            UInt32 u32 = BitConverter.ToUInt32(m_RxMessage, ByteCount);
+                            UInt32 u32 = BitConverter.ToUInt32(m_RxMessage, byteCount);
                             if (m_CommDevice.IsTargetBigEndian())
                             {
                                 Utils.ReverseByteOrder(u32);
                             }
-                            DatalogBuffer[DestCount++] = (Int32)u32;
-                            ByteCount += 4;
+                            DatalogBuffer[destCount++] = (Int32)u32;
+                            byteCount += 4;
                             break;
 
                         default:
@@ -818,11 +822,11 @@ namespace Common.Communication
                             break;
                     }
                 }
-                //TODO Not sure why this is here and just bump the counter up by 4 for all data sizes
+                // TODO DAS:Not sure why this is here and just bump the counter up by 4 for all data sizes
                 // Account for left over bytes
-                if ((ByteCount % 4) != 0)
+                if ((byteCount % 4) != 0)
                 {
-                    ByteCount += (UInt16)(4 - (ByteCount % 4));
+                    byteCount += (UInt16)(4 - (byteCount % 4));
                 }
             }
 
@@ -830,14 +834,14 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Get the parameters associated with the specified stream.
         /// </summary>
-        /// <param name="StreamNumber"></param>
-        /// <param name="NumberOfVariables"></param>
-        /// <param name="NumberOfSamples"></param>
-        /// <param name="SampleRate"></param>
-        /// <param name="VariableIndex"></param>
-        /// <param name="VariableType"></param>
+        /// <param name="StreamNumber">The stream number.</param>
+        /// <param name="NumberOfVariables">The number of watch variables included in the data stream.</param>
+        /// <param name="NumberOfSamples">The number of data samples associated with the data stream.</param>
+        /// <param name="SampleRate">The multiple of the base recording interval (60ms) at which the data is sampled.</param>
+        /// <param name="VariableIndex">The watch identifiers of the watch variables contained within the data stream.</param>
+        /// <param name="VariableType">The data type corresponding to each watch variable contained within the data stream.</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError GetStreamInformation(Int16 StreamNumber, out Int16 NumberOfVariables, out Int16 NumberOfSamples,
                                                         out Int16 SampleRate, Int16[] VariableIndex, Int16[] VariableType)
@@ -898,11 +902,11 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// This method gets all of the logged faults/events from the embedded target's current event log. 
         /// </summary>
-        /// <param name="NumberOfFaults"></param>
-        /// <param name="OldestIndex"></param>
-        /// <param name="NewestIndex"></param>
+        /// <param name="NumberOfFaults">the number of events that are currently stored in the embedded target NVRAM (updated from embedded target response)</param>
+        /// <param name="OldestIndex">the oldest fault index that has been logged (updated from embedded target response)</param>
+        /// <param name="NewestIndex">the newest fault index that has been logged (updated from embedded target response)</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError LoadFaultLog(out Int16 NumberOfFaults, out UInt32 OldestIndex, out UInt32 NewestIndex)
         {
@@ -916,51 +920,53 @@ namespace Common.Communication
             // LOOP ONCE ... EXIT ON ERROR
             do
             {
+                // Reset the current number of faults
                 m_CurrentNumberOfFaults = 0;
-                UInt32 FaultCounter = 0;
 
-                // Disable Fault Logging
+                // temporarily disable Fault Logging
                 commError = EnableFaultLogging(false);
                 if (commError != CommunicationError.Success)
                 {
                     break;
                 }
 
-                // Get Fault Log Indexes
+                // Get Fault Log Indexes from the embedded target
                 commError = GetFaultIndices(out OldestIndex, out NewestIndex);
                 if (commError != CommunicationError.Success)
                 {
                     break;
                 }
 
-                // Check if  Fault Log is Empty
+                // Check if the Fault Log is Empty (no faults have been logged)
                 if ((OldestIndex == EMPTY_FAULT_BUFFER) && (NewestIndex == EMPTY_FAULT_BUFFER))
                 {
                     NumberOfFaults = 0;
                     break;
                 }
 
-                UInt32 RemoteFaults;
+                UInt32 remoteFaults;
                 if (NewestIndex < OldestIndex)
                 {
-                    RemoteFaults = 0x10000 + NewestIndex - OldestIndex + 1;
+                    remoteFaults = 0x10000 + NewestIndex - OldestIndex + 1;
                 }
                 else
                 {
-                    RemoteFaults = NewestIndex - OldestIndex + 1;
+                    remoteFaults = NewestIndex - OldestIndex + 1;
                 }
 
-                if (RemoteFaults == 0)
+                if (remoteFaults == 0)
                 {
                     break;
                 }
 
-                // GetFaultData can only get a max of MAXFAULTBUFFERSIZE bytes of Data. So if there are
-                // more than faults in the Fault Log than this it has do this several times to get ALL the fault data
+                UInt32 faultCounter = 0;
+                // GetFaultData() can only get a max of MAXFAULTBUFFERSIZE bytes of data. So if there are
+                // more than faults in the Fault Log than this loop has to iterate several times to get all 
+                // of the fault data
                 do
                 {
-                    // Get the Fault Data
-                    commError = GetFaultData((OldestIndex + FaultCounter) & 0xFFFF, (UInt16)(RemoteFaults - FaultCounter));
+                    // Get as many faults as the response buffer size allows
+                    commError = GetFaultData((OldestIndex + faultCounter) & 0xFFFF, (UInt16)(remoteFaults - faultCounter));
                     if (commError != CommunicationError.Success)
                     {
                         break;
@@ -972,26 +978,25 @@ namespace Common.Communication
                     }
 
                     // Loop through the fault buffer, pulling out the size and data for each fault
-                    for (Int32 Index = 0; Index < m_FaultDataFromTarget.BufferSize; )
+                    for (Int32 index = 0; index < m_FaultDataFromTarget.BufferSize; )
                     {
-                        FaultCounter++;
+                        faultCounter++;
 
-                        Int16 FaultSize;
                         // Get the size of the next fault
-                        FaultSize = BitConverter.ToInt16(m_FaultDataFromTarget.Buffer, Index);
+                        Int16 faultSize = BitConverter.ToInt16(m_FaultDataFromTarget.Buffer, index);
 
                         if (m_CommDevice.IsTargetBigEndian())
                         {
-                            FaultSize = Utils.ReverseByteOrder(FaultSize);
+                            faultSize = Utils.ReverseByteOrder(faultSize);
                         }
 
                         // Allocate jagged array dynamically and store fault data there
-                        if (FaultSize < MAX_FAULT_SIZE_BYTES && FaultSize > 0)
+                        if (faultSize < MAX_FAULT_SIZE_BYTES && faultSize > 0)
                         {
                             // Add new member with size "FaultSize" to jagged 2 dimensional array
-                            m_faultStorage[m_CurrentNumberOfFaults] = new Byte[FaultSize + 2];
+                            m_faultStorage[m_CurrentNumberOfFaults] = new Byte[faultSize + 2];
                             // Copy all data into newly created array
-                            Buffer.BlockCopy(m_FaultDataFromTarget.Buffer, Index, m_faultStorage[m_CurrentNumberOfFaults], 0, FaultSize + 2);
+                            Buffer.BlockCopy(m_FaultDataFromTarget.Buffer, index, m_faultStorage[m_CurrentNumberOfFaults], 0, faultSize + 2);
 
                             m_CurrentNumberOfFaults++;
                         }
@@ -1003,9 +1008,9 @@ namespace Common.Communication
                         }
 
                         // Increment the Index to point to the size of the next fault
-                        Index += (FaultSize + 2);
+                        index += (faultSize + 2);
                     }
-                } while ((FaultCounter < RemoteFaults) && (commError != CommunicationError.UnknownError));
+                } while ((faultCounter < remoteFaults) && (commError != CommunicationError.UnknownError));
 
                 // Force the Return Code so we can extract all valid faults
                 commError = CommunicationError.Success;

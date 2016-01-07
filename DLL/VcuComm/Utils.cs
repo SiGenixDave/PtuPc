@@ -1,4 +1,28 @@
-﻿using System;
+﻿#region --- Revision History ---
+/*
+ * 
+ *  This document and its contents are the property of Bombardier Inc. or its subsidiaries and contains confidential, proprietary information.
+ *  The reproduction, distribution, utilization or the communication of this document, or any part thereof, without express authorization is strictly prohibited.  
+ *  Offenders will be held liable for the payment of damages.
+ * 
+ *  (C) 2016    Bombardier Inc. or its subsidiaries. All rights reserved.
+ * 
+ *  Solution:   PTU
+ * 
+ *  Project:    VcuComm
+ * 
+ *  File name:  Utils.cs
+ * 
+ *  Revision History
+ *  ----------------
+ * 
+ *  Date        Version Author       Comments
+ *  03/01/2016  1.0     D.Smail      First Release.
+ *
+ */
+#endregion --- Revision History ---
+
+using System;
 
 namespace VcuComm
 {

@@ -813,7 +813,7 @@ namespace Common.Communication
         {
             m_CommunicationSetting = communicationSetting;
             //DAS
-            InitCommunication(communicationSetting);
+            //DAS InitCommunication(communicationSetting);
         }
 
         /// <summary>
@@ -853,6 +853,7 @@ namespace Common.Communication
                     m_CommDevice = new Serial();
                     //TODO need to add a function to parse communicationsSetting to yield string below
                     args = "COM" + communicationsSetting.PortIdentifier + ",19200,none,8,1";
+                    Debug.WriteLine(args);
                 }
                 else if (communicationsSetting.Protocol == Protocol.TCPIP)
                 {
@@ -906,6 +907,7 @@ namespace Common.Communication
         public virtual void CloseCommunication(Protocol protocol)
         {
             CommunicationError errorCode = CommunicationError.UnknownError;
+            Debug.WriteLine(protocol);
             try
             {
                 errorCode = (CommunicationError)m_CommDevice.Close();

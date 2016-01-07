@@ -222,11 +222,11 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Write the specified data to the watch variable specified by the <paramref name="DictionaryIndex"/> parameter.
         /// </summary>
-        /// <param name="DictionaryIndex"></param>
-        /// <param name="DataType"></param>
-        /// <param name="Data"></param>
+        /// <param name="DictionaryIndex">The dictionary index.</param>
+        /// <param name="DataType">The data type.</param>
+        /// <param name="Data">The value of the data to be written.</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SendVariable(Int16 DictionaryIndex, Int16 DataType, Double Data)
         {
@@ -258,10 +258,10 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Assign the specified watch variable to the specified chart recorder channel index.
         /// </summary>
-        /// <param name="ChartIndex"></param>
-        /// <param name="VariableIndex"></param>
+        /// <param name="ChartIndex">The chart recorder channel index.</param>
+        /// <param name="VariableIndex">The watch identifier of the watch variable that is to be assigned to the channel.</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetChartIndex(Int16 ChartIndex, Int16 VariableIndex)
         {
@@ -328,10 +328,10 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Updates a single watch element with a new dictionary index.
         /// </summary>
-        /// <param name="ElementIndex"></param>
-        /// <param name="DictionaryIndex"></param>
+        /// <param name="ElementIndex">the array index in the watch element</param>
+        /// <param name="DictionaryIndex">the data dictionary index of the watch element</param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetWatchElement(UInt16 ElementIndex, UInt16 DictionaryIndex)
         {
@@ -343,9 +343,10 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Map the watch identifiers listed in <paramref name="WatchElements"/> to the watch element array monitored by the embedded target.
         /// </summary>
-        /// <param name="WatchElements"></param>
+        /// <param name="WatchElements">TArray containing the watch identifiers that are to be mapped to each element of the watch element array.
+        /// </param>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError SetWatchElements(Int16[] WatchElements)
         {
@@ -357,7 +358,7 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Starts the real time clock on the embedded target.
         /// </summary>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError StartClock()
@@ -368,7 +369,7 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Stops the real time clock on the embedded target
         /// </summary>
         /// <returns>CommunicationError.Success (0) if all is well; otherwise another enumeration which is less than 0</returns>
         public CommunicationError StopClock()
