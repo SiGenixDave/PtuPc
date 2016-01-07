@@ -52,7 +52,7 @@ namespace VcuComm
         /// of 4 16 bit words of which the checksum is not used on either the PTU or the embedded
         /// target.
         /// </summary>
-        private const UInt16 HEADER_SIZE_BYTES = 8;
+        public static readonly UInt16 HEADER_SIZE_BYTES = 8;
         /// <summary>
         /// These errors are logged whenever any error is detected when a transaction occurs
         /// </summary>

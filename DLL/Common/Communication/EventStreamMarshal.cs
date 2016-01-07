@@ -107,9 +107,10 @@ namespace Common.Communication
         private PtuTargetCommunication m_PtuTargetCommunication = new PtuTargetCommunication();
 
         /// <summary>
-        /// Buffer used to store data responses from the embedded target
+        /// Buffer used to store data responses from the embedded target. Need to add the header
+        /// size.
         /// </summary>
-        private Byte[] m_RxMessage = new Byte[MAX_FAULT_BUFFER_SIZE];
+        private Byte[] m_RxMessage = new Byte[MAX_FAULT_BUFFER_SIZE + ProtocolPTU.HEADER_SIZE_BYTES];
         #endregion --- Member Variables ---
 
         #region --- Constructors ---
