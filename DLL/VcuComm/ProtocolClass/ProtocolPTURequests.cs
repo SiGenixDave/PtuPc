@@ -1356,6 +1356,194 @@ namespace VcuComm
             }
         }
 
+
+
+#if DAS
+        public struct SelfTestCommandReq
+        {
+            public Byte CommandID;
+            public UInt16 Data;
+            public DataPacketProlog Header;
+            public UInt16[] TestSet;
+            public Byte TruckInformation;
+        }
+#endif
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public class SelfTestCommand : ICommRequest
+        {
+            /// <summary>
+            /// Sets the packet type used to identify the message contents
+            /// </summary>
+            private const PacketType PACKET_TYPE = PacketType.SELF_TEST_COMMAND;
+
+            /// <summary>
+            /// Informs the embedded PTU target that this request is a command only and expects
+            /// no data response in return; only an acknowledge that the message was received
+            /// </summary>
+            private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
+
+            /// <summary>
+            /// TODO
+            /// </summary>
+            private Byte CommandId;
+
+            /// <summary>
+            /// TODO
+            /// </summary>
+            private Byte TruckId;
+
+            /// <summary>
+            /// TODO
+            /// </summary>
+            private UInt16 Data;
+
+            /// <summary>
+            /// Public constructor that is the only one permitted to create this object
+            /// </summary>
+            /// <param name="ElementIndex"></param>
+            /// <param name="DictionaryIndex"></param>
+            public SelfTestCommand(Byte CommandId, Byte TruckId, UInt16 Data)
+            {
+                this.CommandId = CommandId;
+                this.TruckId = TruckId;
+                this.Data = Data;
+            }
+
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the public constructor
+            /// </summary>
+            private SelfTestCommand()
+            {
+            }
+
+            /// <summary>
+            /// Method that formats the message going to the embedded PTU target. The format of the message
+            /// is specific to the type of request made.
+            /// </summary>
+            /// <param name="targetIsBigEndian">true if the embedded PTU target is a Big Endian machine; false otherwise</param>
+            /// <returns>ordered byte array that is to be sent to the embedded PTU target</returns>
+            public Byte[] GetByteArray(Boolean targetIsBigEndian)
+            {
+                DataPacketProlog dpp = new DataPacketProlog();
+
+                if (targetIsBigEndian)
+                {
+                    this.CommandId = Utils.ReverseByteOrder(this.CommandId);
+                    this.Data = Utils.ReverseByteOrder(this.Data);
+                }
+                MemoryStream ms = new MemoryStream(MAX_TX_STREAM_SIZE);
+                BinaryWriter bw = new BinaryWriter(ms);
+                bw.Write(this.CommandId);
+                bw.Write(this.TruckId);
+                bw.Write(this.Data);
+
+                return dpp.GetByteArray(ms.ToArray(), PACKET_TYPE, RESPONSE_TYPE, targetIsBigEndian);
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public class SelfTestUpdateListReq : ICommRequest
+        {
+            /// <summary>
+            /// Sets the packet type used to identify the message contents
+            /// </summary>
+            private const PacketType PACKET_TYPE = PacketType.SELF_TEST_COMMAND;
+
+            /// <summary>
+            /// Informs the embedded PTU target that this request is a command only and expects
+            /// no data response in return; only an acknowledge that the message was received
+            /// </summary>
+            private const ResponseType RESPONSE_TYPE = ResponseType.COMMANDREQUEST;
+
+            /// <summary>
+            /// TODO
+            /// </summary>
+            private Byte CommandId;
+
+            /// <summary>
+            /// TODO
+            /// </summary>
+            private Int16 NumberOfTests;
+
+            /// <summary>
+            /// TODO
+            /// </summary>
+            private Int16[] TestList;
+
+            /// <summary>
+            /// Public constructor that is the only one permitted to create this object
+            /// </summary>
+            /// <param name="ElementIndex"></param>
+            /// <param name="DictionaryIndex"></param>
+            public SelfTestUpdateListReq(Byte CommandId, Int16 NumberOfTests, Int16[] TestList)
+            {
+                this.CommandId = CommandId;
+                this.NumberOfTests = NumberOfTests;
+                this.TestList = new Int16[TestList.Length];
+
+                for (UInt16 i = 0; i < TestList.Length; i++)
+                {
+                    this.TestList[i] = TestList[i]; 
+                }
+
+            }
+
+            /// <summary>
+            /// Private 0 argument constructor that forces the instantiation of this class
+            /// to use the public constructor
+            /// </summary>
+            private SelfTestUpdateListReq()
+            {
+            }
+
+            /// <summary>
+            /// Method that formats the message going to the embedded PTU target. The format of the message
+            /// is specific to the type of request made.
+            /// </summary>
+            /// <param name="targetIsBigEndian">true if the embedded PTU target is a Big Endian machine; false otherwise</param>
+            /// <returns>ordered byte array that is to be sent to the embedded PTU target</returns>
+            public Byte[] GetByteArray(Boolean targetIsBigEndian)
+            {
+                DataPacketProlog dpp = new DataPacketProlog();
+
+                if (targetIsBigEndian)
+                {
+                    this.CommandId = Utils.ReverseByteOrder(this.CommandId);
+                    this.NumberOfTests = Utils.ReverseByteOrder(this.NumberOfTests);
+
+                    for (UInt16 i = 0; i < this.TestList.Length; i++)
+                    {
+                        this.TestList[i] = Utils.ReverseByteOrder(this.TestList[i]);
+                    }
+                }
+                MemoryStream ms = new MemoryStream(MAX_TX_STREAM_SIZE);
+                BinaryWriter bw = new BinaryWriter(ms);
+
+                bw.Write(this.CommandId);
+                bw.Write(0);
+                bw.Write(NumberOfTests);
+
+                for (UInt16 i = 0; i < this.TestList.Length; i++)
+                {
+                    bw.Write(this.TestList[i]);
+                }
+
+                return dpp.GetByteArray(ms.ToArray(), PACKET_TYPE, RESPONSE_TYPE, targetIsBigEndian);
+            }
+        }
+
+
+
+
 #if NOT_USED_AS_FAR_I_CAN_TELL
         public class ReadVariableReq : ICommRequest
         {

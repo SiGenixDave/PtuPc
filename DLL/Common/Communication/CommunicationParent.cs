@@ -916,10 +916,6 @@ namespace Common.Communication
             catch (Exception)
             {
                 errorCode = CommunicationError.SystemException;
-                // TODO This exception can be fired when trying to close an already terminated TCP connection. This
-                // usually occurs when the PTU target server gracefully [FIN,ACK] or ungracefully [RST] closes the connection.
-                // Need to find a way to avoid calling CloseCommunication when connection is already closed. The error code
-                // when a server closes the connection is handled 
                 throw new CommunicationException(Resources.EMPortCloseFailed, errorCode);
             }
 
@@ -929,12 +925,6 @@ namespace Common.Communication
                 DebugMode.Write(closeCommunication.ToXML());
             }
 
-            if (errorCode != CommunicationError.Success)
-            {
-                // DAS Eliminate below because its possible to attempt to close an already closed port; need
-                // to check TCP error code for reason why port couldn't be closed
-				//TODO throw new CommunicationException(Resources.EMPortCloseFailed, errorCode);
-            }
         }
 
         /// <summary>

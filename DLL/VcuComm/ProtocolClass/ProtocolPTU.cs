@@ -53,6 +53,7 @@ namespace VcuComm
         /// target.
         /// </summary>
         public static readonly UInt16 HEADER_SIZE_BYTES = 8;
+
         /// <summary>
         /// These errors are logged whenever any error is detected when a transaction occurs
         /// </summary>
@@ -97,15 +98,6 @@ namespace VcuComm
             public UInt16 BufferSize;
         }
 
-
-        public struct SelfTestCommandReq
-        {
-            public Byte CommandID;
-            public UInt16 Data;
-            public DataPacketProlog Header;
-            public UInt16[] TestSet;
-            public Byte TruckInformation;
-        }
 
         public struct StreamInformation
         {
@@ -162,40 +154,6 @@ namespace VcuComm
             }
         }
 
-#if DAS
-        public struct GetSelfTestPacketRes
-        {
-	        public DataPacketProlog    Header;
-	        public Byte                Valid;
-	        public Byte                MessageMode;
-	        public UInt16			    SetInformation;
-	        public UInt16				TestID;
-	        st_test_result_data ResultsData;
-	        public UInt32              Flags;
-	        public UInt16				Reserved[2];
-	        //UINT8				Reserved[4];
-	        st_msg_var_str      VariableMsg[MAXSTVARIABLES];
-        }
-#endif
-#if NOT_USED_AS_FAR_I_CAN_TELL
-        public struct DataDictionary
-        {
-            private char[] VariableName;   //40
-            private char[] EmbeddedName;   //50
-            private char[] FormatString;   //20
-            private double ScaleFactor;
-            private char[] TargetUnits;    //50
-            private double MaxScale;
-            private double MinScale;
-            private double UpperBounds;
-            private double LowerBounds;
-            public Int32 AttributeFlags;
-            public Int32 EnumbitID;
-            public Int32 HelpIndex;
-            private double BitMask;
-            private Int16 DataType;
-        }
-#endif
         /// /////////////////////////////////////////////////////////////////////////////////
         /// /////////////////////////////////////////////////////////////////////////////////
     }

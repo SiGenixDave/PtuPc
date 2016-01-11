@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="CheckBoxUInt32.cs" />
     <Compile Include="Communication\AutoScale.cs" />
+    <Compile Include="Communication\SelfTestMarshal.cs" />
     <Compile Include="Communication\WatchClockMarshal.cs" />
     <Compile Include="Communication\CommunicationException.cs" />
     <Compile Include="Communication\CommunicationParent.cs" />
