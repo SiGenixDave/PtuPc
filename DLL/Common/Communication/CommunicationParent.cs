@@ -784,7 +784,11 @@ namespace Common.Communication
         /// </summary>
         protected EventStreamMarshal m_EventStreamMarshal;
 
-        
+        /// <summary>
+        /// Object that is used to call methods that gather or send information pertaining to self 
+        /// test execution on the embedded PTU target.
+        /// </summary>
+        protected SelfTestMarshal m_SelfTestMarshal;        
 
 
         #endregion --- Member Variables ---
@@ -892,6 +896,7 @@ namespace Common.Communication
                 errorCode = CommunicationError.Success;
                 m_WatchClockMarshal = new WatchClockMarshal(m_CommDevice);
                 m_EventStreamMarshal = new EventStreamMarshal(m_CommDevice);
+                m_SelfTestMarshal = new SelfTestMarshal(m_CommDevice);
             }
 
             if (errorCode != CommunicationError.Success)
@@ -1251,6 +1256,14 @@ namespace Common.Communication
         public WatchClockMarshal WatchClockMarshall
         {
             get { return m_WatchClockMarshal; }
+        }
+
+        /// <summary>
+        /// TOOD
+        /// </summary>
+        public SelfTestMarshal SelfTestMarshall
+        {
+            get { return m_SelfTestMarshal; }
         }
 
         #endregion --- Properties ---

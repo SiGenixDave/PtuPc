@@ -282,6 +282,14 @@ namespace Common.Communication
             get { return null; }
         }
 
+        /// <summary>
+        /// TOOD
+        /// </summary>
+        public SelfTestMarshal SelfTestMarshall
+        {
+            get { return null; }
+        }
+
         #endregion --- Properties ---
     }
 }

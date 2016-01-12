@@ -138,13 +138,18 @@ namespace Common.Communication
         #region --- Public Methods ---
 
         /// <summary>
-        ///
+        /// Get the self test special message.
         /// </summary>
-        /// <param name="Result"></param>
-        /// <param name="Reason"></param>
-        /// <returns></returns>
-        public CommunicationError GetSelfTestSpecialMessage(ref Int16 Result, ref Int16 Reason)
+        /// <param name="Result">The result of the call. A value of: (1) 1 represents success; (2) indicates that the error message defined by the 
+        /// <paramref name="Reason"/> parameter applies and (3) represents an unknown error.</param>
+        /// <param name="Reason">A value of 1 represents success; otherwise, the value is mapped to the <c>ERRID</c> field of the
+        /// <c>SELFTESTERRMESS</c> table of the data dictionary in order to determine the error message returned from the VCU.</param>
+        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
+        public CommunicationError GetSelfTestSpecialMessage(out Int16 Result, out Int16 Reason)
         {
+            Result = -1;
+            Reason = -1;
+
             // Initiate transaction with embedded target
             CommunicationError commError = m_PtuTargetCommunication.SendDataRequestToEmbedded(m_CommDevice, ProtocolPTU.PacketType.GET_SELF_TEST_PACKET, m_RxMessage);
 
@@ -186,13 +191,20 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Start the self test task.
         /// </summary>
-        /// <param name="Result"></param>
-        /// <param name="Reason"></param>
-        /// <returns></returns>
-        public CommunicationError StartSelfTestTask(ref Int16 Result, ref Int16 Reason)
+        /// <remarks>This request will start the self test process on the VCU. 
+        /// process.</remarks>
+        /// <param name="Result">The result of the call. A value of: (1) 1 represents success; (2) indicates that the error message defined by the 
+        /// <paramref name="Reason"/> parameter applies and (3) represents an unknown error.</param>
+        /// <param name="Reason">A value of 1 represents success; otherwise, the value is mapped to the <c>ERRID</c> field of the
+        /// <c>SELFTESTERRMESS</c> table of the data dictionary in order to determine the error message returned from the VCU.</param>
+        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
+        public CommunicationError StartSelfTestTask(out Int16 Result, out Int16 Reason)
         {
+            Result = -1;
+            Reason = -1;
+
             // Initiate transaction with embedded target
             CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.START_SELF_TEST_TASK);
 
@@ -204,19 +216,25 @@ namespace Common.Communication
             // original code has a hard-coded while--loop delay
             Thread.Sleep(100);
 
-            commError = GetSelfTestSpecialMessage(ref Result, ref Reason);
+            commError = GetSelfTestSpecialMessage(out Result, out Reason);
 
             return commError;
         }
 
         /// <summary>
-        ///
+        /// Exit the self test task. 
         /// </summary>
-        /// <param name="Result"></param>
-        /// <param name="Reason"></param>
-        /// <returns></returns>
-        public CommunicationError ExitSelfTestTask(ref Int16 Result, ref Int16 Reason)
+        /// <remarks>This request will exit the self-test process on the VCU and turn control over to the propulsion software.</remarks>
+        /// <param name="Result">The result of the call. A value of: (1) 1 represents success; (2) indicates that the error message defined by the 
+        /// <paramref name="Reason"/> parameter applies and (3) represents an unknown error.</param>
+        /// <param name="Reason">A value of 1 represents success; otherwise, the value is mapped to the <c>ERRID</c> field of the
+        /// <c>SELFTESTERRMESS</c> table of the data dictionary in order to determine the error message returned from the VCU.</param>
+        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
+        public CommunicationError ExitSelfTestTask(out Int16 Result, out Int16 Reason)
         {
+            Result = -1;
+            Reason = -1;
+
             // Initiate transaction with embedded target
             CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, ProtocolPTU.PacketType.EXIT_SELF_TEST_TASK);
 
@@ -225,15 +243,16 @@ namespace Common.Communication
                 return commError;
             }
 
-            commError = GetSelfTestSpecialMessage(ref Result, ref Reason);
+            commError = GetSelfTestSpecialMessage(out Result, out Reason);
 
             return commError;
         }
 
         /// <summary>
-        ///
+        /// Abort the self test sequence.
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>This request will stop the execution of the self-test process on the VCU and return control to the propulsion software.</remarks>
+        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
         public CommunicationError AbortSTSequence()
         {
             ProtocolPTU.SelfTestCommand request = new ProtocolPTU.SelfTestCommand(STC_CMD_ABORT_SEQ, 0, 0);
@@ -245,9 +264,10 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Send an operator acknowledge message.
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>This request allows the operator to move to the next step of an interactive test.</remarks>
+        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
         public CommunicationError SendOperatorAcknowledge()
         {
             ProtocolPTU.SelfTestCommand request = new ProtocolPTU.SelfTestCommand(STC_CMD_OPRTR_ACK, 0, 0);
@@ -259,11 +279,13 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Update the list of individually selected self tests that are to be executed. 
         /// </summary>
-        /// <param name="NumberOfTests"></param>
-        /// <param name="TestList"></param>
-        /// <returns></returns>
+        /// <remarks>This method will define the list of self-tests that are to be executed once the tester selects the execute command. The self tests
+        /// are defined using the self test identifiers defined in the data dictionary.</remarks>
+        /// <param name="NumberOfTests">The number of tests in the list.</param>
+        /// <param name="TestList">A list of the self test identifiers.</param>
+        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
         public CommunicationError UpdateSTTestList(Int16 NumberOfTests, Int16[] TestList)
         {
             ProtocolPTU.SelfTestUpdateListReq request = new ProtocolPTU.SelfTestUpdateListReq(STC_CMD_UPDT_LIST, NumberOfTests, TestList);
@@ -275,10 +297,10 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Run the predefined self tests associated with the specified test list identifier, these tests are defined in the data dictionary. 
         /// </summary>
-        /// <param name="TestID"></param>
-        /// <returns></returns>
+        /// <param name="TestID">The test list identifier of the predefined self tests that are to be executed.</param>
+        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
         public CommunicationError RunPredefinedSTTests(Int16 TestID)
         {
             ProtocolPTU.SelfTestCommand request = new ProtocolPTU.SelfTestCommand(STC_CMD_SEL_LIST, 0, (UInt16)TestID);
@@ -290,13 +312,13 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Update the number of times that the selected tests are to be run.
         /// </summary>
-        /// <param name="TestID"></param>
-        /// <returns></returns>
-        public CommunicationError UpdateSTLoopCount(Int16 TestID)
+        /// <param name="LoopCount">The number of cycles/loops of the defined tests that are to be performed.</param>
+        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
+        public CommunicationError UpdateSTLoopCount(Int16 LoopCount)
         {
-            ProtocolPTU.SelfTestCommand request = new ProtocolPTU.SelfTestCommand(STC_CMD_UPDT_LOOP_CNT, 0, (UInt16)TestID);
+            ProtocolPTU.SelfTestCommand request = new ProtocolPTU.SelfTestCommand(STC_CMD_UPDT_LOOP_CNT, 0, (UInt16)LoopCount);
 
             // Initiate transaction with embedded target
             CommunicationError commError = m_PtuTargetCommunication.SendCommandToEmbedded(m_CommDevice, request);
@@ -305,10 +327,11 @@ namespace Common.Communication
         }
 
         /// <summary>
-        ///
+        /// Execute the self tests that are defined in the current list.
         /// </summary>
-        /// <param name="TruckInformation"></param>
-        /// <returns></returns>
+        /// <param name="TruckInformation">The truck to which the self tests apply. This does not apply on the CTA project, separate self-tests are set
+        /// up for each truck.</param>
+        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
         public CommunicationError ExecuteSTTestList(Int16 TruckInformation)
         {
             ProtocolPTU.SelfTestCommand request = new ProtocolPTU.SelfTestCommand(STC_CMD_EXECUTE_LIST, (Byte)TruckInformation, 0);

@@ -106,87 +106,7 @@ namespace SelfTest.Communication
     public class CommunicationSelfTest : CommunicationParent, ICommunicationSelfTest
     {
         #region --- Delegate Declarations ---
-        /// <summary>
-        /// Get the self test special message.
-        /// </summary>
-        /// <param name="result">The result of the call. A value of: (1) 1 represents success; (2) indicates that the error message defined by the 
-        /// <paramref name="reason"/> parameter applies and (3) represents an unknown error.</param>
-        /// <param name="reason">A value of 1 represents success; otherwise, the value is mapped to the <c>ERRID</c> field of the
-        /// <c>SELFTESTERRMESS</c> table 
-        /// of the data dictionary in order to determine the error message returned from the VCU.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short GetSelfTestSpecialMessageDelegate(out short result, out short reason);
 
-        /// <summary>
-        /// Start the self test task.
-        /// </summary>
-        /// <remarks>This request will start the self test process on the VCU. 
-        /// process.</remarks>
-        /// <param name="result">The result of the call. A value of: (1) 1 represents success; (2) indicates that the error message defined by the 
-        /// <paramref name="reason"/> parameter applies and (3) represents an unknown error.</param>
-        /// <param name="reason">A value of 1 represents success; otherwise, the value is mapped to the <c>ERRID</c> field of the
-        /// <c>SELFTESTERRMESS</c> table 
-        /// of the data dictionary in order to determine the error message returned from the VCU.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short StartSelfTestTaskDelegate(out short result, out short reason);
-
-        /// <summary>
-        /// Exit the self test task. 
-        /// </summary>
-        /// <remarks>This request will exit the self-test process on the VCU and turn control over to the propulsion software.</remarks>
-        /// <param name="result">The result of the call. A value of: (1) 1 represents success; (2) indicates that the error message defined by the 
-        /// <paramref name="reason"/> parameter applies and (3) represents an unknown error.</param>
-        /// <param name="reason">A value of 1 represents success; otherwise, the value is mapped to the <c>ERRID</c> field of the
-        /// <c>SELFTESTERRMESS</c> table 
-        /// of the data dictionary in order to determine the error message returned from the VCU.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short ExitSelfTestTaskDelegate(out short result, out short reason);
-
-        /// <summary>
-        /// Abort the self test sequence.
-        /// </summary>
-        /// <remarks>This request will stop the execution of the self-test process on the VCU and return control to the propulsion software.</remarks>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short AbortSTSequenceDelegate();
-
-        /// <summary>
-        /// Send an operator acknowledge message.
-        /// </summary>
-        /// <remarks>This request allows the operator to move to the next step of an interactive test.</remarks>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short SendOperatorAcknowledgeDelegate();
-
-        /// <summary>
-        /// Update the list of individually selected self tests that are to be executed. 
-        /// </summary>
-        /// <remarks>This method will define the list of self-tests that are to be executed once the tester selects the execute command. The self tests
-        /// are defined using the self test identifiers defined in the data dictionary.</remarks>
-        /// <param name="testCount">The number of tests in the list.</param>
-        /// <param name="tests">A list of the self test identifiers.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short UpdateSTTestListDelegate(short testCount, short[] tests);
-
-        /// <summary>
-        /// Run the predefined self tests associated with the specified test list identifier, these tests are defined in the data dictionary. 
-        /// </summary>
-        /// <param name="testListIdentifier">The test list identifier of the predefined self tests that are to be executed.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short RunPredefinedSTTestsDelegate(short testListIdentifier);
-
-        /// <summary>
-        /// Update the number of times that the selected tests are to be run.
-        /// </summary>
-        /// <param name="loopCount">The number of cycles/loops of the defined tests that are to be performed.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short UpdateSTLoopCountDelegate(short loopCount);
-
-        /// <summary>
-        /// Execute the self tests that are defined in the current list.
-        /// </summary>
-        /// <param name="truckInformation">The truck to which the self tests apply. This does not apply on the CTA project, separate self-tests are set
-        /// up for each truck.</param>
-        /// <returns>Success, if the communication request was successful; otherwise, an error code.</returns>
-        protected delegate short ExecuteSTTestListDelegate(short truckInformation);
 
         /// <summary>
         /// Get the self test results.
@@ -222,50 +142,7 @@ namespace SelfTest.Communication
 
         #region --- Member Variables ---
         #region --- Function Delegates  ---
-        /// <summary>
-        /// Delegate for the GetSelfTestSpecialMessage() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected GetSelfTestSpecialMessageDelegate m_GetSelfTestSpecialMessage;
 
-        /// <summary>
-        /// Delegate for the StartSelfTestTask() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected StartSelfTestTaskDelegate m_StartSelfTestTask;
-        
-        /// <summary>
-        /// Delegate for the ExitSelfTestTask() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected ExitSelfTestTaskDelegate m_ExitSelfTestTask;
-
-        /// <summary>
-        /// Delegate for the AbortSTSequence() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected AbortSTSequenceDelegate m_AbortSTSequence;
-
-        /// <summary>
-        /// Delegate for the SendOperatorAcknowledge() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected SendOperatorAcknowledgeDelegate m_SendOperatorAcknowledge;
-
-        /// <summary>
-        /// Delegate for the UpdateSTTestList() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected UpdateSTTestListDelegate m_UpdateSTTestList;
-
-        /// <summary>
-        /// Delegate for the RunPredefinedSTTests() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected RunPredefinedSTTestsDelegate m_RunPredefinedSTTests;
-
-        /// <summary>
-        /// Delegate for the UpdateSTLoopCount() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected UpdateSTLoopCountDelegate m_UpdateSTLoopCount;
-
-        /// <summary>
-        /// Delegate for the ExecuteSTTestList() method of VcuCommunication32.dll/VcuCommunication64.dll.
-        /// </summary>
-        protected ExecuteSTTestListDelegate m_ExecuteSTTestList;
 
         /// <summary>
         /// Delegate for the GetSelfTestResult() method of VcuCommunication32.dll/VcuCommunication64.dll.
@@ -297,15 +174,6 @@ namespace SelfTest.Communication
             // ----------------------------------------------------------------------
             if (m_Is64BitOperatingSystem == true)
             {
-                m_GetSelfTestSpecialMessage = VcuCommunication64SelfTest.GetSelfTestSpecialMessage;
-                m_StartSelfTestTask = VcuCommunication64SelfTest.StartSelfTestTask;
-                m_ExitSelfTestTask = VcuCommunication64SelfTest.ExitSelfTestTask;
-                m_AbortSTSequence = VcuCommunication64SelfTest.AbortSTSequence;
-                m_SendOperatorAcknowledge = VcuCommunication64SelfTest.SendOperatorAcknowledge;
-                m_UpdateSTTestList = VcuCommunication64SelfTest.UpdateSTTestList;
-                m_RunPredefinedSTTests = VcuCommunication64SelfTest.RunPredefinedSTTests;
-                m_UpdateSTLoopCount = VcuCommunication64SelfTest.UpdateSTLoopCount;
-                m_ExecuteSTTestList = VcuCommunication64SelfTest.ExecuteSTTestList;
                 unsafe
                 {
                     m_GetSelfTestResult = VcuCommunication64SelfTest.GetSelfTestResult;
@@ -314,15 +182,6 @@ namespace SelfTest.Communication
             }
             else
             {
-                m_GetSelfTestSpecialMessage = VcuCommunication32SelfTest.GetSelfTestSpecialMessage;
-                m_StartSelfTestTask = VcuCommunication32SelfTest.StartSelfTestTask;
-                m_ExitSelfTestTask = VcuCommunication32SelfTest.ExitSelfTestTask;
-                m_AbortSTSequence = VcuCommunication32SelfTest.AbortSTSequence;
-                m_SendOperatorAcknowledge = VcuCommunication32SelfTest.SendOperatorAcknowledge;
-                m_UpdateSTTestList = VcuCommunication32SelfTest.UpdateSTTestList;
-                m_RunPredefinedSTTests = VcuCommunication32SelfTest.RunPredefinedSTTests;
-                m_UpdateSTLoopCount = VcuCommunication32SelfTest.UpdateSTLoopCount;
-                m_ExecuteSTTestList = VcuCommunication32SelfTest.ExecuteSTTestList;
                 unsafe
                 {
                     m_GetSelfTestResult = VcuCommunication32SelfTest.GetSelfTestResult;
@@ -347,8 +206,6 @@ namespace SelfTest.Communication
         public void GetSelfTestSpecialMessage(out short result, out short reason)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_GetSelfTestSpecialMessage != null,
-                         "CommunicationSelfTest.GetSelfTestSpecialMessage() - [m_GetSelfTestSpecialMessage != null]");
             Debug.Assert(m_MutexCommuncationInterface != null,
                          "CommunicationSelfTest.GetSelfTestSpecialMessage() - [m_MutexCommuncationInterface != null]");
 
@@ -356,7 +213,7 @@ namespace SelfTest.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_GetSelfTestSpecialMessage(out result, out reason);
+                errorCode = m_SelfTestMarshal.GetSelfTestSpecialMessage(out result, out reason);
             }
             catch (Exception)
             {
@@ -393,9 +250,7 @@ namespace SelfTest.Communication
         /// CommunicationError.Success.</exception>
         public void StartSelfTestTask(out short result, out short reason)
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_StartSelfTestTask != null,
-                         "CommunicationSelfTest.StartSelfestTask() - [m_StartSelfTestTask != null]");
+
             Debug.Assert(m_MutexCommuncationInterface != null,
                          "CommunicationSelfTest.StartSelfTestTask() - [m_MutexCommuncationInterface != null]");
 
@@ -403,7 +258,7 @@ namespace SelfTest.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_StartSelfTestTask(out result, out reason);
+                errorCode = m_SelfTestMarshal.StartSelfTestTask(out result, out reason);
             }
             catch (Exception)
             {
@@ -440,9 +295,6 @@ namespace SelfTest.Communication
         /// CommunicationError.Success.</exception>
         public void ExitSelfTestTask(out short result, out short reason)
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_ExitSelfTestTask != null,
-                         "CommunicationSelfTest.ExitSelfTestTask() - [m_ExitSelfTestTask != null]");
             Debug.Assert(m_MutexCommuncationInterface != null,
                          "CommunicationSelfTest.ExitSelfTestTask() - [m_MutexCommuncationInterface != null]");
 
@@ -450,7 +302,7 @@ namespace SelfTest.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_ExitSelfTestTask(out result, out reason);
+                errorCode = m_SelfTestMarshal.ExitSelfTestTask(out result, out reason);
             }
             catch (Exception)
             {
@@ -482,9 +334,6 @@ namespace SelfTest.Communication
         /// CommunicationError.Success.</exception>
         public void AbortSTSequence()
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_AbortSTSequence != null,
-                         "CommunicationSelfTest.AbortSTSequence() - [m_AbortSTSequence != null]");
             Debug.Assert(m_MutexCommuncationInterface != null,
                          "CommunicationSelfTest.AbortSTSequence() - [m_MutexCommuncationInterface != null]");
 
@@ -492,7 +341,7 @@ namespace SelfTest.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_AbortSTSequence();
+                errorCode = m_SelfTestMarshal.AbortSTSequence();
             }
             catch (Exception)
             {
@@ -524,9 +373,6 @@ namespace SelfTest.Communication
         /// is not CommunicationError.Success.</exception>
         public void SendOperatorAcknowledge()
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_SendOperatorAcknowledge != null,
-                         "CommunicationSelfTest.SendOperatorAcknowledge() - [m_SendOperatorAcknowledge != null]");
             Debug.Assert(m_MutexCommuncationInterface != null,
                          "CommunicationSelfTest.SendOperatorAcknowledge() - [m_MutexCommuncationInterface != null]");
 
@@ -534,7 +380,7 @@ namespace SelfTest.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_SendOperatorAcknowledge();
+                errorCode = m_SelfTestMarshal.SendOperatorAcknowledge();
             }
             catch (Exception)
             {
@@ -569,9 +415,6 @@ namespace SelfTest.Communication
         /// CommunicationError.Success.</exception>
         public void UpdateSTTestList(short testCount, short[] tests)
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_UpdateSTTestList != null,
-                         "CommunicationSelfTest.UpdateSTTestList() - [m_UpdateSTTestList != null]");
             Debug.Assert(m_MutexCommuncationInterface != null,
                          "CommunicationSelfTest.UpdateSTTestList() - [m_MutexCommuncationInterface != null]");
 
@@ -579,7 +422,7 @@ namespace SelfTest.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_UpdateSTTestList(testCount, tests);
+                errorCode = m_SelfTestMarshal.UpdateSTTestList(testCount, tests);
             }
             catch (Exception)
             {
@@ -611,9 +454,6 @@ namespace SelfTest.Communication
         /// not CommunicationError.Success.</exception>
         public void RunPredefinedSTTests(short testListIdentifier)
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_RunPredefinedSTTests != null,
-                         "CommunicationSelfTest.RunPredefinedSTTests() - [m_RunPredefinedSTTests != null]");
             Debug.Assert(m_MutexCommuncationInterface != null,
                          "CommunicationSelfTest.RunPredefinedSTTests() - [m_MutexCommuncationInterface != null]");
 
@@ -621,7 +461,7 @@ namespace SelfTest.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_RunPredefinedSTTests(testListIdentifier);
+                errorCode = m_SelfTestMarshal.RunPredefinedSTTests(testListIdentifier);
             }
             catch (Exception)
             {
@@ -654,8 +494,6 @@ namespace SelfTest.Communication
         public void UpdateSTLoopCount(short loopCount)
         {
             // Check that the function delegate has been initialized.
-            Debug.Assert(m_UpdateSTLoopCount != null,
-                         "CommunicationSelfTest.UpdateSTLoopCount() - [m_UpdateSTLoopCount != null]");
             Debug.Assert(m_MutexCommuncationInterface != null,
                          "CommunicationSelfTest.UpdateSTLoopCount() - [m_MutexCommuncationInterface != null]");
 
@@ -663,7 +501,7 @@ namespace SelfTest.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_UpdateSTLoopCount(loopCount);
+                errorCode = m_SelfTestMarshal.UpdateSTLoopCount(loopCount);
             }
             catch (Exception)
             {
@@ -696,9 +534,6 @@ namespace SelfTest.Communication
         /// CommunicationError.Success.</exception>
         public void ExecuteSTTestList(TruckInformation truckInformation)
         {
-            // Check that the function delegate has been initialized.
-            Debug.Assert(m_ExecuteSTTestList != null,
-                         "CommunicationSelfTest.ExecuteSTTestList() - [m_ExecuteSTTestList != null]");
             Debug.Assert(m_MutexCommuncationInterface != null,
                          "CommunicationSelfTest.ExecuteSTTestList() - [m_MutexCommuncationInterface != null]");
 
@@ -706,7 +541,7 @@ namespace SelfTest.Communication
             try
             {
                 m_MutexCommuncationInterface.WaitOne(DefaultMutexWaitDurationMs, false);
-                errorCode = (CommunicationError)m_ExecuteSTTestList((short)truckInformation);
+                errorCode = m_SelfTestMarshal.ExecuteSTTestList((short)truckInformation);
             }
             catch (Exception)
             {

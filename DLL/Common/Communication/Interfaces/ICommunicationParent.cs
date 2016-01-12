@@ -124,6 +124,11 @@ namespace Common.Communication
         /// </summary>
         EventStreamMarshal EventStreamMarshall { get; }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        SelfTestMarshal SelfTestMarshall { get; }
+
         #endregion - [Properties] -
     }
 }
